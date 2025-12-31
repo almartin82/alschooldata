@@ -1,13 +1,13 @@
 Package: alschooldata
 Title: Fetch and Process Alabama School Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R:
     person("Al", "Martin", , "almartin@example.com", role = c("aut", "cre"))
 Description: Downloads and processes school data from the Alabama State Department
-    of Education (ALSDE). Provides functions for fetching enrollment data from the
-    Federal Report Card system and transforming it into tidy format for analysis.
-    Supports data from 2015 to present, with demographic breakdowns by race/ethnicity,
-    gender, and special populations.
+    of Education (ALSDE). Provides functions for fetching enrollment data from
+    the ALSDE Federal Report Card Student Demographics system. Supports data from
+    2015 to present (2014-15 school year onwards), with demographic breakdowns by
+    race/ethnicity, gender, and special populations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -16,7 +16,6 @@ Depends:
     R (>= 4.0)
 Imports:
     dplyr,
-    readxl,
     readr,
     purrr,
     stringr,

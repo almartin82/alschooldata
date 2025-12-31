@@ -5,11 +5,14 @@
 # This file contains functions for processing raw ALSDE enrollment data into a
 # clean, standardized format.
 #
+# Data is sourced exclusively from the ALSDE Federal Report Card Student
+# Demographics system.
+#
 # ==============================================================================
 
 #' Process raw ALSDE enrollment data
 #'
-#' Transforms raw Federal Report Card or CCD data into a standardized schema
+#' Transforms raw Federal Report Card data into a standardized schema
 #' combining school and district data.
 #'
 #' @param raw_data Data frame from get_raw_enr
@@ -18,19 +21,8 @@
 #' @keywords internal
 process_enr <- function(raw_data, end_year) {
 
-  # Detect data source based on column names
-  cols <- names(raw_data)
-
-  if (any(grepl("System|School", cols, ignore.case = TRUE))) {
-    # Federal Report Card format
-    processed <- process_federal_reportcard(raw_data, end_year)
-  } else if (any(grepl("ncessch|leaid", cols, ignore.case = TRUE))) {
-    # NCES CCD format
-    processed <- process_ccd_data(raw_data, end_year)
-  } else {
-    # Unknown format - try generic processing
-    processed <- process_generic(raw_data, end_year)
-  }
+  # Process Federal Report Card format
+  processed <- process_federal_reportcard(raw_data, end_year)
 
   # Ensure required columns exist
   required_cols <- c("end_year", "type", "district_id", "campus_id",
@@ -179,141 +171,6 @@ process_federal_reportcard <- function(df, end_year) {
   result <- ensure_aggregation_levels(result, end_year)
 
   result
-}
-
-
-#' Process NCES CCD data
-#'
-#' @param df Raw data frame from CCD
-#' @param end_year School year end
-#' @return Processed data frame
-#' @keywords internal
-process_ccd_data <- function(df, end_year) {
-
-  cols <- names(df)
-
-  # Helper to find column
-  find_col <- function(patterns) {
-    for (pattern in patterns) {
-      matched <- grep(pattern, cols, value = TRUE, ignore.case = TRUE)
-      if (length(matched) > 0) return(matched[1])
-    }
-    NULL
-  }
-
-  n_rows <- nrow(df)
-
-  result <- data.frame(
-    end_year = rep(end_year, n_rows),
-    type = rep("Campus", n_rows),  # CCD is school-level
-    stringsAsFactors = FALSE
-  )
-
-  # District/LEA ID - extract Alabama 3-digit code from full NCES ID
-  lea_col <- find_col(c("leaid", "lea_id", "district_id"))
-  if (!is.null(lea_col)) {
-    # NCES LEA IDs are 7 digits; last 3-5 are the local ID
-    # For Alabama, extract the local portion
-    full_id <- df[[lea_col]]
-    result$district_id <- substr(full_id, nchar(full_id) - 2, nchar(full_id))
-  }
-
-  # School ID
-  school_col <- find_col(c("ncessch", "school_id", "campus_id"))
-  if (!is.null(school_col)) {
-    result$campus_id <- df[[school_col]]
-  }
-
-  # Names
-  lea_name_col <- find_col(c("lea_name", "district_name", "system_name"))
-  if (!is.null(lea_name_col)) {
-    result$district_name <- trimws(df[[lea_name_col]])
-  }
-
-  school_name_col <- find_col(c("school_name", "campus_name"))
-  if (!is.null(school_name_col)) {
-    result$campus_name <- trimws(df[[school_name_col]])
-  }
-
-  # Enrollment total
-  enr_col <- find_col(c("enrollment", "total_count", "total"))
-  if (!is.null(enr_col)) {
-    result$row_total <- safe_numeric(df[[enr_col]])
-  }
-
-  # Demographics from CCD - these may be in wide or long format
-  # CCD uses race_ethnicity codes: 1=White, 2=Black, 3=Hispanic, etc.
-  race_col <- find_col(c("race_ethnicity", "race"))
-  if (!is.null(race_col)) {
-    # Data is in long format - need to pivot
-    result <- pivot_ccd_demographics(result, df, race_col)
-  } else {
-    # Try wide format columns
-    demo_cols <- list(
-      white = "white",
-      black = "black",
-      hispanic = "hispanic",
-      asian = "asian",
-      native_american = c("american_indian", "native_american"),
-      pacific_islander = c("pacific_islander", "hawaiian"),
-      multiracial = c("two_or_more", "multiracial")
-    )
-
-    for (name in names(demo_cols)) {
-      col <- find_col(demo_cols[[name]])
-      if (!is.null(col)) {
-        result[[name]] <- safe_numeric(df[[col]])
-      }
-    }
-  }
-
-  # Ensure aggregation levels
-  result <- ensure_aggregation_levels(result, end_year)
-
-  result
-}
-
-
-#' Pivot CCD demographics from long to wide format
-#'
-#' @param result Partial result data frame
-#' @param df Original CCD data frame
-#' @param race_col Name of race column
-#' @return Data frame with demographics in wide format
-#' @keywords internal
-pivot_ccd_demographics <- function(result, df, race_col) {
-  # CCD race codes:
-  # 1 = White, 2 = Black, 3 = Hispanic, 4 = Asian, 5 = American Indian,
-  # 6 = Pacific Islander, 7 = Two or More, 99 = Total
-
-  race_map <- c(
-    "1" = "white", "2" = "black", "3" = "hispanic", "4" = "asian",
-    "5" = "native_american", "6" = "pacific_islander", "7" = "multiracial"
-  )
-
-  # This is a simplified pivot - full implementation would use tidyr::pivot_wider
-  # For now, return result as-is
-  result
-}
-
-
-#' Process generic data format
-#'
-#' @param df Raw data frame
-#' @param end_year School year end
-#' @return Processed data frame
-#' @keywords internal
-process_generic <- function(df, end_year) {
-  # Add basic structure
-  df$end_year <- end_year
-  df$type <- "Campus"
-  df$district_id <- NA_character_
-  df$campus_id <- NA_character_
-  df$district_name <- NA_character_
-  df$campus_name <- NA_character_
-  df$row_total <- NA_real_
-
-  df
 }
 
 

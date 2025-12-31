@@ -1,8 +1,9 @@
 #' alschooldata: Fetch and Process Alabama School Data
 #'
 #' Downloads and processes school data from the Alabama State Department of
-#' Education (ALSDE). Provides functions for fetching enrollment data from the
-#' Federal Report Card system and transforming it into tidy format for analysis.
+#' Education (ALSDE). Provides functions for fetching enrollment data from
+#' the ALSDE Federal Report Card and transforming it into tidy format for
+#' analysis. Supports data from 2015 to present.
 #'
 #' @section Main functions:
 #' \describe{
@@ -11,6 +12,7 @@
 #'   \item{\code{\link{tidy_enr}}}{Transform wide data to tidy (long) format}
 #'   \item{\code{\link{id_enr_aggs}}}{Add aggregation level flags}
 #'   \item{\code{\link{enr_grade_aggs}}}{Create grade-level aggregations}
+#'   \item{\code{\link{get_available_years}}}{Get the range of available years}
 #' }
 #'
 #' @section Cache functions:
@@ -26,22 +28,17 @@
 #'   \item School Codes: 4-digit codes unique within each system
 #' }
 #'
-#' @section Data Sources:
-#' Data is sourced from the Alabama State Department of Education's Federal
-#' Report Card system:
+#' @section Data Source:
+#' Data is sourced exclusively from the Alabama State Department of Education:
 #' \itemize{
-#'   \item Federal Report Card: \url{https://reportcard.alsde.edu/}
-#'   \item Alabama Achieves: \url{https://www.alabamaachieves.org/reports-data/}
+#'   \item Federal Report Card Student Demographics:
+#'     \url{https://reportcard.alsde.edu/SupportingData_StudentDemographics.aspx}
 #' }
 #'
-#' @section Data Eras:
-#' Alabama enrollment data is available in two main eras:
-#' \itemize{
-#'   \item Federal Report Card Era (2015-present): Detailed demographics via
-#'     the ALSDE Federal Report Card system with CSV export capability
-#'   \item ADM Reports (2019-present): Fall enrollment reports via Alabama
-#'     Achieves with total enrollment by system and school
-#' }
+#' @section Available Years:
+#' The ALSDE Federal Report Card provides enrollment data from 2015 to 2025
+#' (school years 2014-15 through 2024-25). Data includes school-level enrollment
+#' with demographic breakdowns by race/ethnicity, gender, and special populations.
 #'
 #' @docType package
 #' @name alschooldata-package

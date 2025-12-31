@@ -2,35 +2,43 @@
 # Raw Enrollment Data Download Functions
 # ==============================================================================
 #
-# This file contains functions for downloading raw enrollment data from ALSDE.
-# Data comes from two main sources:
-# - Federal Report Card (2015-present): Detailed demographics via web export
-# - ADM Reports (2019-present): Fall enrollment totals via Excel files
+# This file contains functions for downloading raw enrollment data from the
+# Alabama State Department of Education (ALSDE).
 #
-# The primary data source is the Federal Report Card Student Demographics page
-# which provides school-level enrollment data with demographic breakdowns.
+# Data Source:
+# - ALSDE Federal Report Card Student Demographics (2015-present)
+#   https://reportcard.alsde.edu/SupportingData_StudentDemographics.aspx
+#
+# The Federal Report Card provides school-level enrollment data with detailed
+# demographic breakdowns including race/ethnicity, gender, and special populations.
+#
+# Available Years: 2015-2025 (school year end year, e.g., 2025 = 2024-25)
 #
 # ==============================================================================
 
 #' Download raw enrollment data from ALSDE
 #'
-#' Downloads school-level enrollment data from ALSDE's Federal Report Card system.
-#' Uses the Student Demographics data export which provides counts by race/ethnicity,
-#' gender, and special populations.
+#' Downloads school-level enrollment data from the Alabama State Department of
+#' Education Federal Report Card Student Demographics system.
 #'
-#' @param end_year School year end (2023-24 = 2024). Valid values are 2015-2025.
-#' @return Data frame with raw enrollment data from ALSDE
+#' @param end_year School year end (2024-25 = 2025). Valid values are 2015-2025.
+#' @return Data frame with raw enrollment data
 #' @keywords internal
 get_raw_enr <- function(end_year) {
 
-  # Validate year - Federal Report Card data available 2015-2025
-  if (end_year < 2015 || end_year > 2025) {
-    stop("end_year must be between 2015 and 2025")
+  # Get valid year range
+  years <- get_available_years()
+
+  # Validate year
+  if (end_year < years$min_year || end_year > years$max_year) {
+    stop(paste0("end_year must be between ", years$min_year, " and ", years$max_year,
+                ". ALSDE Federal Report Card data is only available for 2015-2025."))
   }
 
-  message(paste("Downloading ALSDE enrollment data for", end_year, "..."))
+  message(paste("Downloading ALSDE enrollment data for", school_year_label(end_year), "..."))
 
   # Download from Federal Report Card Student Demographics
+
   raw_data <- download_federal_reportcard(end_year)
 
   # Add end_year column
@@ -45,16 +53,17 @@ get_raw_enr <- function(end_year) {
 #' The Federal Report Card provides detailed enrollment data by demographics
 #' at the school level. This function downloads the CSV export.
 #'
+#' The Student Demographics page is available at:
+#' https://reportcard.alsde.edu/SupportingData_StudentDemographics.aspx
+#'
 #' @param end_year School year end
 #' @return Data frame with enrollment data
 #' @keywords internal
 download_federal_reportcard <- function(end_year) {
 
-  message("  Downloading from Federal Report Card...")
-
+  message("  Downloading from ALSDE Federal Report Card...")
 
   # The Federal Report Card exports data via a POST request to an ASPX endpoint
-
   # The page uses ASP.NET ViewState, so we need to:
   # 1. GET the page to obtain __VIEWSTATE and other hidden fields
   # 2. POST with the year filter and export request
@@ -64,12 +73,14 @@ download_federal_reportcard <- function(end_year) {
   # First, get the page to extract ViewState
   initial_response <- httr::GET(
     base_url,
-    httr::timeout(120)
+    httr::timeout(120),
+    httr::user_agent("alschooldata R package (https://github.com/almartin82/alschooldata)")
   )
 
   if (httr::http_error(initial_response)) {
-    stop(paste("Failed to access Federal Report Card page. HTTP status:",
-               httr::status_code(initial_response)))
+    stop(paste("Failed to access ALSDE Federal Report Card page. HTTP status:",
+               httr::status_code(initial_response),
+               "\nPlease check if the site is accessible at:", base_url))
   }
 
   page_content <- httr::content(initial_response, "text", encoding = "UTF-8")
@@ -86,9 +97,9 @@ download_federal_reportcard <- function(end_year) {
     rvest::html_attr("value")
 
   if (is.na(viewstate)) {
-    # Fallback: try alternative download method
-    message("  ViewState extraction failed, trying direct CSV download...")
-    return(download_federal_reportcard_direct(end_year))
+    stop("Failed to extract ViewState from ALSDE Federal Report Card page. ",
+         "The page structure may have changed. ",
+         "Please report this issue at: https://github.com/almartin82/alschooldata/issues")
   }
 
   # Build form data for export request
@@ -114,13 +125,15 @@ download_federal_reportcard <- function(end_year) {
     body = form_data,
     encode = "form",
     httr::write_disk(tname, overwrite = TRUE),
-    httr::timeout(600)  # Long timeout for large export
+    httr::timeout(600),  # Long timeout for large export
+    httr::user_agent("alschooldata R package (https://github.com/almartin82/alschooldata)")
   )
 
   if (httr::http_error(export_response)) {
-    # Try alternative download method
-    message("  Export request failed, trying direct download...")
-    return(download_federal_reportcard_direct(end_year))
+    unlink(tname)
+    stop(paste("Failed to export data from ALSDE Federal Report Card. HTTP status:",
+               httr::status_code(export_response),
+               "\nThe server may be temporarily unavailable. Please try again later."))
   }
 
   # Check if we got CSV data or HTML error page
@@ -128,8 +141,10 @@ download_federal_reportcard <- function(end_year) {
   if (file_size < 1000) {
     first_lines <- readLines(tname, n = 5, warn = FALSE)
     if (any(grepl("<html|<!DOCTYPE", first_lines, ignore.case = TRUE))) {
-      message("  Received HTML instead of CSV, trying direct download...")
-      return(download_federal_reportcard_direct(end_year))
+      unlink(tname)
+      stop("ALSDE server returned an HTML page instead of CSV data. ",
+           "This may indicate the year ", end_year, " is not available, ",
+           "or the server is experiencing issues. Please try again later.")
     }
   }
 
@@ -143,204 +158,14 @@ download_federal_reportcard <- function(end_year) {
   # Clean up
   unlink(tname)
 
-  df
-}
-
-
-#' Direct download from Federal Report Card (fallback method)
-#'
-#' This is a fallback method that constructs synthetic data based on the
-#' known structure of ALSDE data. Used when the primary download method fails.
-#'
-#' @param end_year School year end
-#' @return Data frame with enrollment data
-#' @keywords internal
-download_federal_reportcard_direct <- function(end_year) {
-
-  # Try to download from the NCES Common Core of Data as a fallback
-  # This provides Alabama school enrollment data with demographics
-  message("  Attempting NCES CCD download as fallback...")
-
-  ccd_data <- download_nces_ccd(end_year)
-
-  if (!is.null(ccd_data) && nrow(ccd_data) > 0) {
-    return(ccd_data)
+  if (nrow(df) == 0) {
+    stop("Downloaded file contains no data for year ", end_year, ". ",
+         "Please verify the year is available at: ", base_url)
   }
 
-  # If CCD fails, try ADM report for basic enrollment
-  message("  Attempting ADM report download...")
-  adm_data <- download_adm_report(end_year)
-
-  if (!is.null(adm_data) && nrow(adm_data) > 0) {
-    return(adm_data)
-  }
-
-  stop(paste("Unable to download enrollment data for year", end_year,
-             "\nPlease try again later or check ALSDE data availability."))
-}
-
-
-#' Download from NCES Common Core of Data
-#'
-#' Downloads Alabama school enrollment data from the NCES CCD.
-#' This provides a reliable fallback with historical data.
-#'
-#' @param end_year School year end
-#' @return Data frame with enrollment data or NULL if unavailable
-#' @keywords internal
-download_nces_ccd <- function(end_year) {
-
-  # CCD uses different year format - need to map
-  # end_year 2024 = 2023-24 school year = CCD year 2023
-  ccd_year <- end_year - 1
-
-  # Build Urban Institute Education Data Portal API URL
-  # This API provides easy access to CCD data
-  api_url <- paste0(
-    "https://educationdata.urban.org/api/v1/schools/ccd/enrollment/",
-    ccd_year, "/",
-    "?fips=01",  # Alabama FIPS code
-    "&grade=99"  # Total enrollment
-  )
-
-  tryCatch({
-    response <- httr::GET(
-      api_url,
-      httr::timeout(120)
-    )
-
-    if (httr::http_error(response)) {
-      message("  CCD API returned error")
-      return(NULL)
-    }
-
-    content <- httr::content(response, "text", encoding = "UTF-8")
-    json_data <- jsonlite::fromJSON(content)
-
-    if (is.null(json_data$results) || length(json_data$results) == 0) {
-      message("  No CCD data found for year ", end_year)
-      return(NULL)
-    }
-
-    # Convert to data frame
-    df <- as.data.frame(json_data$results)
-
-    # Standardize column names to match ALSDE format
-    df <- standardize_ccd_columns(df)
-
-    df
-
-  }, error = function(e) {
-    message("  CCD download error: ", e$message)
-    return(NULL)
-  })
-}
-
-
-#' Standardize CCD column names to match ALSDE format
-#'
-#' @param df Data frame with CCD data
-#' @return Data frame with standardized column names
-#' @keywords internal
-standardize_ccd_columns <- function(df) {
-
-  # CCD column mappings
-  # Note: CCD uses different column names than ALSDE
-  col_map <- c(
-    "ncessch" = "school_id",
-    "leaid" = "district_id",
-    "school_name" = "school_name",
-    "lea_name" = "system_name",
-    "enrollment" = "total_count",
-    "race_ethnicity" = "race",
-    "sex" = "gender"
-  )
-
-  # Rename columns that exist
-  for (old_name in names(col_map)) {
-    if (old_name %in% names(df)) {
-      names(df)[names(df) == old_name] <- col_map[old_name]
-    }
-  }
+  message("  Downloaded ", nrow(df), " rows from ALSDE")
 
   df
-}
-
-
-#' Download ADM Report from Alabama Achieves
-#'
-#' Downloads Fall ADM (Average Daily Membership) report which contains
-#' enrollment totals by system and school. This provides basic enrollment
-#' data without demographic breakdowns.
-#'
-#' @param end_year School year end
-#' @return Data frame with ADM data or NULL if unavailable
-#' @keywords internal
-download_adm_report <- function(end_year) {
-
-  # ADM reports are available from 2019-20 onward
-  if (end_year < 2020) {
-    message("  ADM reports not available before 2020")
-    return(NULL)
-  }
-
-  # URL patterns for ADM reports (discovered from web research)
-  # Pattern varies by year - try known patterns
-  url_patterns <- c(
-    # 2023-24 format
-    paste0("https://www.alabamaachieves.org/wp-content/uploads/", end_year - 1, "/11/",
-           "RD_FR_", end_year - 1, "2112_", end_year - 1, "-", end_year,
-           "-Fall-ADM-Report-by-System-School_v1.0.xlsb"),
-    # 2021-22 format
-    paste0("https://www.alabamaachieves.org/wp-content/uploads/", end_year - 1, "/11/",
-           end_year - 1, "-", end_year, "-Fall-ADM-Report-by-System-School.xlsb"),
-    # 2020-21 format
-    paste0("https://alabamaachieves.org/wp-content/uploads/", end_year, "/06/",
-           end_year - 1, "-", end_year, "-Fall-ADM-Report-by-System-School.xlsx")
-  )
-
-  for (url in url_patterns) {
-    tryCatch({
-      # Create temp file
-      file_ext <- tools::file_ext(url)
-      tname <- tempfile(
-        pattern = paste0("alsde_adm_", end_year, "_"),
-        tmpdir = tempdir(),
-        fileext = paste0(".", file_ext)
-      )
-
-      response <- httr::GET(
-        url,
-        httr::write_disk(tname, overwrite = TRUE),
-        httr::timeout(120)
-      )
-
-      if (!httr::http_error(response)) {
-        # Check file size
-        if (file.info(tname)$size > 5000) {
-          # Try to read the file
-          if (file_ext == "xlsb") {
-            # xlsb files need special handling
-            message("  Note: XLSB format requires 'readxlsb' package")
-            # For now, skip xlsb files
-            next
-          } else {
-            df <- readxl::read_excel(tname, col_types = "text")
-            unlink(tname)
-            return(df)
-          }
-        }
-      }
-
-      unlink(tname)
-
-    }, error = function(e) {
-      # Try next URL pattern
-    })
-  }
-
-  message("  No ADM report found for year ", end_year)
-  NULL
 }
 
 
