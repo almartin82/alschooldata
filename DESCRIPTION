@@ -1,0 +1,38 @@
+Package: alschooldata
+Title: Fetch and Process Alabama School Data
+Version: 0.1.0
+Authors@R:
+    person("Al", "Martin", , "almartin@example.com", role = c("aut", "cre"))
+Description: Downloads and processes school data from the Alabama State Department
+    of Education (ALSDE). Provides functions for fetching enrollment data from the
+    Federal Report Card system and transforming it into tidy format for analysis.
+    Supports data from 2015 to present, with demographic breakdowns by race/ethnicity,
+    gender, and special populations.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.0)
+Imports:
+    dplyr,
+    readxl,
+    readr,
+    purrr,
+    stringr,
+    tidyr,
+    rlang,
+    httr,
+    rappdirs,
+    rvest,
+    xml2
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    ggplot2,
+    scales
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+URL: https://almartin82.github.io/alschooldata/, https://github.com/almartin82/alschooldata
+BugReports: https://github.com/almartin82/alschooldata/issues
