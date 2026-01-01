@@ -33,6 +33,8 @@ enr %>%
   mutate(change = n_students - lag(n_students))
 ```
 
+![Alabama enrollment trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png)
+
 ---
 
 ### 2. COVID hit elementary hardest
@@ -48,6 +50,8 @@ enr %>%
   select(end_year, grade_level, n_students) %>%
   tidyr::pivot_wider(names_from = end_year, values_from = n_students)
 ```
+
+![COVID impact by grade level](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/covid-chart-1.png)
 
 ---
 
@@ -65,6 +69,8 @@ enr_2025 %>%
   select(district_name, n_students)
 ```
 
+![Alabama's 10 largest school systems](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png)
+
 ---
 
 ### 4. The suburban surge around Birmingham
@@ -80,6 +86,8 @@ enr %>%
   select(end_year, district_name, n_students) %>%
   tidyr::pivot_wider(names_from = end_year, values_from = n_students)
 ```
+
+![Birmingham metro area enrollment trends](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/suburb-chart-1.png)
 
 ---
 
@@ -116,6 +124,8 @@ enr_2025 %>%
   arrange(desc(n_students))
 ```
 
+![Alabama student demographics](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png)
+
 ---
 
 ### 7. Hispanic enrollment is climbing
@@ -130,6 +140,8 @@ enr %>%
   mutate(pct = round(pct * 100, 1)) %>%
   select(end_year, n_students, pct)
 ```
+
+![Hispanic enrollment growth](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/hispanic-chart-1.png)
 
 ---
 
