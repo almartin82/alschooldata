@@ -16,6 +16,64 @@
 #
 # ==============================================================================
 
+#' Retry an HTTP request with exponential backoff
+#'
+#' @param request_fn Function that makes the HTTP request and returns response
+#' @param max_retries Maximum number of retry attempts (default 5)
+#' @param base_delay Initial delay in seconds (default 1)
+#' @param max_delay Maximum delay in seconds (default 60)
+#' @param description Description of the request for logging
+#' @return The HTTP response if successful
+#' @keywords internal
+retry_with_backoff <- function(request_fn, max_retries = 5, base_delay = 1,
+                                max_delay = 60, description = "request") {
+  attempt <- 1
+
+
+  while (attempt <= max_retries) {
+    result <- tryCatch(
+      {
+        response <- request_fn()
+        # Check for server errors (5xx) that warrant retry
+        if (httr::http_error(response)) {
+          status <- httr::status_code(response)
+          if (status >= 500 && status < 600) {
+            stop(paste("Server error:", status))
+          }
+        }
+        return(response)
+      },
+      error = function(e) {
+        if (attempt < max_retries) {
+          # Exponential backoff with jitter
+          delay <- min(base_delay * (2 ^ (attempt - 1)), max_delay)
+          jitter <- runif(1, 0, delay * 0.1)
+          wait_time <- delay + jitter
+
+          message(sprintf("  Attempt %d/%d failed for %s: %s",
+                          attempt, max_retries, description, e$message))
+          message(sprintf("  Retrying in %.1f seconds...", wait_time))
+          Sys.sleep(wait_time)
+          return(NULL)  # Signal to retry
+        } else {
+          stop(e)
+        }
+      }
+    )
+
+    if (!is.null(result)) {
+      if (attempt > 1) {
+        message(sprintf("  %s succeeded on attempt %d", description, attempt))
+      }
+      return(result)
+    }
+
+    attempt <- attempt + 1
+  }
+
+  stop(paste("All", max_retries, "attempts failed for", description))
+}
+
 #' Download raw enrollment data from ALSDE
 #'
 #' Downloads school-level enrollment data from the Alabama State Department of
@@ -70,11 +128,17 @@ download_federal_reportcard <- function(end_year) {
 
   base_url <- "https://reportcard.alsde.edu/SupportingData_StudentDemographics.aspx"
 
-  # First, get the page to extract ViewState
-  initial_response <- httr::GET(
-    base_url,
-    httr::timeout(120),
-    httr::user_agent("alschooldata R package (https://github.com/almartin82/alschooldata)")
+  # First, get the page to extract ViewState (with retry)
+  initial_response <- retry_with_backoff(
+    request_fn = function() {
+      httr::GET(
+        base_url,
+        httr::timeout(60),
+        httr::user_agent("alschooldata R package (https://github.com/almartin82/alschooldata)")
+      )
+    },
+    max_retries = 5,
+    description = "ALSDE page fetch"
   )
 
   if (httr::http_error(initial_response)) {
@@ -119,14 +183,21 @@ download_federal_reportcard <- function(end_year) {
     fileext = ".csv"
   )
 
-  # POST request to export data
-  export_response <- httr::POST(
-    base_url,
-    body = form_data,
-    encode = "form",
-    httr::write_disk(tname, overwrite = TRUE),
-    httr::timeout(600),  # Long timeout for large export
-    httr::user_agent("alschooldata R package (https://github.com/almartin82/alschooldata)")
+  # POST request to export data (with retry)
+  export_response <- retry_with_backoff(
+    request_fn = function() {
+      httr::POST(
+        base_url,
+        body = form_data,
+        encode = "form",
+        httr::write_disk(tname, overwrite = TRUE),
+        httr::timeout(60),
+        httr::user_agent("alschooldata R package (https://github.com/almartin82/alschooldata)")
+      )
+    },
+    max_retries = 5,
+    base_delay = 2,  # Start with 2s delay for export requests
+    description = "ALSDE data export"
   )
 
   if (httr::http_error(export_response)) {
