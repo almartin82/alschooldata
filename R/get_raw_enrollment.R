@@ -89,11 +89,11 @@ download_federal_reportcard <- function(end_year) {
   html_doc <- xml2::read_html(page_content)
 
   # Extract hidden form fields needed for postback
-  viewstate <- rvest::html_element(html_doc, "input#__VIEWSTATE") %>%
+  viewstate <- rvest::html_element(html_doc, "input#__VIEWSTATE") |>
     rvest::html_attr("value")
-  viewstate_gen <- rvest::html_element(html_doc, "input#__VIEWSTATEGENERATOR") %>%
+  viewstate_gen <- rvest::html_element(html_doc, "input#__VIEWSTATEGENERATOR") |>
     rvest::html_attr("value")
-  event_validation <- rvest::html_element(html_doc, "input#__EVENTVALIDATION") %>%
+  event_validation <- rvest::html_element(html_doc, "input#__EVENTVALIDATION") |>
     rvest::html_attr("value")
 
   if (is.na(viewstate)) {

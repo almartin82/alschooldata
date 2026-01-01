@@ -267,12 +267,12 @@ ensure_aggregation_levels <- function(df, end_year) {
     campus_data <- df[df$type == "Campus" & !is.na(df$district_id), ]
 
     if (nrow(campus_data) > 0) {
-      district_agg <- campus_data %>%
-        dplyr::group_by(district_id, district_name) %>%
+      district_agg <- campus_data |>
+        dplyr::group_by(district_id, district_name) |>
         dplyr::summarize(
           dplyr::across(dplyr::any_of(sum_cols), ~sum(.x, na.rm = TRUE)),
           .groups = "drop"
-        ) %>%
+        ) |>
         dplyr::mutate(
           end_year = end_year,
           type = "District",
@@ -289,10 +289,10 @@ ensure_aggregation_levels <- function(df, end_year) {
     district_data <- df[df$type == "District", ]
 
     if (nrow(district_data) > 0) {
-      state_agg <- district_data %>%
+      state_agg <- district_data |>
         dplyr::summarize(
           dplyr::across(dplyr::any_of(sum_cols), ~sum(.x, na.rm = TRUE))
-        ) %>%
+        ) |>
         dplyr::mutate(
           end_year = end_year,
           type = "State",
