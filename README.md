@@ -7,9 +7,11 @@
 
 Fetch and analyze Alabama public school enrollment data from the Alabama State Department of Education (ALSDE).
 
-**[Documentation](https://almartin82.github.io/alschooldata/)** | **[Getting Started](https://almartin82.github.io/alschooldata/articles/quickstart.html)**
+**[Documentation](https://almartin82.github.io/alschooldata/)** | **[10 Key Insights](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)** | **[Getting Started](https://almartin82.github.io/alschooldata/articles/quickstart.html)**
 
 ## What can you find with alschooldata?
+
+> **See the full analysis with charts and data output:** [10 Insights from Alabama Enrollment Data](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)
 
 **11 years of enrollment data (2015-2025).** 730,000 students across 140+ school systems. Here are ten stories hiding in the numbers:
 

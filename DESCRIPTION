@@ -30,7 +30,8 @@ Suggests:
     knitr,
     rmarkdown,
     ggplot2,
-    scales
+    scales,
+    forcats
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://almartin82.github.io/alschooldata/, https://github.com/almartin82/alschooldata
