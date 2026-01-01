@@ -28,6 +28,8 @@ reference:
   - tidy_enr
   - id_enr_aggs
   - enr_grade_aggs
+  - parse_school_year
+  - school_year_label
 
 - title: Cache Management
   contents:
