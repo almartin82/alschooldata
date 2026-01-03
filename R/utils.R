@@ -21,7 +21,7 @@ NULL
 get_available_years <- function() {
   list(
     min_year = 2015L,
-    max_year = 2025L
+    max_year = 2024L
   )
 }
 

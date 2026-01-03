@@ -12,7 +12,7 @@
 # The Federal Report Card provides school-level enrollment data with detailed
 # demographic breakdowns including race/ethnicity, gender, and special populations.
 #
-# Available Years: 2015-2025 (school year end year, e.g., 2025 = 2024-25)
+# Available Years: 2015-2024 (school year end year, e.g., 2024 = 2023-24)
 #
 # ==============================================================================
 
@@ -79,7 +79,7 @@ retry_with_backoff <- function(request_fn, max_retries = 5, base_delay = 1,
 #' Downloads school-level enrollment data from the Alabama State Department of
 #' Education Federal Report Card Student Demographics system.
 #'
-#' @param end_year School year end (2024-25 = 2025). Valid values are 2015-2025.
+#' @param end_year School year end (2023-24 = 2024). Valid values are 2015-2024.
 #' @return Data frame with raw enrollment data
 #' @keywords internal
 get_raw_enr <- function(end_year) {
@@ -90,7 +90,7 @@ get_raw_enr <- function(end_year) {
   # Validate year
   if (end_year < years$min_year || end_year > years$max_year) {
     stop(paste0("end_year must be between ", years$min_year, " and ", years$max_year,
-                ". ALSDE Federal Report Card data is only available for 2015-2025."))
+                ". ALSDE Federal Report Card data is only available for 2015-2024."))
   }
 
   message(paste("Downloading ALSDE enrollment data for", school_year_label(end_year), "..."))

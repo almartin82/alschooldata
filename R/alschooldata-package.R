@@ -36,8 +36,8 @@
 #' }
 #'
 #' @section Available Years:
-#' The ALSDE Federal Report Card provides enrollment data from 2015 to 2025
-#' (school years 2014-15 through 2024-25). Data includes school-level enrollment
+#' The ALSDE Federal Report Card provides enrollment data from 2015 to 2024
+#' (school years 2014-15 through 2023-24). Data includes school-level enrollment
 #' with demographic breakdowns by race/ethnicity, gender, and special populations.
 #'
 #' @docType package
