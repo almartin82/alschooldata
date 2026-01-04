@@ -7,7 +7,7 @@
 get_raw_enr(end_year)
 }
 \arguments{
-\item{end_year}{School year end (2024-25 = 2025). Valid values are 2015-2025.}
+\item{end_year}{School year end (2023-24 = 2024). Valid values are 2015-2024.}
 }
 \value{
 Data frame with raw enrollment data
