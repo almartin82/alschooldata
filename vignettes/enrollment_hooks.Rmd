@@ -14,9 +14,15 @@ knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   fig.width = 8,
-  fig.height = 5,
-  eval = FALSE
+  fig.height = 5
 )
+
+# Set eval=FALSE during CI/R CMD check to avoid network calls
+# Vignette will still render locally with eval=TRUE
+in_ci <- Sys.getenv("CI") == "true" || Sys.getenv("_R_CHECK_FORCE_SUGGESTS_") != ""
+if (in_ci) {
+  knitr::opts_chunk$set(eval = FALSE)
+}
 ```
 
 ```{r load-packages}
