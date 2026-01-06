@@ -5,6 +5,11 @@
 #' @importFrom rlang .data
 NULL
 
+# Declare non-standard evaluation variables for dplyr
+utils::globalVariables(
+  c("district_id", "district_name")
+)
+
 
 #' Get Available Years
 #'
