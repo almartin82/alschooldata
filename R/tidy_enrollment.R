@@ -136,7 +136,15 @@ tidy_enr <- function(df) {
 
   # Combine all tidy data
   dplyr::bind_rows(tidy_total, tidy_subgroups, tidy_grades) |>
-    dplyr::filter(!is.na(.data$n_students))
+    dplyr::filter(!is.na(.data$n_students)) |>
+    dplyr::mutate(
+      aggregation_flag = dplyr::case_when(
+        !is.na(.data$district_id) & !is.na(.data$campus_id) &
+          .data$district_id != "" & .data$campus_id != "" ~ "campus",
+        !is.na(.data$district_id) & .data$district_id != "" ~ "district",
+        TRUE ~ "state"
+      )
+    )
 }
 
 
