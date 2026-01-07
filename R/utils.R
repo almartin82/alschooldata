@@ -5,6 +5,11 @@
 #' @importFrom rlang .data
 NULL
 
+# Declare non-standard evaluation variables for dplyr
+utils::globalVariables(
+  c("district_id", "district_name")
+)
+
 
 #' Get Available Years
 #'
@@ -21,7 +26,7 @@ NULL
 get_available_years <- function() {
   list(
     min_year = 2015L,
-    max_year = 2024L
+    max_year = 2025L
   )
 }
 
