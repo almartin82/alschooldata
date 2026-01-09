@@ -175,5 +175,14 @@ create_example_data <- function() {
                            "subgroup", "n_students", "pct",
                            "is_state", "is_district", "is_school")]
 
+  # Rename to match actual data schema (system_name -> district_name, school_name -> campus_name)
+  all_data <- all_data |>
+    dplyr::rename(
+      district_id = system_code,
+      district_name = system_name,
+      campus_id = school_code,
+      campus_name = school_name
+    )
+
   all_data
 }
