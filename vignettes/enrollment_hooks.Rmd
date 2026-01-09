@@ -17,12 +17,8 @@ knitr::opts_chunk$set(
   fig.height = 5
 )
 
-# Set eval=FALSE during CI/R CMD check to avoid network calls
-# Vignette will still render locally with eval=TRUE
-in_ci <- Sys.getenv("CI") == "true" || Sys.getenv("_R_CHECK_FORCE_SUGGESTS_") != ""
-if (in_ci) {
-  knitr::opts_chunk$set(eval = FALSE)
-}
+# During CI, use cached data instead of fetching
+in_ci <- Sys.getenv("CI") == "true"
 ```
 
 ```{r load-packages}
@@ -115,7 +111,7 @@ enr |>
 Jefferson County (Birmingham) is Alabama's largest school system but has been steadily losing students while suburban systems grow.
 
 ```{r top-districts}
-enr_2024 <- fetch_enr(2024, use_cache = TRUE)
+enr_2025 <- fetch_enr(2025, use_cache = TRUE)
 
 top_10 <- enr_2024 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
