@@ -34,7 +34,7 @@ library(ggplot2)
 theme_set(theme_minimal(base_size = 14))
 ```
 
-This vignette explores Alabama's public school enrollment data, surfacing key trends and demographic patterns across 11 years of data (2015-2025).
+This vignette explores Alabama's public school enrollment data, surfacing key trends and demographic patterns across 10 years of data (2015-2024).
 
 ---
 
@@ -115,9 +115,9 @@ enr |>
 Jefferson County (Birmingham) is Alabama's largest school system but has been steadily losing students while suburban systems grow.
 
 ```{r top-districts}
-enr_2025 <- fetch_enr(2025, use_cache = TRUE)
+enr_2024 <- fetch_enr(2024, use_cache = TRUE)
 
-top_10 <- enr_2025 |>
+top_10 <- enr_2024 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   arrange(desc(n_students)) |>
   head(10) |>
@@ -186,8 +186,8 @@ black_belt <- enr |>
   group_by(district_name) |>
   summarize(
     y2020 = n_students[end_year == 2020],
-    y2025 = n_students[end_year == 2025],
-    pct_change = round((y2025 / y2020 - 1) * 100, 1),
+    y2024 = n_students[end_year == 2024],
+    pct_change = round((y2024 / y2020 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(pct_change)
@@ -202,7 +202,7 @@ black_belt
 Alabama's student demographics show a significant Black student population, particularly concentrated in urban and Black Belt areas.
 
 ```{r demographics}
-demographics <- enr_2025 |>
+demographics <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("white", "black", "hispanic", "asian", "multiracial")) |>
   mutate(pct = round(pct * 100, 1)) |>
@@ -268,8 +268,8 @@ madison <- enr |>
   group_by(district_name) |>
   summarize(
     y2020 = n_students[end_year == 2020],
-    y2025 = n_students[end_year == 2025],
-    pct_change = round((y2025 / y2020 - 1) * 100, 1),
+    y2024 = n_students[end_year == 2024],
+    pct_change = round((y2024 / y2020 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(desc(pct_change))
@@ -284,7 +284,7 @@ madison
 Over 50% of Alabama's public school students qualify as economically disadvantaged, reflecting the state's high poverty rates.
 
 ```{r econ-disadv}
-econ <- enr_2025 |>
+econ <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("econ_disadv", "total_enrollment")) |>
   select(subgroup, n_students, pct)
@@ -299,7 +299,7 @@ econ
 Mobile County Public Schools, with over 50,000 students, is one of the largest school systems in the Southeast—larger than the entire state enrollment of Wyoming.
 
 ```{r mobile}
-mobile <- enr_2025 |>
+mobile <- enr_2024 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Mobile", district_name)) |>
   select(district_name, n_students)
