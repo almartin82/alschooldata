@@ -43,7 +43,7 @@ This vignette explores Alabama's public school enrollment data, surfacing key tr
 Unlike many states seeing sharp pandemic-driven declines, Alabama's public school enrollment has remained relatively stable around 730,000 students.
 
 ```{r statewide-trend}
-enr <- fetch_enr_multi(2015:2025)
+enr <- fetch_enr_multi(2015:2025, use_cache = TRUE)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
@@ -115,7 +115,7 @@ enr |>
 Jefferson County (Birmingham) is Alabama's largest school system but has been steadily losing students while suburban systems grow.
 
 ```{r top-districts}
-enr_2025 <- fetch_enr(2025)
+enr_2025 <- fetch_enr(2025, use_cache = TRUE)
 
 top_10 <- enr_2025 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
