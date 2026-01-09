@@ -123,7 +123,7 @@ if (skip_network) {
   enr_2025 <- fetch_enr(2025, use_cache = TRUE)
 }
 
-top_10 <- enr_2024 |>
+top_10 <- enr_2025 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   arrange(desc(n_students)) |>
   head(10) |>
