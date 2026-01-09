@@ -208,7 +208,7 @@ black_belt
 Alabama's student demographics show a significant Black student population, particularly concentrated in urban and Black Belt areas.
 
 ```{r demographics}
-demographics <- enr_2024 |>
+demographics <- enr_2025 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("white", "black", "hispanic", "asian", "multiracial")) |>
   mutate(pct = round(pct * 100, 1)) |>
@@ -290,7 +290,7 @@ madison
 Over 50% of Alabama's public school students qualify as economically disadvantaged, reflecting the state's high poverty rates.
 
 ```{r econ-disadv}
-econ <- enr_2024 |>
+econ <- enr_2025 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("econ_disadv", "total_enrollment")) |>
   select(subgroup, n_students, pct)
@@ -305,7 +305,7 @@ econ
 Mobile County Public Schools, with over 50,000 students, is one of the largest school systems in the Southeast—larger than the entire state enrollment of Wyoming.
 
 ```{r mobile}
-mobile <- enr_2024 |>
+mobile <- enr_2025 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Mobile", district_name)) |>
   select(district_name, n_students)
