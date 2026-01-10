@@ -136,6 +136,10 @@ create_example_data <- function() {
     c(53100, 53150, 50200, 51800, 52000),  # Kindergarten with 2021 drop
     c(55100, 55150, 54800, 53900, 54000)   # Other grades stable
   )
+  covid_grades$pct <- 7.0
+  covid_grades$is_state <- TRUE
+  covid_grades$is_district <- FALSE
+  covid_grades$is_school <- FALSE
 
   # Hispanic trend (2015-2025)
   hispanic_trend <- data.frame(
