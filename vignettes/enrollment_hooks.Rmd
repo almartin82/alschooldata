@@ -45,7 +45,7 @@ if (skip_network) {
   # Use example data during CI
   enr <- alschooldata:::create_example_data()
 } else {
-  enr <- fetch_enr_multi(2015:2025, use_cache = TRUE)
+  enr <- fetch_enr_multi(2015:2024, use_cache = TRUE)
 }
 
 state_totals <- enr |>
@@ -62,9 +62,9 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_line(linewidth = 1.2, color = "#9B1B30") +
   geom_point(size = 3, color = "#9B1B30") +
   scale_y_continuous(labels = scales::comma, limits = c(700000, 750000)) +
-  scale_x_continuous(breaks = 2015:2025) +
+  scale_x_continuous(breaks = 2015:2024) +
   labs(
-    title = "Alabama Public School Enrollment (2015-2025)",
+    title = "Alabama Public School Enrollment (2015-2024)",
     subtitle = "Statewide enrollment has remained remarkably stable",
     x = "School Year (ending)",
     y = "Total Enrollment"
@@ -119,12 +119,12 @@ Jefferson County (Birmingham) is Alabama's largest school system but has been st
 
 ```{r top-districts}
 if (skip_network) {
-  enr_2025 <- alschooldata:::create_example_data() |> filter(end_year == 2025)
+  enr_2024 <- alschooldata:::create_example_data() |> filter(end_year == 2024)
 } else {
-  enr_2025 <- fetch_enr(2025, use_cache = TRUE)
+  enr_2024 <- fetch_enr(2024, use_cache = TRUE)
 }
 
-top_10 <- enr_2025 |>
+top_10 <- enr_2024 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   arrange(desc(n_students)) |>
   head(10) |>
@@ -140,7 +140,7 @@ top_10 |>
   geom_col(fill = "#9B1B30") +
   scale_x_continuous(labels = scales::comma) +
   labs(
-    title = "Alabama's 10 Largest School Systems (2025)",
+    title = "Alabama's 10 Largest School Systems (2024)",
     x = "Total Enrollment",
     y = NULL
   )
@@ -209,7 +209,7 @@ black_belt
 Alabama's student demographics show a significant Black student population, particularly concentrated in urban and Black Belt areas.
 
 ```{r demographics}
-demographics <- enr_2025 |>
+demographics <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("white", "black", "hispanic", "asian", "multiracial")) |>
   mutate(pct = round(pct * 100, 1)) |>
@@ -228,7 +228,7 @@ demographics |>
   scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.15))) +
   scale_fill_brewer(palette = "Set2") +
   labs(
-    title = "Alabama Student Demographics (2025)",
+    title = "Alabama Student Demographics (2024)",
     x = "Number of Students",
     y = NULL
   )
@@ -253,7 +253,7 @@ hispanic_trend
 ggplot(hispanic_trend, aes(x = end_year, y = pct)) +
   geom_line(linewidth = 1.2, color = "#2E8B57") +
   geom_point(size = 3, color = "#2E8B57") +
-  scale_x_continuous(breaks = 2015:2025) +
+  scale_x_continuous(breaks = 2015:2024) +
   labs(
     title = "Hispanic Student Enrollment Growth",
     subtitle = "Steady increase from 4.5% to nearly 7% over 10 years",
@@ -291,7 +291,7 @@ madison
 Over 50% of Alabama's public school students qualify as economically disadvantaged, reflecting the state's high poverty rates.
 
 ```{r econ-disadv}
-econ <- enr_2025 |>
+econ <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("econ_disadv", "total_enrollment")) |>
   select(subgroup, n_students, pct)
@@ -306,7 +306,7 @@ econ
 Mobile County Public Schools, with over 50,000 students, is one of the largest school systems in the Southeast—larger than the entire state enrollment of Wyoming.
 
 ```{r mobile}
-mobile <- enr_2025 |>
+mobile <- enr_2024 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Mobile", district_name)) |>
   select(district_name, n_students)
