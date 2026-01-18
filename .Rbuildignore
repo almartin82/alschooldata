@@ -1,3 +1,12 @@
 ^doc$
 ^Meta$
 ^py.*schooldata$
+^ASSESSMENT-IMPLEMENTATION-SUMMARY\.md$
+^EXPANSION-ASSESSMENT-RESEARCH\.md$
+^EXPANSION\.md$
+^docs$
+^\.github$
+^_pkgdown\.yml$
+^CLAUDE\.md$
+^\.\.Rcheck$
+^.*\.Rcheck$
