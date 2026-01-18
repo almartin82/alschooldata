@@ -10,3 +10,4 @@
 ^CLAUDE\.md$
 ^\.\.Rcheck$
 ^.*\.Rcheck$
+^vignettes/.*_cache$
