@@ -7,14 +7,14 @@
 #
 # ==============================================================================
 
-#' Example Alabama enrollment data (2025)
+#' Example Alabama enrollment data (2024)
 #'
 #' A subset of Alabama enrollment data for 2025, used in vignettes and examples.
 #' Contains state totals, top districts, and key demographic breakdowns.
 #'
 #' @format A data frame with 100 rows and 14 variables:
 #' \describe{
-#'   \item{end_year}{School year end (2025)}
+#'   \item{end_year}{School year end (2024)}
 #'   \item{system_code}{3-digit system code}
 #'   \item{system_name}{System/district name}
 #'   \item{school_code}{4-digit school code}
@@ -31,9 +31,9 @@
 #' @examples
 #' \dontrun{
 #'   # Used internally by vignettes
-#'   example_enr_2025
+#'   example_enr_2024
 #' }
-"example_enr_2025"
+"example_enr_2024"
 
 #' Create example enrollment data for vignettes
 #'
@@ -46,7 +46,7 @@ create_example_data <- function() {
 
   # State totals by grade
   state_grades <- data.frame(
-    end_year = 2025,
+    end_year = 2024,
     system_code = "000",
     system_name = "ALABAMA",
     school_code = "0000",
@@ -63,7 +63,7 @@ create_example_data <- function() {
 
   # State demographics
   state_demographics <- data.frame(
-    end_year = 2025,
+    end_year = 2024,
     system_code = "000",
     system_name = "ALABAMA",
     school_code = "0000",
@@ -80,7 +80,7 @@ create_example_data <- function() {
 
   # Top 10 districts
   top_districts <- data.frame(
-    end_year = 2025,
+    end_year = 2024,
     system_code = c("065", "045", "048", "063", "023",
                     "047", "055", "058", "019", "006"),
     system_name = c("Mobile County", "Jefferson County", "Birmingham City",
@@ -101,9 +101,9 @@ create_example_data <- function() {
     stringsAsFactors = FALSE
   )
 
-  # Historical state totals (2015-2025)
+  # Historical state totals (2015-2024)
   historical <- data.frame(
-    end_year = 2015:2025,
+    end_year = 2015:2024,
     system_code = "000",
     system_name = "ALABAMA",
     school_code = "0000",
@@ -111,7 +111,7 @@ create_example_data <- function() {
     grade_level = "TOTAL",
     subgroup = "total_enrollment",
     n_students = c(728456, 729123, 730012, 730987, 731234,
-                   730456, 729876, 730123, 730567, 730123, 730245),
+                   730456, 729876, 730123, 730567, 730123),
     pct = 100,
     is_state = TRUE,
     is_district = FALSE,
@@ -141,9 +141,9 @@ create_example_data <- function() {
   covid_grades$is_district <- FALSE
   covid_grades$is_school <- FALSE
 
-  # Hispanic trend (2015-2025)
+  # Hispanic trend (2015-2024)
   hispanic_trend <- data.frame(
-    end_year = 2015:2025,
+    end_year = 2015:2024,
     system_code = "000",
     system_name = "ALABAMA",
     school_code = "0000",
@@ -151,8 +151,8 @@ create_example_data <- function() {
     grade_level = "TOTAL",
     subgroup = "hispanic",
     n_students = c(32800, 34500, 36500, 38100, 40200,
-                   42300, 44800, 46900, 49000, 50100, 51117),
-    pct = c(4.5, 4.73, 5.0, 5.21, 5.50, 5.79, 6.13, 6.42, 6.71, 6.86, 7.0),
+                   42300, 44800, 46900, 49000, 50100),
+    pct = c(4.5, 4.73, 5.0, 5.21, 5.50, 5.79, 6.13, 6.42, 6.71, 6.86),
     is_state = TRUE,
     is_district = FALSE,
     is_school = FALSE,
