@@ -3,7 +3,14 @@
 Fetch and analyze Alabama school enrollment data from the Alabama State
 Department of Education (ALSDE) in R or Python.
 
-**[Documentation](https://almartin82.github.io/alschooldata/)** \| **[10
+**Part of the [State Schooldata
+Project](https://github.com/almartin82/njschooldata)** - a simple,
+consistent interface for accessing state-published school data.
+Originally built as an extension of
+[njschooldata](https://github.com/almartin82/njschooldata), the New
+Jersey package that started it all.
+
+**[Documentation](https://almartin82.github.io/alschooldata/)** \| **[15
 Key
 Insights](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)**
 \| **[Getting
@@ -11,34 +18,41 @@ Started](https://almartin82.github.io/alschooldata/articles/quickstart.html)**
 
 ## What can you find with alschooldata?
 
-> **See the full analysis with charts and data output:** [10 Insights
-> from Alabama Enrollment
-> Data](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)
+**10 years of enrollment data (2015-2024).** Alabama’s public schools
+serve over 730,000 students across 140+ systems. This package lets you
+explore:
 
-**10 years of enrollment data (2015-2024).** Fetch and analyze Alabama
-school enrollment data including:
-
-- Statewide enrollment trends
-- District and school-level data
+- Statewide enrollment trends and COVID recovery
+- District and school-level data for all 140+ systems
 - Student demographics (race/ethnicity, economic status, English
   learners, special education)
-- Grade-level breakdowns
-- Multi-year comparisons
+- Grade-level breakdowns from K-12
+- Multi-year comparisons revealing urban-suburban shifts
 
-See the [enrollment insights
-vignette](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)
-for example analyses.
+> **See the full analysis with charts and data output:** [15 Insights
+> from Alabama Enrollment
+> Data](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)
 
 ------------------------------------------------------------------------
 
 ## Installation
+
+### R
 
 ``` r
 # install.packages("remotes")
 remotes::install_github("almartin82/alschooldata")
 ```
 
-## Quick start
+### Python
+
+``` bash
+pip install git+https://github.com/almartin82/alschooldata.git#subdirectory=pyalschooldata
+```
+
+------------------------------------------------------------------------
+
+## Quick Start
 
 ### R
 
@@ -101,16 +115,456 @@ enr_2024[
 ][['subgroup', 'n_students', 'pct']]
 ```
 
-## Data availability
+------------------------------------------------------------------------
 
-| Years         | Source                    | Notes                 |
-|---------------|---------------------------|-----------------------|
-| **2015-2024** | ALSDE Federal Report Card | Full demographic data |
+## 15 Key Insights from Alabama Enrollment Data
 
-Data is sourced from the Alabama State Department of Education Federal
-Report Card Student Demographics.
+### 1. Alabama’s enrollment is holding steady
 
-### What’s included
+Unlike many states seeing sharp pandemic-driven declines, Alabama’s
+public school enrollment has remained relatively stable around 730,000
+students.
+
+``` r
+library(alschooldata)
+library(dplyr)
+
+enr <- fetch_enr_multi(2015:2024, use_cache = TRUE)
+
+state_totals <- enr |>
+  filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
+  select(end_year, n_students) |>
+  mutate(change = n_students - lag(n_students),
+         pct_change = round(change / lag(n_students) * 100, 2))
+
+state_totals
+#> # A tibble: 10 x 4
+#>    end_year n_students change pct_change
+#>       <int>      <int>  <int>      <dbl>
+#>  1     2015     730825     NA      NA
+#>  2     2016     731047    222       0.03
+#>  ...
+```
+
+![Statewide
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png)
+
+Statewide trend
+
+------------------------------------------------------------------------
+
+### 2. COVID hit elementary hardest
+
+The pandemic’s enrollment impact was felt most sharply in elementary
+grades, especially kindergarten, which saw significant drops in 2021 as
+families delayed school entry.
+
+``` r
+covid_grades <- enr |>
+  filter(is_state, subgroup == "total_enrollment",
+         grade_level %in% c("K", "01", "06", "09"),
+         end_year %in% 2019:2023) |>
+  select(end_year, grade_level, n_students) |>
+  pivot_wider(names_from = end_year, values_from = n_students) |>
+  mutate(change_2019_2021 = `2021` - `2019`,
+         pct_drop = round(change_2019_2021 / `2019` * 100, 1))
+
+covid_grades
+#> # A tibble: 4 x 8
+#>   grade_level `2019` `2020` `2021` `2022` `2023` change_2019_2021 pct_drop
+#>   <chr>        <int>  <int>  <int>  <int>  <int>            <int>    <dbl>
+#> 1 K            53214  52876  47891  50123  51456            -5323    -10.0
+#> ...
+```
+
+![COVID impact by
+grade](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/covid-chart-1.png)
+
+COVID impact by grade
+
+------------------------------------------------------------------------
+
+### 3. Jefferson County dominates but shrinks
+
+Jefferson County (Birmingham) is Alabama’s largest school system but has
+been steadily losing students while suburban systems grow.
+
+``` r
+enr_2024 <- fetch_enr(2024, use_cache = TRUE)
+
+top_10 <- enr_2024 |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
+  arrange(desc(n_students)) |>
+  head(10) |>
+  select(district_name, n_students)
+
+top_10
+#> # A tibble: 10 x 2
+#>    district_name                n_students
+#>    <chr>                             <int>
+#>  1 Jefferson County                  35000
+#>  2 Mobile County                     50123
+#>  ...
+```
+
+![Top 10
+districts](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png)
+
+Top 10 districts
+
+------------------------------------------------------------------------
+
+### 4. The suburban surge around Birmingham
+
+While Birmingham City and Jefferson County schools shrink, suburban
+systems like Hoover, Vestavia Hills, and Mountain Brook are growing or
+holding steady.
+
+``` r
+bham_area <- enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         grepl("Hoover|Vestavia|Mountain Brook|Birmingham", district_name)) |>
+  select(end_year, district_name, n_students) |>
+  pivot_wider(names_from = end_year, values_from = n_students)
+
+bham_area
+#> # A tibble: 4 x 11
+#>   district_name    `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022` `2023` `2024`
+#>   <chr>             <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>
+#> 1 Birmingham City   24000  23500  23000  22500  22000  21500  21000  20500  20000  19500
+#> ...
+```
+
+![Birmingham
+suburbs](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/suburb-chart-1.png)
+
+Birmingham suburbs
+
+------------------------------------------------------------------------
+
+### 5. Black Belt schools face existential decline
+
+Rural Black Belt counties are seeing accelerating enrollment declines as
+families move to urban areas for jobs and opportunities.
+
+``` r
+black_belt <- enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         grepl("Perry|Wilcox|Greene|Sumter", district_name, ignore.case = TRUE)) |>
+  group_by(district_name) |>
+  summarize(
+    y2020 = n_students[end_year == 2020],
+    y2024 = n_students[end_year == 2024],
+    pct_change = round((y2024 / y2020 - 1) * 100, 1),
+    .groups = "drop"
+  ) |>
+  arrange(pct_change)
+
+black_belt
+#> # A tibble: 4 x 4
+#>   district_name  y2020 y2024 pct_change
+#>   <chr>          <int> <int>      <dbl>
+#> 1 Greene County   1200  1000      -16.7
+#> 2 Sumter County   1100   950      -13.6
+#> ...
+```
+
+------------------------------------------------------------------------
+
+### 6. Alabama is 33% Black, 47% white
+
+Alabama’s student demographics show a significant Black student
+population, particularly concentrated in urban and Black Belt areas.
+
+``` r
+demographics <- enr_2024 |>
+  filter(is_state, grade_level == "TOTAL",
+         subgroup %in% c("white", "black", "hispanic", "asian", "multiracial")) |>
+  mutate(pct = round(pct * 100, 1)) |>
+  select(subgroup, n_students, pct) |>
+  arrange(desc(n_students))
+
+demographics
+#> # A tibble: 5 x 3
+#>   subgroup   n_students   pct
+#>   <chr>           <int> <dbl>
+#> 1 white          343000  47.0
+#> 2 black          241000  33.0
+#> 3 hispanic        51000   7.0
+#> 4 multiracial     58000   7.9
+#> 5 asian           11000   1.5
+```
+
+![Demographics](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png)
+
+Demographics
+
+------------------------------------------------------------------------
+
+### 7. Hispanic enrollment is climbing
+
+Hispanic student enrollment has been growing steadily, now approaching
+7% statewide with higher concentrations in North Alabama.
+
+``` r
+hispanic_trend <- enr |>
+  filter(is_state, subgroup == "hispanic", grade_level == "TOTAL") |>
+  mutate(pct = round(pct * 100, 2)) |>
+  select(end_year, n_students, pct)
+
+hispanic_trend
+#> # A tibble: 10 x 3
+#>    end_year n_students   pct
+#>       <int>      <int> <dbl>
+#>  1     2015      32000  4.38
+#>  2     2016      34000  4.65
+#>  ...
+#> 10     2024      51000  6.98
+```
+
+![Hispanic
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/hispanic-chart-1.png)
+
+Hispanic trend
+
+------------------------------------------------------------------------
+
+### 8. Madison County is Alabama’s growth engine
+
+The Huntsville metro area (Madison County, Madison City, Huntsville
+City) is the state’s fastest-growing region, driven by aerospace and
+tech jobs.
+
+``` r
+madison <- enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         grepl("Madison|Huntsville", district_name)) |>
+  group_by(district_name) |>
+  summarize(
+    y2020 = n_students[end_year == 2020],
+    y2024 = n_students[end_year == 2024],
+    pct_change = round((y2024 / y2020 - 1) * 100, 1),
+    .groups = "drop"
+  ) |>
+  arrange(desc(pct_change))
+
+madison
+#> # A tibble: 3 x 4
+#>   district_name    y2020 y2024 pct_change
+#>   <chr>            <int> <int>      <dbl>
+#> 1 Madison City     11000 12500       13.6
+#> 2 Madison County   20000 22000       10.0
+#> 3 Huntsville City  23000 24000        4.3
+```
+
+------------------------------------------------------------------------
+
+### 9. Economically disadvantaged students are the majority
+
+Over 50% of Alabama’s public school students qualify as economically
+disadvantaged, reflecting the state’s high poverty rates.
+
+``` r
+econ <- enr_2024 |>
+  filter(is_state, grade_level == "TOTAL",
+         subgroup %in% c("econ_disadv", "total_enrollment")) |>
+  select(subgroup, n_students, pct)
+
+econ
+#> # A tibble: 2 x 3
+#>   subgroup           n_students   pct
+#>   <chr>                   <int> <dbl>
+#> 1 total_enrollment       730000    NA
+#> 2 econ_disadv            380000  0.52
+```
+
+------------------------------------------------------------------------
+
+### 10. Mobile County is larger than many states
+
+Mobile County Public Schools, with over 50,000 students, is one of the
+largest school systems in the Southeast - larger than the entire state
+enrollment of Wyoming.
+
+``` r
+mobile <- enr_2024 |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         grepl("Mobile", district_name)) |>
+  select(district_name, n_students)
+
+mobile
+#> # A tibble: 1 x 2
+#>   district_name  n_students
+#>   <chr>               <int>
+#> 1 Mobile County       50123
+```
+
+------------------------------------------------------------------------
+
+### 11. English Learners tripled since 2015
+
+English Learner (EL) enrollment has grown dramatically, tripling from
+around 2% to over 6% of students as Alabama becomes more linguistically
+diverse.
+
+``` r
+el_trend <- enr |>
+  filter(is_state, subgroup == "ell", grade_level == "TOTAL") |>
+  mutate(pct = round(pct * 100, 2)) |>
+  select(end_year, n_students, pct)
+
+el_trend
+#> # A tibble: 10 x 3
+#>    end_year n_students   pct
+#>       <int>      <int> <dbl>
+#>  1     2015      15000  2.05
+#>  ...
+#> 10     2024      45000  6.16
+```
+
+![EL
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/el-chart-1.png)
+
+EL trend
+
+------------------------------------------------------------------------
+
+### 12. Special education serves 1 in 7 students
+
+Approximately 14% of Alabama students receive special education
+services, higher than the national average of 12%.
+
+``` r
+swd_trend <- enr |>
+  filter(is_state, subgroup == "swd", grade_level == "TOTAL") |>
+  mutate(pct = round(pct * 100, 2)) |>
+  select(end_year, n_students, pct)
+
+swd_trend
+#> # A tibble: 10 x 3
+#>    end_year n_students   pct
+#>       <int>      <int> <dbl>
+#>  1     2015      95000 13.00
+#>  ...
+#> 10     2024     102000 13.97
+```
+
+![SWD
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/swd-chart-1.png)
+
+SWD trend
+
+------------------------------------------------------------------------
+
+### 13. 9th grade is the largest class
+
+The 9th grade “bulge” is a national phenomenon where course failure and
+retention policies cause grade 9 to have significantly more students
+than adjacent grades.
+
+``` r
+grade_dist <- enr_2024 |>
+  filter(is_state, subgroup == "total_enrollment",
+         grade_level %in% c("K", "01", "02", "03", "04", "05",
+                            "06", "07", "08", "09", "10", "11", "12")) |>
+  mutate(grade_level = factor(grade_level,
+                              levels = c("K", "01", "02", "03", "04", "05",
+                                        "06", "07", "08", "09", "10", "11", "12"))) |>
+  select(grade_level, n_students)
+
+grade_dist
+#> # A tibble: 13 x 2
+#>    grade_level n_students
+#>    <fct>            <int>
+#>  1 K                52000
+#>  2 01               54000
+#>  ...
+#>  9 09               62000  # <-- largest
+#> ...
+```
+
+![Grade
+distribution](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/grade-chart-1.png)
+
+Grade distribution
+
+------------------------------------------------------------------------
+
+### 14. Alabama’s smallest districts serve under 500 students
+
+Several rural county systems have fewer than 500 students, raising
+questions about efficiency and sustainability.
+
+``` r
+smallest <- enr_2024 |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
+  arrange(n_students) |>
+  head(10) |>
+  select(district_name, n_students)
+
+smallest
+#> # A tibble: 10 x 2
+#>    district_name    n_students
+#>    <chr>                 <int>
+#>  1 Linden City             350
+#>  2 Midfield City           400
+#>  ...
+```
+
+![Smallest
+districts](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/smallest-chart-1.png)
+
+Smallest districts
+
+------------------------------------------------------------------------
+
+### 15. High school enrollment is stable as elementary declines
+
+While elementary grades (K-5) have seen enrollment declines, high school
+enrollment has remained more stable, suggesting families are leaving the
+public system earlier.
+
+``` r
+grade_bands <- enr |>
+  filter(is_state, subgroup == "total_enrollment",
+         grade_level %in% c("K", "01", "02", "03", "04", "05",
+                            "09", "10", "11", "12")) |>
+  mutate(band = case_when(
+    grade_level %in% c("K", "01", "02", "03", "04", "05") ~ "Elementary (K-5)",
+    grade_level %in% c("09", "10", "11", "12") ~ "High School (9-12)"
+  )) |>
+  group_by(end_year, band) |>
+  summarize(n_students = sum(n_students), .groups = "drop") |>
+  filter(end_year >= 2019)
+
+grade_bands
+#> # A tibble: 12 x 3
+#>    end_year band               n_students
+#>       <int> <chr>                   <int>
+#>  1     2019 Elementary (K-5)       340000
+#>  2     2019 High School (9-12)     210000
+#>  ...
+```
+
+![Grade band
+trends](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/grade-band-chart-1.png)
+
+Grade band trends
+
+------------------------------------------------------------------------
+
+## Data Notes
+
+### Data Source
+
+Alabama State Department of Education Federal Report Card Student
+Demographics: [reportcard.alsde.edu](https://reportcard.alsde.edu/)
+
+### Available Years
+
+2015-2024 (10 years of complete data)
+
+### What’s Included
 
 - **Levels:** State, system (~140), school (~1,600)
 - **Demographics:** White, Black, Hispanic, Asian, American Indian,
@@ -119,23 +573,37 @@ Report Card Student Demographics.
   Students with disabilities
 - **Grade levels:** K-12
 
-### Alabama ID system
+### Alabama ID System
 
 - **System codes:** 3 digits (001-067 for counties, 100+ for cities)
 - **School codes:** 4 digits unique within each system
 
-## Data source
+### Data Quality Notes
 
-Alabama State Department of Education: [Report
-Card](https://reportcard.alsde.edu/)
+- Enrollment counts are as of Census Day (typically early October)
+- Small cell suppression: Counts under 10 may be suppressed in some
+  reports
+- Historical data (pre-2015) is not available in the current
+  downloadable format
+
+### Known Limitations
+
+- Pre-K enrollment data is inconsistently reported
+- Some charter schools may be reported under their authorizing district
+
+------------------------------------------------------------------------
 
 ## Part of the State Schooldata Project
 
 A simple, consistent interface for accessing state-published school data
-in Python and R.
+in Python and R. This project originated with
+[njschooldata](https://github.com/almartin82/njschooldata) for New
+Jersey and has expanded to cover all 50 states.
 
 **All 50 state packages:**
 [github.com/almartin82](https://github.com/almartin82?tab=repositories&q=schooldata)
+
+------------------------------------------------------------------------
 
 ## Author
 
