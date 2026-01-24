@@ -38,7 +38,7 @@ get_available_assess_years <- function() {
 tidy_assess <- function(df) {
 
   # Proficiency = at or above grade level
-  df <- df %>%
+  df <- df |>
     dplyr::mutate(
       proficiency_rate = .data$pct_at_or_above_grade_level / 100,
       proficiency_count = .data$at_or_above_grade_level,
@@ -46,7 +46,7 @@ tidy_assess <- function(df) {
     )
 
   # Select columns for tidy output
-  tidy_df <- df %>%
+  tidy_df <- df |>
     dplyr::select(
       end_year = .data$end_year,
       system_code = .data$system_code,
@@ -79,11 +79,11 @@ tidy_assess <- function(df) {
 id_assess_aggs <- function(df) {
 
   # Start with school-level data only
-  school_data <- df %>%
+  school_data <- df |>
     dplyr::filter(.data$is_school)
 
   # Calculate district aggregates from school data
-  district_agg <- school_data %>%
+  district_agg <- school_data |>
     dplyr::group_by(
       end_year = .data$end_year,
       system_code = .data$system_code,
@@ -91,13 +91,13 @@ id_assess_aggs <- function(df) {
       subject = .data$subject,
       grade = .data$grade,
       grade_level = .data$grade_level
-    ) %>%
+    ) |>
     dplyr::summarise(
       n_tested = sum(.data$n_tested, na.rm = TRUE),
       proficiency_count = sum(.data$proficiency_count, na.rm = TRUE),
       .groups = "drop"
-    ) %>%
-    dplyr::filter(.data$n_tested > 0) %>%
+    ) |>
+    dplyr::filter(.data$n_tested > 0) |>
     dplyr::mutate(
       proficiency_rate = .data$proficiency_count / .data$n_tested,
       school_code = "0000",
@@ -108,19 +108,19 @@ id_assess_aggs <- function(df) {
     )
 
   # Calculate state aggregates from school data
-  state_agg <- school_data %>%
+  state_agg <- school_data |>
     dplyr::group_by(
       end_year = .data$end_year,
       subject = .data$subject,
       grade = .data$grade,
       grade_level = .data$grade_level
-    ) %>%
+    ) |>
     dplyr::summarise(
       n_tested = sum(.data$n_tested, na.rm = TRUE),
       proficiency_count = sum(.data$proficiency_count, na.rm = TRUE),
       .groups = "drop"
-    ) %>%
-    dplyr::filter(.data$n_tested > 0) %>%
+    ) |>
+    dplyr::filter(.data$n_tested > 0) |>
     dplyr::mutate(
       proficiency_rate = .data$proficiency_count / .data$n_tested,
       system_code = "000",
@@ -133,10 +133,10 @@ id_assess_aggs <- function(df) {
     )
 
   # Combine original data with aggregates
-  result <- df %>%
-    dplyr::bind_rows(district_agg) %>%
-    dplyr::bind_rows(state_agg) %>%
-    dplyr::arrange(.data$end_year, .data$system_code, .data$school_code, .data$grade) %>%
+  result <- df |>
+    dplyr::bind_rows(district_agg) |>
+    dplyr::bind_rows(state_agg) |>
+    dplyr::arrange(.data$end_year, .data$system_code, .data$school_code, .data$grade) |>
     dplyr::filter(!is.na(.data$end_year))
 
   result

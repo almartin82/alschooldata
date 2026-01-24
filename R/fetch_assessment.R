@@ -69,7 +69,7 @@ fetch_assess <- function(end_year, tidy = TRUE, use_cache = TRUE) {
 
   # Optionally tidy
   if (tidy) {
-    processed <- tidy_assess(processed) %>%
+    processed <- tidy_assess(processed) |>
       id_assess_aggs()
   }
 
