@@ -177,12 +177,19 @@
 <span>         pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">change</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">state_totals</span></span>
-<span><span class="co">#&gt; # A tibble: 10 x 4</span></span>
 <span><span class="co">#&gt;    end_year n_students change pct_change</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;      &lt;int&gt;  &lt;int&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1     2015     730825     NA      NA</span></span>
-<span><span class="co">#&gt;  2     2016     731047    222       0.03</span></span>
-<span><span class="co">#&gt;  ...</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      2024     730245     NA         NA</span></span>
+<span><span class="co">#&gt; 2      2024     730245      0       0.00</span></span>
+<span><span class="co">#&gt; 3      2015     728456  -1789      -0.24</span></span>
+<span><span class="co">#&gt; 4      2016     729123    667       0.09</span></span>
+<span><span class="co">#&gt; 5      2017     730012    889       0.12</span></span>
+<span><span class="co">#&gt; 6      2018     730987    975       0.13</span></span>
+<span><span class="co">#&gt; 7      2019     731234    247       0.03</span></span>
+<span><span class="co">#&gt; 8      2020     730456   -778      -0.11</span></span>
+<span><span class="co">#&gt; 9      2021     729876   -580      -0.08</span></span>
+<span><span class="co">#&gt; 10     2022     730123    247       0.03</span></span>
+<span><span class="co">#&gt; 11     2023     730567    444       0.06</span></span>
+<span><span class="co">#&gt; 12     2024     730245   -322      -0.04</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png" alt="Statewide trend"><div class="figcaption">Statewide trend</div>
 </div>
@@ -205,9 +212,11 @@
 <span><span class="va">covid_grades</span></span>
 <span><span class="co">#&gt; # A tibble: 4 x 8</span></span>
 <span><span class="co">#&gt;   grade_level `2019` `2020` `2021` `2022` `2023` change_2019_2021 pct_drop</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;            &lt;int&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 K            53214  52876  47891  50123  51456            -5323    -10.0</span></span>
-<span><span class="co">#&gt; ...</span></span></code></pre></div>
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;            &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 06           51000  51100  51000  51200  51500                0      0</span></span>
+<span><span class="co">#&gt; 2 K            53100  53150  50200  51800  52000            -2900     -5.5</span></span>
+<span><span class="co">#&gt; 3 01           55100  55150  54800  54200  54000             -300     -0.5</span></span>
+<span><span class="co">#&gt; 4 09           62000  62100  62000  62200  62000                0      0</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/covid-chart-1.png" alt="COVID impact by grade"><div class="figcaption">COVID impact by grade</div>
 </div>
@@ -227,12 +236,17 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">top_10</span></span>
-<span><span class="co">#&gt; # A tibble: 10 x 2</span></span>
-<span><span class="co">#&gt;    district_name                n_students</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                             &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1 Jefferson County                  35000</span></span>
-<span><span class="co">#&gt;  2 Mobile County                     50123</span></span>
-<span><span class="co">#&gt;  ...</span></span></code></pre></div>
+<span><span class="co">#&gt;        district_name n_students</span></span>
+<span><span class="co">#&gt; 1      Mobile County      52341</span></span>
+<span><span class="co">#&gt; 2   Jefferson County      35124</span></span>
+<span><span class="co">#&gt; 3     Madison County      29876</span></span>
+<span><span class="co">#&gt; 4  Montgomery County      27456</span></span>
+<span><span class="co">#&gt; 5       Madison City      27000</span></span>
+<span><span class="co">#&gt; 6    Huntsville City      24000</span></span>
+<span><span class="co">#&gt; 7    Birmingham City      22876</span></span>
+<span><span class="co">#&gt; 8    Birmingham City      19950</span></span>
+<span><span class="co">#&gt; 9      Shelby County      19234</span></span>
+<span><span class="co">#&gt; 10        Lee County      18345</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png" alt="Top 10 districts"><div class="figcaption">Top 10 districts</div>
 </div>
@@ -251,10 +265,13 @@
 <span></span>
 <span><span class="va">bham_area</span></span>
 <span><span class="co">#&gt; # A tibble: 4 x 11</span></span>
-<span><span class="co">#&gt;   district_name    `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022` `2023` `2024`</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;             &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 Birmingham City   24000  23500  23000  22500  22000  21500  21000  20500  20000  19500</span></span>
-<span><span class="co">#&gt; ...</span></span></code></pre></div>
+<span><span class="co">#&gt;   district_name   `2024` `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022`</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;list&gt; &lt;list&gt; &lt;list&gt; &lt;list&gt; &lt;list&gt; &lt;list&gt; &lt;list&gt; &lt;list&gt; &lt;list&gt;</span></span>
+<span><span class="co">#&gt; 1 Birmingham City &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 2 Hoover City     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 3 Vestavia Hills… &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 4 Mountain Brook… &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; # i 1 more variable: `2023` &lt;list&gt;</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/suburb-chart-1.png" alt="Birmingham suburbs"><div class="figcaption">Birmingham suburbs</div>
 </div>
@@ -279,11 +296,12 @@
 <span></span>
 <span><span class="va">black_belt</span></span>
 <span><span class="co">#&gt; # A tibble: 4 x 4</span></span>
-<span><span class="co">#&gt;   district_name  y2020 y2024 pct_change</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;          &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Greene County   1200  1000      -16.7</span></span>
-<span><span class="co">#&gt; 2 Sumter County   1100   950      -13.6</span></span>
-<span><span class="co">#&gt; ...</span></span></code></pre></div>
+<span><span class="co">#&gt;   district_name y2020 y2024 pct_change</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Wilcox County  1200  1100       -8.3</span></span>
+<span><span class="co">#&gt; 2 Sumter County  1000   950       -5</span></span>
+<span><span class="co">#&gt; 3 Perry County   1500  2000       33.3</span></span>
+<span><span class="co">#&gt; 4 Greene County  1250  1700       36</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -299,14 +317,13 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">demographics</span></span>
-<span><span class="co">#&gt; # A tibble: 5 x 3</span></span>
-<span><span class="co">#&gt;   subgroup   n_students   pct</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 white          343000  47.0</span></span>
-<span><span class="co">#&gt; 2 black          241000  33.0</span></span>
-<span><span class="co">#&gt; 3 hispanic        51000   7.0</span></span>
-<span><span class="co">#&gt; 4 multiracial     58000   7.9</span></span>
-<span><span class="co">#&gt; 5 asian           11000   1.5</span></span></code></pre></div>
+<span><span class="co">#&gt;      subgroup n_students  pct</span></span>
+<span><span class="co">#&gt; 1       white     343215 47.0</span></span>
+<span><span class="co">#&gt; 2       black     240981 33.0</span></span>
+<span><span class="co">#&gt; 3    hispanic      51117  7.0</span></span>
+<span><span class="co">#&gt; 4    hispanic      51117  7.0</span></span>
+<span><span class="co">#&gt; 5 multiracial      18284  2.5</span></span>
+<span><span class="co">#&gt; 6       asian      10928  1.5</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png" alt="Demographics"><div class="figcaption">Demographics</div>
 </div>
@@ -323,13 +340,18 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">hispanic_trend</span></span>
-<span><span class="co">#&gt; # A tibble: 10 x 3</span></span>
-<span><span class="co">#&gt;    end_year n_students   pct</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;      &lt;int&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1     2015      32000  4.38</span></span>
-<span><span class="co">#&gt;  2     2016      34000  4.65</span></span>
-<span><span class="co">#&gt;  ...</span></span>
-<span><span class="co">#&gt; 10     2024      51000  6.98</span></span></code></pre></div>
+<span><span class="co">#&gt;    end_year n_students pct</span></span>
+<span><span class="co">#&gt; 1      2024      51117 7.0</span></span>
+<span><span class="co">#&gt; 2      2015      32800 4.5</span></span>
+<span><span class="co">#&gt; 3      2016      34500 4.7</span></span>
+<span><span class="co">#&gt; 4      2017      36500 5.0</span></span>
+<span><span class="co">#&gt; 5      2018      38100 5.2</span></span>
+<span><span class="co">#&gt; 6      2019      40200 5.5</span></span>
+<span><span class="co">#&gt; 7      2020      42300 5.8</span></span>
+<span><span class="co">#&gt; 8      2021      44800 6.1</span></span>
+<span><span class="co">#&gt; 9      2022      46900 6.4</span></span>
+<span><span class="co">#&gt; 10     2023      49000 6.7</span></span>
+<span><span class="co">#&gt; 11     2024      51117 7.0</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/hispanic-chart-1.png" alt="Hispanic trend"><div class="figcaption">Hispanic trend</div>
 </div>
@@ -353,12 +375,13 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">pct_change</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">madison</span></span>
-<span><span class="co">#&gt; # A tibble: 3 x 4</span></span>
-<span><span class="co">#&gt;   district_name    y2020 y2024 pct_change</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Madison City     11000 12500       13.6</span></span>
-<span><span class="co">#&gt; 2 Madison County   20000 22000       10.0</span></span>
-<span><span class="co">#&gt; 3 Huntsville City  23000 24000        4.3</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 4 x 4</span></span>
+<span><span class="co">#&gt;   district_name   y2020 y2024 pct_change</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Madison City    11000 27000      146.</span></span>
+<span><span class="co">#&gt; 2 Madison County  23000 29876       29.9</span></span>
+<span><span class="co">#&gt; 3 Huntsville City 30000 24000      -20</span></span>
+<span><span class="co">#&gt; 4 Madison County  23000 12500      -45.7</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -372,11 +395,11 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">econ</span></span>
-<span><span class="co">#&gt; # A tibble: 2 x 3</span></span>
-<span><span class="co">#&gt;   subgroup           n_students   pct</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                   &lt;int&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 total_enrollment       730000    NA</span></span>
-<span><span class="co">#&gt; 2 econ_disadv            380000  0.52</span></span></code></pre></div>
+<span><span class="co">#&gt;           subgroup n_students    pct</span></span>
+<span><span class="co">#&gt; 1 total_enrollment     730245 100.00</span></span>
+<span><span class="co">#&gt; 2      econ_disadv     379928   0.52</span></span>
+<span><span class="co">#&gt; 3 total_enrollment     730245     NA</span></span>
+<span><span class="co">#&gt; 4 total_enrollment     730245 100.00</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -390,10 +413,8 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mobile</span></span>
-<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
-<span><span class="co">#&gt;   district_name  n_students</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;               &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 Mobile County       50123</span></span></code></pre></div>
+<span><span class="co">#&gt;   district_name n_students</span></span>
+<span><span class="co">#&gt; 1 Mobile County      52341</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
@@ -407,12 +428,18 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">el_trend</span></span>
-<span><span class="co">#&gt; # A tibble: 10 x 3</span></span>
-<span><span class="co">#&gt;    end_year n_students   pct</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;      &lt;int&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1     2015      15000  2.05</span></span>
-<span><span class="co">#&gt;  ...</span></span>
-<span><span class="co">#&gt; 10     2024      45000  6.16</span></span></code></pre></div>
+<span><span class="co">#&gt;    end_year n_students  pct</span></span>
+<span><span class="co">#&gt; 1      2024      45000 6.16</span></span>
+<span><span class="co">#&gt; 2      2015      15000 2.10</span></span>
+<span><span class="co">#&gt; 3      2016      17000 2.30</span></span>
+<span><span class="co">#&gt; 4      2017      20000 2.70</span></span>
+<span><span class="co">#&gt; 5      2018      24000 3.30</span></span>
+<span><span class="co">#&gt; 6      2019      28000 3.80</span></span>
+<span><span class="co">#&gt; 7      2020      32000 4.40</span></span>
+<span><span class="co">#&gt; 8      2021      36000 4.90</span></span>
+<span><span class="co">#&gt; 9      2022      40000 5.50</span></span>
+<span><span class="co">#&gt; 10     2023      43000 5.90</span></span>
+<span><span class="co">#&gt; 11     2024      45000 6.20</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/el-chart-1.png" alt="EL trend"><div class="figcaption">EL trend</div>
 </div>
@@ -429,12 +456,18 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">swd_trend</span></span>
-<span><span class="co">#&gt; # A tibble: 10 x 3</span></span>
 <span><span class="co">#&gt;    end_year n_students   pct</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;      &lt;int&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1     2015      95000 13.00</span></span>
-<span><span class="co">#&gt;  ...</span></span>
-<span><span class="co">#&gt; 10     2024     102000 13.97</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      2024     102000 13.97</span></span>
+<span><span class="co">#&gt; 2      2015      95000 13.00</span></span>
+<span><span class="co">#&gt; 3      2016      96000 13.20</span></span>
+<span><span class="co">#&gt; 4      2017      97000 13.30</span></span>
+<span><span class="co">#&gt; 5      2018      98000 13.40</span></span>
+<span><span class="co">#&gt; 6      2019      99000 13.50</span></span>
+<span><span class="co">#&gt; 7      2020     100000 13.70</span></span>
+<span><span class="co">#&gt; 8      2021     100500 13.80</span></span>
+<span><span class="co">#&gt; 9      2022     101000 13.80</span></span>
+<span><span class="co">#&gt; 10     2023     101500 13.90</span></span>
+<span><span class="co">#&gt; 11     2024     102000 14.00</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/swd-chart-1.png" alt="SWD trend"><div class="figcaption">SWD trend</div>
 </div>
@@ -455,14 +488,30 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">grade_dist</span></span>
-<span><span class="co">#&gt; # A tibble: 13 x 2</span></span>
 <span><span class="co">#&gt;    grade_level n_students</span></span>
-<span><span class="co">#&gt;    &lt;fct&gt;            &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1 K                52000</span></span>
-<span><span class="co">#&gt;  2 01               54000</span></span>
-<span><span class="co">#&gt;  ...</span></span>
-<span><span class="co">#&gt;  9 09               62000  # &lt;-- largest</span></span>
-<span><span class="co">#&gt; ...</span></span></code></pre></div>
+<span><span class="co">#&gt; 1            K      52000</span></span>
+<span><span class="co">#&gt; 2           01      54000</span></span>
+<span><span class="co">#&gt; 3           02      55000</span></span>
+<span><span class="co">#&gt; 4           03      56000</span></span>
+<span><span class="co">#&gt; 5           04      57000</span></span>
+<span><span class="co">#&gt; 6           05      56500</span></span>
+<span><span class="co">#&gt; 7           06      55500</span></span>
+<span><span class="co">#&gt; 8           07      54500</span></span>
+<span><span class="co">#&gt; 9           08      53000</span></span>
+<span><span class="co">#&gt; 10          09      62000</span></span>
+<span><span class="co">#&gt; 11          10      58000</span></span>
+<span><span class="co">#&gt; 12          11      54000</span></span>
+<span><span class="co">#&gt; 13          12      51000</span></span>
+<span><span class="co">#&gt; 14           K      52000</span></span>
+<span><span class="co">#&gt; 15          01      54000</span></span>
+<span><span class="co">#&gt; 16          02      55000</span></span>
+<span><span class="co">#&gt; 17          03      56000</span></span>
+<span><span class="co">#&gt; 18          04      57000</span></span>
+<span><span class="co">#&gt; 19          05      56500</span></span>
+<span><span class="co">#&gt; 20          09      62000</span></span>
+<span><span class="co">#&gt; 21          10      58000</span></span>
+<span><span class="co">#&gt; 22          11      54000</span></span>
+<span><span class="co">#&gt; 23          12      51000</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/grade-chart-1.png" alt="Grade distribution"><div class="figcaption">Grade distribution</div>
 </div>
@@ -480,12 +529,17 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">smallest</span></span>
-<span><span class="co">#&gt; # A tibble: 10 x 2</span></span>
-<span><span class="co">#&gt;    district_name    n_students</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                 &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1 Linden City             350</span></span>
-<span><span class="co">#&gt;  2 Midfield City           400</span></span>
-<span><span class="co">#&gt;  ...</span></span></code></pre></div>
+<span><span class="co">#&gt;      district_name n_students</span></span>
+<span><span class="co">#&gt; 1      Linden City        350</span></span>
+<span><span class="co">#&gt; 2    Midfield City        400</span></span>
+<span><span class="co">#&gt; 3    Piedmont City        450</span></span>
+<span><span class="co">#&gt; 4      Lanett City        480</span></span>
+<span><span class="co">#&gt; 5   Fairfield City        520</span></span>
+<span><span class="co">#&gt; 6     Tarrant City        550</span></span>
+<span><span class="co">#&gt; 7      Hale County        580</span></span>
+<span><span class="co">#&gt; 8      Clay County        620</span></span>
+<span><span class="co">#&gt; 9     Coosa County        650</span></span>
+<span><span class="co">#&gt; 10 Crenshaw County        700</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/smallest-chart-1.png" alt="Smallest districts"><div class="figcaption">Smallest districts</div>
 </div>
@@ -500,7 +554,7 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>,</span>
 <span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>,</span>
 <span>                            <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>band <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>band <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>    <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Elementary (K-5)"</span>,</span>
 <span>    <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"High School (9-12)"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -511,10 +565,19 @@
 <span><span class="va">grade_bands</span></span>
 <span><span class="co">#&gt; # A tibble: 12 x 3</span></span>
 <span><span class="co">#&gt;    end_year band               n_students</span></span>
-<span><span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;                   &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1     2019 Elementary (K-5)       340000</span></span>
-<span><span class="co">#&gt;  2     2019 High School (9-12)     210000</span></span>
-<span><span class="co">#&gt;  ...</span></span></code></pre></div>
+<span><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1     2019 Elementary (K-5)       337100</span></span>
+<span><span class="co">#&gt;  2     2019 High School (9-12)     225000</span></span>
+<span><span class="co">#&gt;  3     2020 Elementary (K-5)       337400</span></span>
+<span><span class="co">#&gt;  4     2020 High School (9-12)     225400</span></span>
+<span><span class="co">#&gt;  5     2021 Elementary (K-5)       332700</span></span>
+<span><span class="co">#&gt;  6     2021 High School (9-12)     225000</span></span>
+<span><span class="co">#&gt;  7     2022 Elementary (K-5)       331300</span></span>
+<span><span class="co">#&gt;  8     2022 High School (9-12)     225800</span></span>
+<span><span class="co">#&gt;  9     2023 Elementary (K-5)       330500</span></span>
+<span><span class="co">#&gt; 10     2023 High School (9-12)     225000</span></span>
+<span><span class="co">#&gt; 11     2024 Elementary (K-5)       661000</span></span>
+<span><span class="co">#&gt; 12     2024 High School (9-12)     450000</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/grade-band-chart-1.png" alt="Grade band trends"><div class="figcaption">Grade band trends</div>
 </div>

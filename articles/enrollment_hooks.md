@@ -34,17 +34,15 @@ state_totals <- enr |>
 state_totals
 #>    end_year n_students change pct_change
 #> 1      2024     730245     NA         NA
-#> 2      2024     730245      0       0.00
-#> 3      2015     728456  -1789      -0.24
-#> 4      2016     729123    667       0.09
-#> 5      2017     730012    889       0.12
-#> 6      2018     730987    975       0.13
-#> 7      2019     731234    247       0.03
-#> 8      2020     730456   -778      -0.11
-#> 9      2021     729876   -580      -0.08
-#> 10     2022     730123    247       0.03
-#> 11     2023     730567    444       0.06
-#> 12     2024     730245   -322      -0.04
+#> 2      2015     728456  -1789      -0.24
+#> 3      2016     729123    667       0.09
+#> 4      2017     730012    889       0.12
+#> 5      2018     730987    975       0.13
+#> 6      2019     731234    247       0.03
+#> 7      2020     730456   -778      -0.11
+#> 8      2021     729876   -580      -0.08
+#> 9      2022     730123    247       0.03
+#> 10     2023     730567    444       0.06
 ```
 
 ``` r
@@ -136,11 +134,11 @@ top_10
 #>        district_name n_students
 #> 1      Mobile County      52341
 #> 2   Jefferson County      35124
-#> 3     Madison County      29876
+#> 3        Dothan City      29876
 #> 4  Montgomery County      27456
 #> 5       Madison City      27000
 #> 6    Huntsville City      24000
-#> 7    Birmingham City      22876
+#> 7    Tuscaloosa City      22876
 #> 8    Birmingham City      19950
 #> 9      Shelby County      19234
 #> 10        Lee County      18345
@@ -178,13 +176,13 @@ bham_area <- enr |>
 
 bham_area
 #> # A tibble: 4 × 11
-#>   district_name   `2024` `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022`
-#>   <chr>           <list> <list> <list> <list> <list> <list> <list> <list> <list>
-#> 1 Birmingham City <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> 
-#> 2 Hoover City     <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> 
-#> 3 Vestavia Hills… <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> 
-#> 4 Mountain Brook… <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> 
-#> # ℹ 1 more variable: `2023` <list>
+#>   district_name   `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022` `2023`
+#>   <chr>            <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#> 1 Birmingham City  24000  23550  23100  22650  22200  21750  21300  20850  20400
+#> 2 Hoover City      14000  14050  14100  14150  14200  14250  14300  14350  14400
+#> 3 Vestavia Hills…   6500   6550   6600   6650   6700   6750   6800   6850   6900
+#> 4 Mountain Brook…   4500   4550   4600   4650   4700   4750   4800   4850   4900
+#> # ℹ 1 more variable: `2024` <dbl>
 ```
 
 ``` r
@@ -257,9 +255,8 @@ demographics
 #> 1       white     343215 47.0
 #> 2       black     240981 33.0
 #> 3    hispanic      51117  7.0
-#> 4    hispanic      51117  7.0
-#> 5 multiracial      18284  2.5
-#> 6       asian      10928  1.5
+#> 4 multiracial      18284  2.5
+#> 5       asian      10928  1.5
 ```
 
 ``` r
@@ -304,7 +301,6 @@ hispanic_trend
 #> 8      2021      44800 6.1
 #> 9      2022      46900 6.4
 #> 10     2023      49000 6.7
-#> 11     2024      51117 7.0
 ```
 
 ``` r
@@ -344,13 +340,12 @@ madison <- enr |>
   arrange(desc(pct_change))
 
 madison
-#> # A tibble: 4 × 4
+#> # A tibble: 3 × 4
 #>   district_name   y2020 y2024 pct_change
 #>   <chr>           <dbl> <dbl>      <dbl>
 #> 1 Madison City    11000 27000      146. 
-#> 2 Madison County  23000 29876       29.9
-#> 3 Huntsville City 30000 24000      -20  
-#> 4 Madison County  23000 12500      -45.7
+#> 2 Huntsville City 30000 24000      -20  
+#> 3 Madison County  23000 12500      -45.7
 ```
 
 ------------------------------------------------------------------------
@@ -370,8 +365,6 @@ econ
 #>           subgroup n_students    pct
 #> 1 total_enrollment     730245 100.00
 #> 2      econ_disadv     379928   0.52
-#> 3 total_enrollment     730245     NA
-#> 4 total_enrollment     730245 100.00
 ```
 
 ------------------------------------------------------------------------
@@ -419,7 +412,6 @@ el_trend
 #> 8      2021      36000 4.90
 #> 9      2022      40000 5.50
 #> 10     2023      43000 5.90
-#> 11     2024      45000 6.20
 ```
 
 ``` r
@@ -463,7 +455,6 @@ swd_trend
 #> 8      2021     100500 13.80
 #> 9      2022     101000 13.80
 #> 10     2023     101500 13.90
-#> 11     2024     102000 14.00
 ```
 
 ``` r
@@ -516,16 +507,6 @@ grade_dist
 #> 11          10      58000
 #> 12          11      54000
 #> 13          12      51000
-#> 14           K      52000
-#> 15          01      54000
-#> 16          02      55000
-#> 17          03      56000
-#> 18          04      57000
-#> 19          05      56500
-#> 20          09      62000
-#> 21          10      58000
-#> 22          11      54000
-#> 23          12      51000
 ```
 
 ``` r
@@ -621,8 +602,8 @@ grade_bands
 #>  8     2022 High School (9-12)     225800
 #>  9     2023 Elementary (K-5)       330500
 #> 10     2023 High School (9-12)     225000
-#> 11     2024 Elementary (K-5)       661000
-#> 12     2024 High School (9-12)     450000
+#> 11     2024 Elementary (K-5)       330500
+#> 12     2024 High School (9-12)     225000
 ```
 
 ``` r
@@ -687,7 +668,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_4.0.1      tidyr_1.3.2        dplyr_1.1.4        alschooldata_0.2.0
+#> [1] ggplot2_4.0.2      tidyr_1.3.2        dplyr_1.2.0        alschooldata_0.2.0
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] gtable_0.3.6       jsonlite_2.0.0     compiler_4.5.2     tidyselect_1.2.1  

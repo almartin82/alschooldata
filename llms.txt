@@ -138,12 +138,19 @@ state_totals <- enr |>
          pct_change = round(change / lag(n_students) * 100, 2))
 
 state_totals
-#> # A tibble: 10 x 4
 #>    end_year n_students change pct_change
-#>       <int>      <int>  <int>      <dbl>
-#>  1     2015     730825     NA      NA
-#>  2     2016     731047    222       0.03
-#>  ...
+#> 1      2024     730245     NA         NA
+#> 2      2024     730245      0       0.00
+#> 3      2015     728456  -1789      -0.24
+#> 4      2016     729123    667       0.09
+#> 5      2017     730012    889       0.12
+#> 6      2018     730987    975       0.13
+#> 7      2019     731234    247       0.03
+#> 8      2020     730456   -778      -0.11
+#> 9      2021     729876   -580      -0.08
+#> 10     2022     730123    247       0.03
+#> 11     2023     730567    444       0.06
+#> 12     2024     730245   -322      -0.04
 ```
 
 ![Statewide
@@ -172,9 +179,11 @@ covid_grades <- enr |>
 covid_grades
 #> # A tibble: 4 x 8
 #>   grade_level `2019` `2020` `2021` `2022` `2023` change_2019_2021 pct_drop
-#>   <chr>        <int>  <int>  <int>  <int>  <int>            <int>    <dbl>
-#> 1 K            53214  52876  47891  50123  51456            -5323    -10.0
-#> ...
+#>   <chr>        <dbl>  <dbl>  <dbl>  <dbl>  <dbl>            <dbl>    <dbl>
+#> 1 06           51000  51100  51000  51200  51500                0      0
+#> 2 K            53100  53150  50200  51800  52000            -2900     -5.5
+#> 3 01           55100  55150  54800  54200  54000             -300     -0.5
+#> 4 09           62000  62100  62000  62200  62000                0      0
 ```
 
 ![COVID impact by
@@ -199,12 +208,17 @@ top_10 <- enr_2024 |>
   select(district_name, n_students)
 
 top_10
-#> # A tibble: 10 x 2
-#>    district_name                n_students
-#>    <chr>                             <int>
-#>  1 Jefferson County                  35000
-#>  2 Mobile County                     50123
-#>  ...
+#>        district_name n_students
+#> 1      Mobile County      52341
+#> 2   Jefferson County      35124
+#> 3     Madison County      29876
+#> 4  Montgomery County      27456
+#> 5       Madison City      27000
+#> 6    Huntsville City      24000
+#> 7    Birmingham City      22876
+#> 8    Birmingham City      19950
+#> 9      Shelby County      19234
+#> 10        Lee County      18345
 ```
 
 ![Top 10
@@ -229,10 +243,13 @@ bham_area <- enr |>
 
 bham_area
 #> # A tibble: 4 x 11
-#>   district_name    `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022` `2023` `2024`
-#>   <chr>             <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>
-#> 1 Birmingham City   24000  23500  23000  22500  22000  21500  21000  20500  20000  19500
-#> ...
+#>   district_name   `2024` `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022`
+#>   <chr>           <list> <list> <list> <list> <list> <list> <list> <list> <list>
+#> 1 Birmingham City <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#> 2 Hoover City     <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#> 3 Vestavia Hills… <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#> 4 Mountain Brook… <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#> # i 1 more variable: `2023` <list>
 ```
 
 ![Birmingham
@@ -262,11 +279,12 @@ black_belt <- enr |>
 
 black_belt
 #> # A tibble: 4 x 4
-#>   district_name  y2020 y2024 pct_change
-#>   <chr>          <int> <int>      <dbl>
-#> 1 Greene County   1200  1000      -16.7
-#> 2 Sumter County   1100   950      -13.6
-#> ...
+#>   district_name y2020 y2024 pct_change
+#>   <chr>         <dbl> <dbl>      <dbl>
+#> 1 Wilcox County  1200  1100       -8.3
+#> 2 Sumter County  1000   950       -5
+#> 3 Perry County   1500  2000       33.3
+#> 4 Greene County  1250  1700       36
 ```
 
 ------------------------------------------------------------------------
@@ -285,14 +303,13 @@ demographics <- enr_2024 |>
   arrange(desc(n_students))
 
 demographics
-#> # A tibble: 5 x 3
-#>   subgroup   n_students   pct
-#>   <chr>           <int> <dbl>
-#> 1 white          343000  47.0
-#> 2 black          241000  33.0
-#> 3 hispanic        51000   7.0
-#> 4 multiracial     58000   7.9
-#> 5 asian           11000   1.5
+#>      subgroup n_students  pct
+#> 1       white     343215 47.0
+#> 2       black     240981 33.0
+#> 3    hispanic      51117  7.0
+#> 4    hispanic      51117  7.0
+#> 5 multiracial      18284  2.5
+#> 6       asian      10928  1.5
 ```
 
 ![Demographics](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png)
@@ -313,13 +330,18 @@ hispanic_trend <- enr |>
   select(end_year, n_students, pct)
 
 hispanic_trend
-#> # A tibble: 10 x 3
-#>    end_year n_students   pct
-#>       <int>      <int> <dbl>
-#>  1     2015      32000  4.38
-#>  2     2016      34000  4.65
-#>  ...
-#> 10     2024      51000  6.98
+#>    end_year n_students pct
+#> 1      2024      51117 7.0
+#> 2      2015      32800 4.5
+#> 3      2016      34500 4.7
+#> 4      2017      36500 5.0
+#> 5      2018      38100 5.2
+#> 6      2019      40200 5.5
+#> 7      2020      42300 5.8
+#> 8      2021      44800 6.1
+#> 9      2022      46900 6.4
+#> 10     2023      49000 6.7
+#> 11     2024      51117 7.0
 ```
 
 ![Hispanic
@@ -349,12 +371,13 @@ madison <- enr |>
   arrange(desc(pct_change))
 
 madison
-#> # A tibble: 3 x 4
-#>   district_name    y2020 y2024 pct_change
-#>   <chr>            <int> <int>      <dbl>
-#> 1 Madison City     11000 12500       13.6
-#> 2 Madison County   20000 22000       10.0
-#> 3 Huntsville City  23000 24000        4.3
+#> # A tibble: 4 x 4
+#>   district_name   y2020 y2024 pct_change
+#>   <chr>           <dbl> <dbl>      <dbl>
+#> 1 Madison City    11000 27000      146.
+#> 2 Madison County  23000 29876       29.9
+#> 3 Huntsville City 30000 24000      -20
+#> 4 Madison County  23000 12500      -45.7
 ```
 
 ------------------------------------------------------------------------
@@ -371,11 +394,11 @@ econ <- enr_2024 |>
   select(subgroup, n_students, pct)
 
 econ
-#> # A tibble: 2 x 3
-#>   subgroup           n_students   pct
-#>   <chr>                   <int> <dbl>
-#> 1 total_enrollment       730000    NA
-#> 2 econ_disadv            380000  0.52
+#>           subgroup n_students    pct
+#> 1 total_enrollment     730245 100.00
+#> 2      econ_disadv     379928   0.52
+#> 3 total_enrollment     730245     NA
+#> 4 total_enrollment     730245 100.00
 ```
 
 ------------------------------------------------------------------------
@@ -393,10 +416,8 @@ mobile <- enr_2024 |>
   select(district_name, n_students)
 
 mobile
-#> # A tibble: 1 x 2
-#>   district_name  n_students
-#>   <chr>               <int>
-#> 1 Mobile County       50123
+#>   district_name n_students
+#> 1 Mobile County      52341
 ```
 
 ------------------------------------------------------------------------
@@ -414,12 +435,18 @@ el_trend <- enr |>
   select(end_year, n_students, pct)
 
 el_trend
-#> # A tibble: 10 x 3
-#>    end_year n_students   pct
-#>       <int>      <int> <dbl>
-#>  1     2015      15000  2.05
-#>  ...
-#> 10     2024      45000  6.16
+#>    end_year n_students  pct
+#> 1      2024      45000 6.16
+#> 2      2015      15000 2.10
+#> 3      2016      17000 2.30
+#> 4      2017      20000 2.70
+#> 5      2018      24000 3.30
+#> 6      2019      28000 3.80
+#> 7      2020      32000 4.40
+#> 8      2021      36000 4.90
+#> 9      2022      40000 5.50
+#> 10     2023      43000 5.90
+#> 11     2024      45000 6.20
 ```
 
 ![EL
@@ -441,12 +468,18 @@ swd_trend <- enr |>
   select(end_year, n_students, pct)
 
 swd_trend
-#> # A tibble: 10 x 3
 #>    end_year n_students   pct
-#>       <int>      <int> <dbl>
-#>  1     2015      95000 13.00
-#>  ...
-#> 10     2024     102000 13.97
+#> 1      2024     102000 13.97
+#> 2      2015      95000 13.00
+#> 3      2016      96000 13.20
+#> 4      2017      97000 13.30
+#> 5      2018      98000 13.40
+#> 6      2019      99000 13.50
+#> 7      2020     100000 13.70
+#> 8      2021     100500 13.80
+#> 9      2022     101000 13.80
+#> 10     2023     101500 13.90
+#> 11     2024     102000 14.00
 ```
 
 ![SWD
@@ -473,14 +506,30 @@ grade_dist <- enr_2024 |>
   select(grade_level, n_students)
 
 grade_dist
-#> # A tibble: 13 x 2
 #>    grade_level n_students
-#>    <fct>            <int>
-#>  1 K                52000
-#>  2 01               54000
-#>  ...
-#>  9 09               62000  # <-- largest
-#> ...
+#> 1            K      52000
+#> 2           01      54000
+#> 3           02      55000
+#> 4           03      56000
+#> 5           04      57000
+#> 6           05      56500
+#> 7           06      55500
+#> 8           07      54500
+#> 9           08      53000
+#> 10          09      62000
+#> 11          10      58000
+#> 12          11      54000
+#> 13          12      51000
+#> 14           K      52000
+#> 15          01      54000
+#> 16          02      55000
+#> 17          03      56000
+#> 18          04      57000
+#> 19          05      56500
+#> 20          09      62000
+#> 21          10      58000
+#> 22          11      54000
+#> 23          12      51000
 ```
 
 ![Grade
@@ -503,12 +552,17 @@ smallest <- enr_2024 |>
   select(district_name, n_students)
 
 smallest
-#> # A tibble: 10 x 2
-#>    district_name    n_students
-#>    <chr>                 <int>
-#>  1 Linden City             350
-#>  2 Midfield City           400
-#>  ...
+#>      district_name n_students
+#> 1      Linden City        350
+#> 2    Midfield City        400
+#> 3    Piedmont City        450
+#> 4      Lanett City        480
+#> 5   Fairfield City        520
+#> 6     Tarrant City        550
+#> 7      Hale County        580
+#> 8      Clay County        620
+#> 9     Coosa County        650
+#> 10 Crenshaw County        700
 ```
 
 ![Smallest
@@ -540,10 +594,19 @@ grade_bands <- enr |>
 grade_bands
 #> # A tibble: 12 x 3
 #>    end_year band               n_students
-#>       <int> <chr>                   <int>
-#>  1     2019 Elementary (K-5)       340000
-#>  2     2019 High School (9-12)     210000
-#>  ...
+#>       <dbl> <chr>                   <dbl>
+#>  1     2019 Elementary (K-5)       337100
+#>  2     2019 High School (9-12)     225000
+#>  3     2020 Elementary (K-5)       337400
+#>  4     2020 High School (9-12)     225400
+#>  5     2021 Elementary (K-5)       332700
+#>  6     2021 High School (9-12)     225000
+#>  7     2022 Elementary (K-5)       331300
+#>  8     2022 High School (9-12)     225800
+#>  9     2023 Elementary (K-5)       330500
+#> 10     2023 High School (9-12)     225000
+#> 11     2024 Elementary (K-5)       661000
+#> 12     2024 High School (9-12)     450000
 ```
 
 ![Grade band
