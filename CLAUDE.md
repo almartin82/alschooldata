@@ -4,6 +4,31 @@
 
 ---
 
+## Valid Filter Values (tidy enrollment via `fetch_enr(tidy = TRUE)`)
+
+### subgroup
+`total_enrollment`, `white`, `black`, `hispanic`, `asian`, `native_american`, `pacific_islander`, `multiracial`, `male`, `female`, `econ_disadv`, `lep`, `special_ed`
+
+**NOT in tidy enrollment:** Gender subgroups (male/female) are included. Special populations (econ_disadv, lep, special_ed) are included when present in the ALSDE source data.
+
+### grade_level
+`PK`, `K`, `01`, `02`, `03`, `04`, `05`, `06`, `07`, `08`, `09`, `10`, `11`, `12`, `UG`, `TOTAL`
+
+Grade aggregates from `enr_grade_aggs()`: `K8`, `HS`, `K12`
+
+**Common trap:** Raw data uses `grade_pk`, `grade_k`, `grade_01`, etc. as column names, but tidy format normalizes to `PK`, `K`, `01`, etc. Always filter on the normalized values.
+
+### entity flags
+`is_state`, `is_district`, `is_campus`
+
+- `is_state`: `type == "State"`
+- `is_district`: `type == "District"`
+- `is_campus`: `type == "Campus"`
+
+Note: No `is_charter` flag is defined for Alabama.
+
+---
+
 ### CONCURRENT TASK LIMIT
 - **Maximum 5 background tasks running simultaneously**
 - When launching multiple agents (e.g., for mass audits), batch them in groups of 5
