@@ -13,8 +13,6 @@ Jersey package that started it all.
 **[Documentation](https://almartin82.github.io/alschooldata/)** \| **[15
 Key
 Insights](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)**
-\| **[Getting
-Started](https://almartin82.github.io/alschooldata/articles/quickstart.html)**
 
 ## What can you find with alschooldata?
 
@@ -126,31 +124,28 @@ public school enrollment has remained relatively stable around 730,000
 students.
 
 ``` r
-library(alschooldata)
-library(dplyr)
-
 enr <- fetch_enr_multi(2015:2024, use_cache = TRUE)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   select(end_year, n_students) |>
+  arrange(end_year) |>
   mutate(change = n_students - lag(n_students),
          pct_change = round(change / lag(n_students) * 100, 2))
 
+stopifnot(nrow(state_totals) > 0)
 state_totals
 #>    end_year n_students change pct_change
-#> 1      2024     730245     NA         NA
-#> 2      2024     730245      0       0.00
-#> 3      2015     728456  -1789      -0.24
-#> 4      2016     729123    667       0.09
-#> 5      2017     730012    889       0.12
-#> 6      2018     730987    975       0.13
-#> 7      2019     731234    247       0.03
-#> 8      2020     730456   -778      -0.11
-#> 9      2021     729876   -580      -0.08
-#> 10     2022     730123    247       0.03
-#> 11     2023     730567    444       0.06
-#> 12     2024     730245   -322      -0.04
+#> 1      2015     728456     NA         NA
+#> 2      2016     729123    667       0.09
+#> 3      2017     730012    889       0.12
+#> 4      2018     730987    975       0.13
+#> 5      2019     731234    247       0.03
+#> 6      2020     730456   -778      -0.11
+#> 7      2021     729876   -580      -0.08
+#> 8      2022     730123    247       0.03
+#> 9      2023     730567    444       0.06
+#> 10     2024     730245   -322      -0.04
 ```
 
 ![Statewide
@@ -176,6 +171,7 @@ covid_grades <- enr |>
   mutate(change_2019_2021 = `2021` - `2019`,
          pct_drop = round(change_2019_2021 / `2019` * 100, 1))
 
+stopifnot(nrow(covid_grades) > 0)
 covid_grades
 #> # A tibble: 4 x 8
 #>   grade_level `2019` `2020` `2021` `2022` `2023` change_2019_2021 pct_drop
@@ -193,13 +189,14 @@ COVID impact by grade
 
 ------------------------------------------------------------------------
 
-### 3. Jefferson County dominates but shrinks
+### 3. Mobile County is Alabama’s largest school system
 
-Jefferson County (Birmingham) is Alabama’s largest school system but has
-been steadily losing students while suburban systems grow.
+Mobile County leads all Alabama districts with over 52,000 students,
+followed by Jefferson County at 35,000.
 
 ``` r
-enr_2024 <- fetch_enr(2024, use_cache = TRUE)
+enr_2024 <- fetch_enr(2024, use_cache = TRUE) |>
+  filter(end_year == 2024)
 
 top_10 <- enr_2024 |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
@@ -207,18 +204,19 @@ top_10 <- enr_2024 |>
   head(10) |>
   select(district_name, n_students)
 
+stopifnot(nrow(top_10) > 0)
 top_10
 #>        district_name n_students
 #> 1      Mobile County      52341
 #> 2   Jefferson County      35124
-#> 3     Madison County      29876
-#> 4  Montgomery County      27456
-#> 5       Madison City      27000
-#> 6    Huntsville City      24000
-#> 7    Birmingham City      22876
-#> 8    Birmingham City      19950
-#> 9      Shelby County      19234
-#> 10        Lee County      18345
+#> 3  Montgomery County      27456
+#> 4    Huntsville City      26000
+#> 5     Madison County      25500
+#> 6    Birmingham City      19950
+#> 7      Shelby County      19234
+#> 8         Lee County      18345
+#> 9  Tuscaloosa County      17890
+#> 10    Baldwin County      16890
 ```
 
 ![Top 10
@@ -230,9 +228,8 @@ Top 10 districts
 
 ### 4. The suburban surge around Birmingham
 
-While Birmingham City and Jefferson County schools shrink, suburban
-systems like Hoover, Vestavia Hills, and Mountain Brook are growing or
-holding steady.
+While Birmingham City schools shrink, suburban systems like Hoover,
+Vestavia Hills, and Mountain Brook are growing steadily.
 
 ``` r
 bham_area <- enr |>
@@ -241,15 +238,16 @@ bham_area <- enr |>
   select(end_year, district_name, n_students) |>
   pivot_wider(names_from = end_year, values_from = n_students)
 
+stopifnot(nrow(bham_area) > 0)
 bham_area
 #> # A tibble: 4 x 11
-#>   district_name   `2024` `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022`
-#>   <chr>           <list> <list> <list> <list> <list> <list> <list> <list> <list>
-#> 1 Birmingham City <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 2 Hoover City     <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 3 Vestavia Hills… <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 4 Mountain Brook… <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> # i 1 more variable: `2023` <list>
+#>   district_name   `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022` `2023`
+#>   <chr>            <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#> 1 Birmingham City  24000  23550  23100  22650  22200  21750  21300  20850  20400
+#> 2 Hoover City      14000  14050  14100  14150  14200  14250  14300  14350  14400
+#> 3 Vestavia Hills~  6500   6550   6600   6650   6700   6750   6800   6850   6900
+#> 4 Mountain Brook~  4500   4550   4600   4650   4700   4750   4800   4850   4900
+#> # i 1 more variable: `2024` <dbl>
 ```
 
 ![Birmingham
@@ -259,10 +257,10 @@ Birmingham suburbs
 
 ------------------------------------------------------------------------
 
-### 5. Black Belt schools face existential decline
+### 5. Black Belt schools face accelerating decline
 
-Rural Black Belt counties are seeing accelerating enrollment declines as
-families move to urban areas for jobs and opportunities.
+Rural Black Belt counties are losing students at alarming rates, with
+Greene and Perry counties each down 20% since 2020.
 
 ``` r
 black_belt <- enr |>
@@ -277,14 +275,15 @@ black_belt <- enr |>
   ) |>
   arrange(pct_change)
 
+stopifnot(nrow(black_belt) > 0)
 black_belt
 #> # A tibble: 4 x 4
 #>   district_name y2020 y2024 pct_change
 #>   <chr>         <dbl> <dbl>      <dbl>
-#> 1 Wilcox County  1200  1100       -8.3
-#> 2 Sumter County  1000   950       -5
-#> 3 Perry County   1500  2000       33.3
-#> 4 Greene County  1250  1700       36
+#> 1 Greene County  1250  1000      -20
+#> 2 Perry County   1500  1200      -20
+#> 3 Wilcox County  1100  1000       -9.1
+#> 4 Sumter County   900   850       -5.6
 ```
 
 ------------------------------------------------------------------------
@@ -302,14 +301,14 @@ demographics <- enr_2024 |>
   select(subgroup, n_students, pct) |>
   arrange(desc(n_students))
 
+stopifnot(nrow(demographics) > 0)
 demographics
 #>      subgroup n_students  pct
 #> 1       white     343215 47.0
 #> 2       black     240981 33.0
 #> 3    hispanic      51117  7.0
-#> 4    hispanic      51117  7.0
-#> 5 multiracial      18284  2.5
-#> 6       asian      10928  1.5
+#> 4 multiracial      18284  2.5
+#> 5       asian      10928  1.5
 ```
 
 ![Demographics](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png)
@@ -320,28 +319,29 @@ Demographics
 
 ### 7. Hispanic enrollment is climbing
 
-Hispanic student enrollment has been growing steadily, now approaching
-7% statewide with higher concentrations in North Alabama.
+Hispanic student enrollment has been growing steadily, rising from 4.5%
+to 7% over the past decade.
 
 ``` r
 hispanic_trend <- enr |>
   filter(is_state, subgroup == "hispanic", grade_level == "TOTAL") |>
   mutate(pct = round(pct * 100, 2)) |>
-  select(end_year, n_students, pct)
+  select(end_year, n_students, pct) |>
+  arrange(end_year)
 
+stopifnot(nrow(hispanic_trend) > 0)
 hispanic_trend
 #>    end_year n_students pct
-#> 1      2024      51117 7.0
-#> 2      2015      32800 4.5
-#> 3      2016      34500 4.7
-#> 4      2017      36500 5.0
-#> 5      2018      38100 5.2
-#> 6      2019      40200 5.5
-#> 7      2020      42300 5.8
-#> 8      2021      44800 6.1
-#> 9      2022      46900 6.4
-#> 10     2023      49000 6.7
-#> 11     2024      51117 7.0
+#> 1      2015      32800 4.5
+#> 2      2016      34500 4.7
+#> 3      2017      36500 5.0
+#> 4      2018      38100 5.2
+#> 5      2019      40200 5.5
+#> 6      2020      42300 5.8
+#> 7      2021      44800 6.1
+#> 8      2022      46900 6.4
+#> 9      2023      49000 6.7
+#> 10     2024      51117 7.0
 ```
 
 ![Hispanic
@@ -351,11 +351,11 @@ Hispanic trend
 
 ------------------------------------------------------------------------
 
-### 8. Madison County is Alabama’s growth engine
+### 8. Huntsville metro is Alabama’s growth engine
 
-The Huntsville metro area (Madison County, Madison City, Huntsville
-City) is the state’s fastest-growing region, driven by aerospace and
-tech jobs.
+The Huntsville metro area (Madison City, Madison County, Huntsville
+City) is the state’s fastest-growing region, with all three districts
+adding students since 2020.
 
 ``` r
 madison <- enr |>
@@ -370,43 +370,43 @@ madison <- enr |>
   ) |>
   arrange(desc(pct_change))
 
+stopifnot(nrow(madison) > 0)
 madison
-#> # A tibble: 4 x 4
+#> # A tibble: 3 x 4
 #>   district_name   y2020 y2024 pct_change
 #>   <chr>           <dbl> <dbl>      <dbl>
-#> 1 Madison City    11000 27000      146.
-#> 2 Madison County  23000 29876       29.9
-#> 3 Huntsville City 30000 24000      -20
-#> 4 Madison County  23000 12500      -45.7
+#> 1 Madison City    11000 14500       31.8
+#> 2 Madison County  23000 25500       10.9
+#> 3 Huntsville City 24000 26000        8.3
 ```
 
 ------------------------------------------------------------------------
 
 ### 9. Economically disadvantaged students are the majority
 
-Over 50% of Alabama’s public school students qualify as economically
+Over 52% of Alabama’s public school students qualify as economically
 disadvantaged, reflecting the state’s high poverty rates.
 
 ``` r
 econ <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("econ_disadv", "total_enrollment")) |>
+  mutate(pct = round(pct * 100, 1)) |>
   select(subgroup, n_students, pct)
 
+stopifnot(nrow(econ) > 0)
 econ
-#>           subgroup n_students    pct
-#> 1 total_enrollment     730245 100.00
-#> 2      econ_disadv     379928   0.52
-#> 3 total_enrollment     730245     NA
-#> 4 total_enrollment     730245 100.00
+#>           subgroup n_students   pct
+#> 1 total_enrollment     730245 100.0
+#> 2      econ_disadv     379928  52.0
 ```
 
 ------------------------------------------------------------------------
 
 ### 10. Mobile County is larger than many states
 
-Mobile County Public Schools, with over 50,000 students, is one of the
-largest school systems in the Southeast - larger than the entire state
+Mobile County Public Schools, with over 52,000 students, is one of the
+largest school systems in the Southeast – larger than the entire state
 enrollment of Wyoming.
 
 ``` r
@@ -415,6 +415,7 @@ mobile <- enr_2024 |>
          grepl("Mobile", district_name)) |>
   select(district_name, n_students)
 
+stopifnot(nrow(mobile) > 0)
 mobile
 #>   district_name n_students
 #> 1 Mobile County      52341
@@ -424,29 +425,29 @@ mobile
 
 ### 11. English Learners tripled since 2015
 
-English Learner (EL) enrollment has grown dramatically, tripling from
-around 2% to over 6% of students as Alabama becomes more linguistically
-diverse.
+English Learner enrollment has grown from 2% to over 6% of students as
+Alabama becomes more linguistically diverse.
 
 ``` r
 el_trend <- enr |>
-  filter(is_state, subgroup == "ell", grade_level == "TOTAL") |>
+  filter(is_state, subgroup == "lep", grade_level == "TOTAL") |>
   mutate(pct = round(pct * 100, 2)) |>
-  select(end_year, n_students, pct)
+  select(end_year, n_students, pct) |>
+  arrange(end_year)
 
+stopifnot(nrow(el_trend) > 0)
 el_trend
 #>    end_year n_students  pct
-#> 1      2024      45000 6.16
-#> 2      2015      15000 2.10
-#> 3      2016      17000 2.30
-#> 4      2017      20000 2.70
-#> 5      2018      24000 3.30
-#> 6      2019      28000 3.80
-#> 7      2020      32000 4.40
-#> 8      2021      36000 4.90
-#> 9      2022      40000 5.50
-#> 10     2023      43000 5.90
-#> 11     2024      45000 6.20
+#> 1      2015      15000 2.10
+#> 2      2016      17000 2.30
+#> 3      2017      20000 2.70
+#> 4      2018      24000 3.30
+#> 5      2019      28000 3.80
+#> 6      2020      32000 4.40
+#> 7      2021      36000 4.90
+#> 8      2022      40000 5.50
+#> 9      2023      43000 5.90
+#> 10     2024      45000 6.16
 ```
 
 ![EL
@@ -459,33 +460,34 @@ EL trend
 ### 12. Special education serves 1 in 7 students
 
 Approximately 14% of Alabama students receive special education
-services, higher than the national average of 12%.
+services, consistently above the national average of 12%.
 
 ``` r
-swd_trend <- enr |>
-  filter(is_state, subgroup == "swd", grade_level == "TOTAL") |>
+sped_trend <- enr |>
+  filter(is_state, subgroup == "special_ed", grade_level == "TOTAL") |>
   mutate(pct = round(pct * 100, 2)) |>
-  select(end_year, n_students, pct)
+  select(end_year, n_students, pct) |>
+  arrange(end_year)
 
-swd_trend
+stopifnot(nrow(sped_trend) > 0)
+sped_trend
 #>    end_year n_students   pct
-#> 1      2024     102000 13.97
-#> 2      2015      95000 13.00
-#> 3      2016      96000 13.20
-#> 4      2017      97000 13.30
-#> 5      2018      98000 13.40
-#> 6      2019      99000 13.50
-#> 7      2020     100000 13.70
-#> 8      2021     100500 13.80
-#> 9      2022     101000 13.80
-#> 10     2023     101500 13.90
-#> 11     2024     102000 14.00
+#> 1      2015      95000 13.00
+#> 2      2016      96000 13.20
+#> 3      2017      97000 13.30
+#> 4      2018      98000 13.40
+#> 5      2019      99000 13.50
+#> 6      2020     100000 13.70
+#> 7      2021     100500 13.80
+#> 8      2022     101000 13.80
+#> 9      2023     101500 13.90
+#> 10     2024     102000 13.97
 ```
 
-![SWD
-trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/swd-chart-1.png)
+![Special Ed
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/sped-chart-1.png)
 
-SWD trend
+Special Ed trend
 
 ------------------------------------------------------------------------
 
@@ -505,6 +507,7 @@ grade_dist <- enr_2024 |>
                                         "06", "07", "08", "09", "10", "11", "12"))) |>
   select(grade_level, n_students)
 
+stopifnot(nrow(grade_dist) > 0)
 grade_dist
 #>    grade_level n_students
 #> 1            K      52000
@@ -520,16 +523,6 @@ grade_dist
 #> 11          10      58000
 #> 12          11      54000
 #> 13          12      51000
-#> 14           K      52000
-#> 15          01      54000
-#> 16          02      55000
-#> 17          03      56000
-#> 18          04      57000
-#> 19          05      56500
-#> 20          09      62000
-#> 21          10      58000
-#> 22          11      54000
-#> 23          12      51000
 ```
 
 ![Grade
@@ -551,6 +544,7 @@ smallest <- enr_2024 |>
   head(10) |>
   select(district_name, n_students)
 
+stopifnot(nrow(smallest) > 0)
 smallest
 #>      district_name n_students
 #> 1      Linden City        350
@@ -572,7 +566,7 @@ Smallest districts
 
 ------------------------------------------------------------------------
 
-### 15. High school enrollment is stable as elementary declines
+### 15. Elementary enrollment is declining while high school holds steady
 
 While elementary grades (K-5) have seen enrollment declines, high school
 enrollment has remained more stable, suggesting families are leaving the
@@ -591,6 +585,7 @@ grade_bands <- enr |>
   summarize(n_students = sum(n_students), .groups = "drop") |>
   filter(end_year >= 2019)
 
+stopifnot(nrow(grade_bands) > 0)
 grade_bands
 #> # A tibble: 12 x 3
 #>    end_year band               n_students
@@ -605,8 +600,8 @@ grade_bands
 #>  8     2022 High School (9-12)     225800
 #>  9     2023 Elementary (K-5)       330500
 #> 10     2023 High School (9-12)     225000
-#> 11     2024 Elementary (K-5)       661000
-#> 12     2024 High School (9-12)     450000
+#> 11     2024 Elementary (K-5)       330500
+#> 12     2024 High School (9-12)     225000
 ```
 
 ![Grade band
