@@ -45,7 +45,7 @@ create_example_data <- function() {
     school_name = "STATE",
     grade_level = "TOTAL",
     subgroup = c("white", "black", "hispanic", "asian", "multiracial",
-                 "econ_disadv", "ell", "swd"),
+                 "econ_disadv", "lep", "special_ed"),
     n_students = c(343215, 240981, 51117, 10928, 18284,
                    379928, 45000, 102000),
     pct = c(0.47, 0.33, 0.07, 0.015, 0.025,
@@ -56,23 +56,26 @@ create_example_data <- function() {
     stringsAsFactors = FALSE
   )
 
-  # Top 10 districts (largest)
+  # Top 10 districts (largest) — excludes Madison/Huntsville/Birmingham
+  # area districts which have multi-year data in separate frames
   top_districts <- data.frame(
     end_year = 2024,
-    system_code = c("065", "045", "064", "063", "025",
-                    "047", "055", "058", "024", "006"),
-    system_name = c("Mobile County", "Jefferson County", "Tuscaloosa City",
-                    "Montgomery County", "Dothan City",
-                    "Lee County", "Shelby County", "Tuscaloosa County",
-                    "Decatur City", "Baldwin County"),
+    system_code = c("065", "045", "063",
+                    "055", "047", "058",
+                    "006", "024", "025", "016"),
+    system_name = c("Mobile County", "Jefferson County", "Montgomery County",
+                    "Shelby County", "Lee County", "Tuscaloosa County",
+                    "Baldwin County", "Decatur City", "Dothan City", "Elmore County"),
     school_code = "0000",
     school_name = "DISTRICT",
     grade_level = "TOTAL",
     subgroup = "total_enrollment",
-    n_students = c(52341, 35124, 22876, 27456, 29876,
-                   18345, 19234, 17890, 14567, 16890),
-    pct = c(7.17, 4.81, 3.13, 3.76, 4.09,
-            2.51, 2.63, 2.45, 1.99, 2.31),
+    n_students = c(52341, 35124, 27456,
+                   19234, 18345, 17890,
+                   16890, 14567, 8200, 12500),
+    pct = c(7.17, 4.81, 3.76,
+            2.63, 2.51, 2.45,
+            2.31, 1.99, 1.12, 1.71),
     is_state = FALSE,
     is_district = TRUE,
     is_school = FALSE,
@@ -147,8 +150,8 @@ create_example_data <- function() {
   black_belt$subgroup <- "total_enrollment"
   # Show decline from 2020 to 2024
   black_belt$n_students <- c(
-    1500, 2000, 1200, 1100,  # 2020 values
-    1250, 1700, 1000, 950    # 2024 values (declining)
+    1500, 1200, 1100, 1000,  # 2020 values: Perry, Wilcox, Greene, Sumter
+    1250, 1000,  900,  850   # 2024 values (all declining)
   )
   black_belt$pct <- round(black_belt$n_students / 730000 * 100, 2)
   black_belt$is_state <- FALSE
@@ -168,9 +171,12 @@ create_example_data <- function() {
   madison_area$grade_level <- "TOTAL"
   madison_area$subgroup <- "total_enrollment"
   # Show growth from 2020 to 2024
+  # expand.grid ordering: (2020,MadisonCity), (2024,MadisonCity),
+  #   (2020,MadisonCounty), (2024,MadisonCounty), (2020,Huntsville), (2024,Huntsville)
   madison_area$n_students <- c(
-    11000, 27000, 23000,  # 2020 values
-    12500, 30000, 24000   # 2024 values (growing)
+    11000, 14500,   # Madison City: 2020, 2024 (+31.8%)
+    23000, 25500,   # Madison County: 2020, 2024 (+10.9%)
+    24000, 26000    # Huntsville City: 2020, 2024 (+8.3%)
   )
   madison_area$pct <- round(madison_area$n_students / 730000 * 100, 2)
   madison_area$is_state <- FALSE
@@ -230,15 +236,15 @@ create_example_data <- function() {
     stringsAsFactors = FALSE
   )
 
-  # ELL trend (2015-2023; 2024 is in state_demographics) - for story 11
-  ell_trend <- data.frame(
+  # LEP trend (2015-2023; 2024 is in state_demographics) - for story 11
+  lep_trend <- data.frame(
     end_year = 2015:2023,
     system_code = "000",
     system_name = "ALABAMA",
     school_code = "0000",
     school_name = "STATE",
     grade_level = "TOTAL",
-    subgroup = "ell",
+    subgroup = "lep",
     n_students = c(15000, 17000, 20000, 24000, 28000,
                    32000, 36000, 40000, 43000),
     pct = c(0.021, 0.023, 0.027, 0.033, 0.038,
@@ -249,15 +255,15 @@ create_example_data <- function() {
     stringsAsFactors = FALSE
   )
 
-  # SWD trend (2015-2023; 2024 is in state_demographics) - for story 12
-  swd_trend <- data.frame(
+  # Special Ed trend (2015-2023; 2024 is in state_demographics) - for story 12
+  special_ed_trend <- data.frame(
     end_year = 2015:2023,
     system_code = "000",
     system_name = "ALABAMA",
     school_code = "0000",
     school_name = "STATE",
     grade_level = "TOTAL",
-    subgroup = "swd",
+    subgroup = "special_ed",
     n_students = c(95000, 96000, 97000, 98000, 99000,
                    100000, 100500, 101000, 101500),
     pct = c(0.130, 0.132, 0.133, 0.134, 0.135,
@@ -336,8 +342,8 @@ create_example_data <- function() {
     historical,
     covid_grade_06,
     hispanic_trend,
-    ell_trend,
-    swd_trend,
+    lep_trend,
+    special_ed_trend,
     grade_band_elem,
     grade_band_hs
   )

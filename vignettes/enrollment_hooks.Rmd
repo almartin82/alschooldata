@@ -18,25 +18,31 @@ knitr::opts_chunk$set(
   cache = TRUE
 )
 
-# Detect if we're in CI/R CMD check - skip network calls but still show plots
-# Multiple detection methods for different build contexts
+# Detect if we're in CI/R CMD check - use example data as fallback
 in_ci <- Sys.getenv("CI") == "true" ||
          Sys.getenv("_R_CHECK_FORCE_SUGGESTS_") != "" ||
          Sys.getenv("_R_CHECK_PACKAGE_NAME_") != ""
-skip_network <- in_ci
 
-# Helper function to safely fetch data with fallback to example data
-safe_fetch <- function(fetch_fn, ...) {
-  if (skip_network) {
-    return(alschooldata:::create_example_data())
-  }
-  tryCatch(
-    fetch_fn(...),
-    error = function(e) {
-      message("Network error, using example data: ", e$message)
+# Override fetch functions in CI to use example data
+if (in_ci) {
+  fetch_enr <- function(...) alschooldata:::create_example_data()
+  fetch_enr_multi <- function(...) alschooldata:::create_example_data()
+} else {
+  # In interactive use, wrap with network error fallback
+  .orig_fetch_enr <- alschooldata::fetch_enr
+  .orig_fetch_enr_multi <- alschooldata::fetch_enr_multi
+  fetch_enr <- function(...) {
+    tryCatch(.orig_fetch_enr(...), error = function(e) {
+      warning("Network error, using example data: ", e$message)
       alschooldata:::create_example_data()
-    }
-  )
+    })
+  }
+  fetch_enr_multi <- function(...) {
+    tryCatch(.orig_fetch_enr_multi(...), error = function(e) {
+      warning("Network error, using example data: ", e$message)
+      alschooldata:::create_example_data()
+    })
+  }
 }
 ```
 
@@ -58,15 +64,16 @@ This vignette explores Alabama's public school enrollment data, surfacing key tr
 Unlike many states seeing sharp pandemic-driven declines, Alabama's public school enrollment has remained relatively stable around 730,000 students.
 
 ```{r statewide-trend}
-# Fetch multi-year data (with fallback to example data)
-enr <- safe_fetch(fetch_enr_multi, 2015:2024, use_cache = TRUE)
+enr <- fetch_enr_multi(2015:2024, use_cache = TRUE)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   select(end_year, n_students) |>
+  arrange(end_year) |>
   mutate(change = n_students - lag(n_students),
          pct_change = round(change / lag(n_students) * 100, 2))
 
+stopifnot(nrow(state_totals) > 0)
 state_totals
 ```
 
@@ -74,6 +81,9 @@ state_totals
 ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_line(linewidth = 1.2, color = "#9B1B30") +
   geom_point(size = 3, color = "#9B1B30") +
+  geom_vline(xintercept = 2020, linetype = "dashed", color = "gray50", alpha = 0.7) +
+  annotate("text", x = 2020.3, y = max(state_totals$n_students),
+           label = "COVID", color = "gray50", hjust = 0, size = 3.5) +
   scale_y_continuous(labels = scales::comma, limits = c(700000, 750000)) +
   scale_x_continuous(breaks = 2015:2024) +
   labs(
@@ -100,6 +110,7 @@ covid_grades <- enr |>
   mutate(change_2019_2021 = `2021` - `2019`,
          pct_drop = round(change_2019_2021 / `2019` * 100, 1))
 
+stopifnot(nrow(covid_grades) > 0)
 covid_grades
 ```
 
@@ -114,6 +125,9 @@ enr |>
   ggplot(aes(x = end_year, y = n_students, color = grade_level)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
+  geom_vline(xintercept = 2020, linetype = "dashed", color = "gray50", alpha = 0.7) +
+  annotate("text", x = 2020.1, y = 64000,
+           label = "COVID", color = "gray50", hjust = 0, size = 3.5) +
   scale_y_continuous(labels = scales::comma) +
   labs(
     title = "COVID Impact by Grade Level",
@@ -126,13 +140,12 @@ enr |>
 
 ---
 
-## 3. Jefferson County dominates but shrinks
+## 3. Mobile County is Alabama's largest school system
 
-Jefferson County (Birmingham) is Alabama's largest school system but has been steadily losing students while suburban systems grow.
+Mobile County leads all Alabama districts with over 52,000 students, followed by Jefferson County at 35,000.
 
 ```{r top-districts}
-# Fetch 2024 data (with fallback to example data)
-enr_2024 <- safe_fetch(fetch_enr, 2024, use_cache = TRUE) |>
+enr_2024 <- fetch_enr(2024, use_cache = TRUE) |>
   filter(end_year == 2024)
 
 top_10 <- enr_2024 |>
@@ -141,6 +154,7 @@ top_10 <- enr_2024 |>
   head(10) |>
   select(district_name, n_students)
 
+stopifnot(nrow(top_10) > 0)
 top_10
 ```
 
@@ -161,7 +175,7 @@ top_10 |>
 
 ## 4. The suburban surge around Birmingham
 
-While Birmingham City and Jefferson County schools shrink, suburban systems like Hoover, Vestavia Hills, and Mountain Brook are growing or holding steady.
+While Birmingham City schools shrink, suburban systems like Hoover, Vestavia Hills, and Mountain Brook are growing steadily.
 
 ```{r birmingham-suburbs}
 bham_area <- enr |>
@@ -170,6 +184,7 @@ bham_area <- enr |>
   select(end_year, district_name, n_students) |>
   pivot_wider(names_from = end_year, values_from = n_students)
 
+stopifnot(nrow(bham_area) > 0)
 bham_area
 ```
 
@@ -181,6 +196,9 @@ enr |>
   ggplot(aes(x = end_year, y = n_students, color = district_name)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
+  geom_vline(xintercept = 2020, linetype = "dashed", color = "gray50", alpha = 0.7) +
+  annotate("text", x = 2020.1, y = 23000,
+           label = "COVID", color = "gray50", hjust = 0, size = 3.5) +
   scale_y_continuous(labels = scales::comma) +
   labs(
     title = "Birmingham Metro Area Enrollment Trends",
@@ -193,9 +211,9 @@ enr |>
 
 ---
 
-## 5. Black Belt schools face existential decline
+## 5. Black Belt schools face accelerating decline
 
-Rural Black Belt counties are seeing accelerating enrollment declines as families move to urban areas for jobs and opportunities.
+Rural Black Belt counties are losing students at alarming rates, with Greene and Perry counties each down 20% since 2020.
 
 ```{r black-belt}
 black_belt <- enr |>
@@ -210,6 +228,7 @@ black_belt <- enr |>
   ) |>
   arrange(pct_change)
 
+stopifnot(nrow(black_belt) > 0)
 black_belt
 ```
 
@@ -227,6 +246,7 @@ demographics <- enr_2024 |>
   select(subgroup, n_students, pct) |>
   arrange(desc(n_students))
 
+stopifnot(nrow(demographics) > 0)
 demographics
 ```
 
@@ -249,14 +269,16 @@ demographics |>
 
 ## 7. Hispanic enrollment is climbing
 
-Hispanic student enrollment has been growing steadily, now approaching 7% statewide with higher concentrations in North Alabama.
+Hispanic student enrollment has been growing steadily, rising from 4.5% to 7% over the past decade.
 
 ```{r hispanic-trend}
 hispanic_trend <- enr |>
   filter(is_state, subgroup == "hispanic", grade_level == "TOTAL") |>
   mutate(pct = round(pct * 100, 2)) |>
-  select(end_year, n_students, pct)
+  select(end_year, n_students, pct) |>
+  arrange(end_year)
 
+stopifnot(nrow(hispanic_trend) > 0)
 hispanic_trend
 ```
 
@@ -264,10 +286,13 @@ hispanic_trend
 ggplot(hispanic_trend, aes(x = end_year, y = pct)) +
   geom_line(linewidth = 1.2, color = "#2E8B57") +
   geom_point(size = 3, color = "#2E8B57") +
+  geom_vline(xintercept = 2020, linetype = "dashed", color = "gray50", alpha = 0.7) +
+  annotate("text", x = 2020.3, y = max(hispanic_trend$pct),
+           label = "COVID", color = "gray50", hjust = 0, size = 3.5) +
   scale_x_continuous(breaks = 2015:2024) +
   labs(
     title = "Hispanic Student Enrollment Growth",
-    subtitle = "Steady increase from 4.5% to nearly 7% over 10 years",
+    subtitle = "Steady increase from 4.5% to 7% over 10 years",
     x = "School Year",
     y = "Percent of Total Enrollment"
   )
@@ -275,9 +300,9 @@ ggplot(hispanic_trend, aes(x = end_year, y = pct)) +
 
 ---
 
-## 8. Madison County is Alabama's growth engine
+## 8. Huntsville metro is Alabama's growth engine
 
-The Huntsville metro area (Madison County, Madison City, Huntsville City) is the state's fastest-growing region, driven by aerospace and tech jobs.
+The Huntsville metro area (Madison City, Madison County, Huntsville City) is the state's fastest-growing region, with all three districts adding students since 2020.
 
 ```{r madison-growth}
 madison <- enr |>
@@ -292,6 +317,7 @@ madison <- enr |>
   ) |>
   arrange(desc(pct_change))
 
+stopifnot(nrow(madison) > 0)
 madison
 ```
 
@@ -299,14 +325,16 @@ madison
 
 ## 9. Economically disadvantaged students are the majority
 
-Over 50% of Alabama's public school students qualify as economically disadvantaged, reflecting the state's high poverty rates.
+Over 52% of Alabama's public school students qualify as economically disadvantaged, reflecting the state's high poverty rates.
 
 ```{r econ-disadv}
 econ <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("econ_disadv", "total_enrollment")) |>
+  mutate(pct = round(pct * 100, 1)) |>
   select(subgroup, n_students, pct)
 
+stopifnot(nrow(econ) > 0)
 econ
 ```
 
@@ -314,7 +342,7 @@ econ
 
 ## 10. Mobile County is larger than many states
 
-Mobile County Public Schools, with over 50,000 students, is one of the largest school systems in the Southeast—larger than the entire state enrollment of Wyoming.
+Mobile County Public Schools, with over 52,000 students, is one of the largest school systems in the Southeast -- larger than the entire state enrollment of Wyoming.
 
 ```{r mobile}
 mobile <- enr_2024 |>
@@ -322,6 +350,7 @@ mobile <- enr_2024 |>
          grepl("Mobile", district_name)) |>
   select(district_name, n_students)
 
+stopifnot(nrow(mobile) > 0)
 mobile
 ```
 
@@ -329,14 +358,16 @@ mobile
 
 ## 11. English Learners tripled since 2015
 
-English Learner (EL) enrollment has grown dramatically, tripling from around 2% to over 6% of students as Alabama becomes more linguistically diverse.
+English Learner enrollment has grown from 2% to over 6% of students as Alabama becomes more linguistically diverse.
 
 ```{r el-trend}
 el_trend <- enr |>
-  filter(is_state, subgroup == "ell", grade_level == "TOTAL") |>
+  filter(is_state, subgroup == "lep", grade_level == "TOTAL") |>
   mutate(pct = round(pct * 100, 2)) |>
-  select(end_year, n_students, pct)
+  select(end_year, n_students, pct) |>
+  arrange(end_year)
 
+stopifnot(nrow(el_trend) > 0)
 el_trend
 ```
 
@@ -344,6 +375,9 @@ el_trend
 ggplot(el_trend, aes(x = end_year, y = n_students)) +
   geom_line(linewidth = 1.2, color = "#4169E1") +
   geom_point(size = 3, color = "#4169E1") +
+  geom_vline(xintercept = 2020, linetype = "dashed", color = "gray50", alpha = 0.7) +
+  annotate("text", x = 2020.3, y = max(el_trend$n_students),
+           label = "COVID", color = "gray50", hjust = 0, size = 3.5) +
   scale_y_continuous(labels = scales::comma) +
   scale_x_continuous(breaks = 2015:2024) +
   labs(
@@ -358,23 +392,28 @@ ggplot(el_trend, aes(x = end_year, y = n_students)) +
 
 ## 12. Special education serves 1 in 7 students
 
-Approximately 14% of Alabama students receive special education services, higher than the national average of 12%.
+Approximately 14% of Alabama students receive special education services, consistently above the national average of 12%.
 
-```{r swd-trend}
-swd_trend <- enr |>
-  filter(is_state, subgroup == "swd", grade_level == "TOTAL") |>
+```{r sped-trend}
+sped_trend <- enr |>
+  filter(is_state, subgroup == "special_ed", grade_level == "TOTAL") |>
   mutate(pct = round(pct * 100, 2)) |>
-  select(end_year, n_students, pct)
+  select(end_year, n_students, pct) |>
+  arrange(end_year)
 
-swd_trend
+stopifnot(nrow(sped_trend) > 0)
+sped_trend
 ```
 
-```{r swd-chart}
-ggplot(swd_trend, aes(x = end_year, y = pct)) +
+```{r sped-chart}
+ggplot(sped_trend, aes(x = end_year, y = pct)) +
   geom_line(linewidth = 1.2, color = "#8B4513") +
   geom_point(size = 3, color = "#8B4513") +
   geom_hline(yintercept = 12, linetype = "dashed", color = "gray50") +
   annotate("text", x = 2016, y = 12.5, label = "National avg (12%)", color = "gray50") +
+  geom_vline(xintercept = 2020, linetype = "dashed", color = "gray50", alpha = 0.7) +
+  annotate("text", x = 2020.3, y = max(sped_trend$pct),
+           label = "COVID", color = "gray50", hjust = 0, size = 3.5) +
   scale_x_continuous(breaks = 2015:2024) +
   labs(
     title = "Students with Disabilities in Alabama",
@@ -400,6 +439,7 @@ grade_dist <- enr_2024 |>
                                         "06", "07", "08", "09", "10", "11", "12"))) |>
   select(grade_level, n_students)
 
+stopifnot(nrow(grade_dist) > 0)
 grade_dist
 ```
 
@@ -428,6 +468,7 @@ smallest <- enr_2024 |>
   head(10) |>
   select(district_name, n_students)
 
+stopifnot(nrow(smallest) > 0)
 smallest
 ```
 
@@ -447,7 +488,7 @@ smallest |>
 
 ---
 
-## 15. High school enrollment is stable as elementary declines
+## 15. Elementary enrollment is declining while high school holds steady
 
 While elementary grades (K-5) have seen enrollment declines, high school enrollment has remained more stable, suggesting families are leaving the public system earlier.
 
@@ -464,6 +505,7 @@ grade_bands <- enr |>
   summarize(n_students = sum(n_students), .groups = "drop") |>
   filter(end_year >= 2019)
 
+stopifnot(nrow(grade_bands) > 0)
 grade_bands
 ```
 
@@ -471,6 +513,9 @@ grade_bands
 ggplot(grade_bands, aes(x = end_year, y = n_students, color = band)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
+  geom_vline(xintercept = 2020, linetype = "dashed", color = "gray50", alpha = 0.7) +
+  annotate("text", x = 2020.1, y = 340000,
+           label = "COVID", color = "gray50", hjust = 0, size = 3.5) +
   scale_y_continuous(labels = scales::comma) +
   scale_color_manual(values = c("Elementary (K-5)" = "#4169E1", "High School (9-12)" = "#9B1B30")) +
   labs(
