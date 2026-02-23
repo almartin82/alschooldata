@@ -28,11 +28,11 @@ create_example_data <- function() {
     subgroup = "total_enrollment",
     n_students = c(730245, 52000, 54000, 55000, 56000, 57000, 56500,
                    55500, 54500, 53000, 62000, 58000, 54000, 51000),
-    pct = c(100, 7.12, 7.40, 7.53, 7.67, 7.81, 7.74,
-            7.60, 7.47, 7.26, 8.49, 7.94, 7.40, 6.98),
+    pct = c(1.0, 0.0712, 0.0740, 0.0753, 0.0767, 0.0781, 0.0774,
+            0.0760, 0.0747, 0.0726, 0.0849, 0.0794, 0.0740, 0.0698),
     is_state = TRUE,
     is_district = FALSE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -52,7 +52,7 @@ create_example_data <- function() {
             0.52, 0.0616, 0.1397),
     is_state = TRUE,
     is_district = FALSE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -73,12 +73,12 @@ create_example_data <- function() {
     n_students = c(52341, 35124, 27456,
                    19234, 18345, 17890,
                    16890, 14567, 8200, 12500),
-    pct = c(7.17, 4.81, 3.76,
-            2.63, 2.51, 2.45,
-            2.31, 1.99, 1.12, 1.71),
+    pct = c(0.0717, 0.0481, 0.0376,
+            0.0263, 0.0251, 0.0245,
+            0.0231, 0.0199, 0.0112, 0.0171),
     is_state = FALSE,
     is_district = TRUE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -97,11 +97,11 @@ create_example_data <- function() {
     subgroup = "total_enrollment",
     n_students = c(350, 400, 450, 480, 520,
                    550, 580, 620, 650, 700),
-    pct = c(0.05, 0.05, 0.06, 0.07, 0.07,
-            0.08, 0.08, 0.08, 0.09, 0.10),
+    pct = c(0.0005, 0.0005, 0.0006, 0.0007, 0.0007,
+            0.0008, 0.0008, 0.0008, 0.0009, 0.0010),
     is_state = FALSE,
     is_district = TRUE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -130,10 +130,10 @@ create_example_data <- function() {
       round(base_enr[name] + year_offset * 50)   # growing
     }
   })
-  bham_districts$pct <- round(bham_districts$n_students / 730000 * 100, 2)
+  bham_districts$pct <- round(bham_districts$n_students / 730000, 4)
   bham_districts$is_state <- FALSE
   bham_districts$is_district <- TRUE
-  bham_districts$is_school <- FALSE
+  bham_districts$is_campus <- FALSE
 
   # Black Belt districts (for story 5) - 2020 and 2024
   black_belt <- expand.grid(
@@ -153,10 +153,10 @@ create_example_data <- function() {
     1500, 1200, 1100, 1000,  # 2020 values: Perry, Wilcox, Greene, Sumter
     1250, 1000,  900,  850   # 2024 values (all declining)
   )
-  black_belt$pct <- round(black_belt$n_students / 730000 * 100, 2)
+  black_belt$pct <- round(black_belt$n_students / 730000, 4)
   black_belt$is_state <- FALSE
   black_belt$is_district <- TRUE
-  black_belt$is_school <- FALSE
+  black_belt$is_campus <- FALSE
 
   # Madison area districts (for story 8) - 2020 and 2024
   madison_area <- expand.grid(
@@ -178,10 +178,10 @@ create_example_data <- function() {
     23000, 25500,   # Madison County: 2020, 2024 (+10.9%)
     24000, 26000    # Huntsville City: 2020, 2024 (+8.3%)
   )
-  madison_area$pct <- round(madison_area$n_students / 730000 * 100, 2)
+  madison_area$pct <- round(madison_area$n_students / 730000, 4)
   madison_area$is_state <- FALSE
   madison_area$is_district <- TRUE
-  madison_area$is_school <- FALSE
+  madison_area$is_campus <- FALSE
 
   # Historical state totals (2015-2023; 2024 TOTAL is in state_grades)
   historical <- data.frame(
@@ -194,10 +194,10 @@ create_example_data <- function() {
     subgroup = "total_enrollment",
     n_students = c(728456, 729123, 730012, 730987, 731234,
                    730456, 729876, 730123, 730567),
-    pct = 100,
+    pct = 1.0,
     is_state = TRUE,
     is_district = FALSE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -211,10 +211,10 @@ create_example_data <- function() {
     grade_level = "06",
     subgroup = "total_enrollment",
     n_students = c(51000, 51100, 51000, 51200, 51500),
-    pct = 7.0,
+    pct = 0.07,
     is_state = TRUE,
     is_district = FALSE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -232,7 +232,7 @@ create_example_data <- function() {
     pct = c(0.045, 0.047, 0.050, 0.052, 0.055, 0.058, 0.061, 0.064, 0.067),
     is_state = TRUE,
     is_district = FALSE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -251,7 +251,7 @@ create_example_data <- function() {
             0.044, 0.049, 0.055, 0.059),
     is_state = TRUE,
     is_district = FALSE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -270,7 +270,7 @@ create_example_data <- function() {
             0.137, 0.138, 0.138, 0.139),
     is_state = TRUE,
     is_district = FALSE,
-    is_school = FALSE,
+    is_campus = FALSE,
     stringsAsFactors = FALSE
   )
 
@@ -300,10 +300,10 @@ create_example_data <- function() {
     # 05
     57600, 57650, 57300, 56700, 56500
   )
-  grade_band_elem$pct <- 7.0
+  grade_band_elem$pct <- 0.07
   grade_band_elem$is_state <- TRUE
   grade_band_elem$is_district <- FALSE
-  grade_band_elem$is_school <- FALSE
+  grade_band_elem$is_campus <- FALSE
 
   grade_band_hs <- expand.grid(
     end_year = 2019:2023,
@@ -325,10 +325,10 @@ create_example_data <- function() {
     # 12
     51000, 51100, 51000, 51200, 51000
   )
-  grade_band_hs$pct <- 7.0
+  grade_band_hs$pct <- 0.07
   grade_band_hs$is_state <- TRUE
   grade_band_hs$is_district <- FALSE
-  grade_band_hs$is_school <- FALSE
+  grade_band_hs$is_campus <- FALSE
 
   # Combine all
   all_data <- rbind(
@@ -352,7 +352,7 @@ create_example_data <- function() {
   all_data <- all_data[, c("end_year", "system_code", "system_name",
                            "school_code", "school_name", "grade_level",
                            "subgroup", "n_students", "pct",
-                           "is_state", "is_district", "is_school")]
+                           "is_state", "is_district", "is_campus")]
 
   # Rename to match actual data schema
   all_data <- all_data |>
