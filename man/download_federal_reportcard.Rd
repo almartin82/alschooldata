@@ -19,5 +19,15 @@ at the school level. This function downloads the CSV export.
 \details{
 The Student Demographics page is available at:
 https://reportcard.alsde.edu/SupportingData_StudentDemographics.aspx
+
+The export returns a CSV with columns:
+\itemize{
+\item Year, System, School (identifiers)
+\item Grade, Gender, Ethnicity, Sub Population (filter dimensions)
+\item Total Student Count (enrollment count)
+\item Race columns: Asian, Black or African American,
+American Indian / Alaska Native, Native Hawaiian / Pacific Islander,
+White, Two or more races (with corresponding \% columns)
+}
 }
 \keyword{internal}

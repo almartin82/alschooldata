@@ -12,9 +12,11 @@ process_federal_reportcard(df, end_year)
 \item{end_year}{School year end}
 }
 \value{
-Processed data frame
+Processed data frame in wide format
 }
 \description{
-Process Federal Report Card data
+Extracts enrollment data from the multi-dimensional ALSDE CSV format.
+The raw data has filter dimensions (Grade, Gender, Ethnicity, Sub Population)
+as columns with race/ethnicity breakdowns in value columns.
 }
 \keyword{internal}
