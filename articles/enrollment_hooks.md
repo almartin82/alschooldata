@@ -383,9 +383,9 @@ econ <- enr_2024 |>
 
 stopifnot(nrow(econ) > 0)
 econ
-#>           subgroup n_students   pct
-#> 1 total_enrollment     730245 10000
-#> 2      econ_disadv     379928    52
+#>           subgroup n_students pct
+#> 1 total_enrollment     730245 100
+#> 2      econ_disadv     379928  52
 ```
 
 ------------------------------------------------------------------------
