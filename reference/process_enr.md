@@ -1,7 +1,6 @@
 # Process raw ALSDE enrollment data
 
-Transforms raw Federal Report Card data into a standardized schema
-combining school and district data.
+Transforms raw Federal Report Card data into a standardized schema.
 
 ## Usage
 

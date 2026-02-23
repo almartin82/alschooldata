@@ -1,6 +1,8 @@
 # Process Federal Report Card data
 
-Process Federal Report Card data
+Extracts enrollment data from the multi-dimensional ALSDE CSV format.
+The raw data has filter dimensions (Grade, Gender, Ethnicity, Sub
+Population) as columns with race/ethnicity breakdowns in value columns.
 
 ## Usage
 
@@ -20,4 +22,4 @@ process_federal_reportcard(df, end_year)
 
 ## Value
 
-Processed data frame
+Processed data frame in wide format

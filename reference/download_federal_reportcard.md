@@ -24,3 +24,15 @@ Data frame with enrollment data
 
 The Student Demographics page is available at:
 https://reportcard.alsde.edu/SupportingData_StudentDemographics.aspx
+
+The export returns a CSV with columns:
+
+- Year, System, School (identifiers)
+
+- Grade, Gender, Ethnicity, Sub Population (filter dimensions)
+
+- Total Student Count (enrollment count)
+
+- Race columns: Asian, Black or African American, American Indian /
+  Alaska Native, Native Hawaiian / Pacific Islander, White, Two or more
+  races (with corresponding % columns)
