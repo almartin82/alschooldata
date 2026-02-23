@@ -15,7 +15,6 @@ process_enr(raw_data, end_year)
 Processed data frame with standardized columns
 }
 \description{
-Transforms raw Federal Report Card data into a standardized schema
-combining school and district data.
+Transforms raw Federal Report Card data into a standardized schema.
 }
 \keyword{internal}
