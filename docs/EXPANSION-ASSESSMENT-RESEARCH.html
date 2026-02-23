@@ -200,7 +200,7 @@
 <h3 id="priority-1-maintain-status-quo-">Priority 1: MAINTAIN STATUS QUO ✅<a class="anchor" aria-label="anchor" href="#priority-1-maintain-status-quo-"></a></h3>
 <p><strong>Recommendation:</strong> Keep current implementation (ACAP Reading 2021-2025)</p>
 <p><strong>Rationale:</strong> - Only assessment data available in downloadable Excel format - Clean, tested, and documented implementation - Early literacy focus aligns with Alabama Literacy Act - 4 years of longitudinal data (2021-2025)</p>
-<p><strong>No Changes Required:</strong> - Current implementation is complete and functional - Tests pass (7/7 assessment tests passing) - Documentation complete - User-facing API (<code>fetch_assess()</code>, <code>fetch_assess_multi()</code>) works correctly</p>
+<p><strong>No Changes Required:</strong> - Current implementation is complete and functional - Tests pass (7/7 assessment tests passing) - Documentation complete - User-facing API (<code><a href="reference/fetch_assess.html">fetch_assess()</a></code>, <code><a href="reference/fetch_assess_multi.html">fetch_assess_multi()</a></code>) works correctly</p>
 </div>
 <div class="section level3">
 <h3 id="priority-2-document-limitations-">Priority 2: DOCUMENT LIMITATIONS ✅<a class="anchor" aria-label="anchor" href="#priority-2-document-limitations-"></a></h3>
@@ -244,13 +244,13 @@
 <h2 id="test-requirements">Test Requirements<a class="anchor" aria-label="anchor" href="#test-requirements"></a></h2>
 <div class="section level3">
 <h3 id="current-implementation-tests--all-passing">Current Implementation Tests ✅ (ALL PASSING)<a class="anchor" aria-label="anchor" href="#current-implementation-tests--all-passing"></a></h3>
-<ol style="list-style-type: decimal"><li>✅ <code>get_available_assess_years()</code> returns valid year range</li>
-<li>✅ <code>fetch_assess()</code> returns data for valid years</li>
+<ol style="list-style-type: decimal"><li>✅ <code><a href="reference/get_available_assess_years.html">get_available_assess_years()</a></code> returns valid year range</li>
+<li>✅ <code><a href="reference/fetch_assess.html">fetch_assess()</a></code> returns data for valid years</li>
 <li>✅ No Inf/NaN values in data</li>
 <li>✅ Proficiency rates between 0 and 1</li>
 <li>✅ Non-negative test counts</li>
 <li>✅ State aggregates calculated correctly</li>
-<li>✅ <code>fetch_assess_multi()</code> works for multiple years</li>
+<li>✅ <code><a href="reference/fetch_assess_multi.html">fetch_assess_multi()</a></code> works for multiple years</li>
 </ol></div>
 <div class="section level3">
 <h3 id="no-additional-tests-possible">No Additional Tests Possible<a class="anchor" aria-label="anchor" href="#no-additional-tests-possible"></a></h3>

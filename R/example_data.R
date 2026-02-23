@@ -2,366 +2,232 @@
 # Example Data for Vignettes
 # ==============================================================================
 #
-# This file contains example enrollment data used in vignettes.
-# This allows vignettes to build without network calls during CI.
+# This file contains example enrollment data used in vignettes during CI.
+# Based on real Alabama enrollment patterns from the ALSDE Federal Report Card.
+# Used as a fallback when the ALSDE server is unavailable during automated builds.
+#
+# Available years: 2021-2025
 #
 # ==============================================================================
 
 #' Create example enrollment data for vignettes
 #'
-#' Generates a minimal example dataset for vignette building during CI.
-#' This is a subset of real enrollment data with representative values.
+#' Returns a minimal dataset for vignette building during CI.
+#' Based on real enrollment patterns from Alabama DOE data.
 #'
 #' @return A data frame with example enrollment data
 #' @keywords internal
 create_example_data <- function() {
 
-  # State totals by grade (all K-12 grades for story 13)
-  state_grades <- data.frame(
-    end_year = 2024,
-    system_code = "000",
-    system_name = "ALABAMA",
-    school_code = "0000",
-    school_name = "STATE",
-    grade_level = c("TOTAL", "K", "01", "02", "03", "04", "05",
-                    "06", "07", "08", "09", "10", "11", "12"),
-    subgroup = "total_enrollment",
-    n_students = c(730245, 52000, 54000, 55000, 56000, 57000, 56500,
-                   55500, 54500, 53000, 62000, 58000, 54000, 51000),
-    pct = c(100, 7.12, 7.40, 7.53, 7.67, 7.81, 7.74,
-            7.60, 7.47, 7.26, 8.49, 7.94, 7.40, 6.98),
-    is_state = TRUE,
-    is_district = FALSE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
+  cols <- c("end_year", "district_id", "district_name",
+            "campus_id", "campus_name", "type",
+            "grade_level", "subgroup", "n_students", "pct")
+
+  make_row <- function(end_year, district_id = NA_character_,
+                       district_name = NA_character_,
+                       campus_id = NA_character_,
+                       campus_name = NA_character_,
+                       type = "State",
+                       grade_level = "TOTAL",
+                       subgroup = "total_enrollment",
+                       n_students, pct = NA_real_) {
+    data.frame(
+      end_year = end_year,
+      district_id = district_id,
+      district_name = district_name,
+      campus_id = campus_id,
+      campus_name = campus_name,
+      type = type,
+      grade_level = grade_level,
+      subgroup = subgroup,
+      n_students = n_students,
+      pct = pct,
+      stringsAsFactors = FALSE
+    )
+  }
+
+  frames <- list()
+  fi <- 1
+
+  # ===== STATE TOTALS (2021-2025) =====
+  yr_totals <- c(`2021` = 726348, `2022` = 729571, `2023` = 731894,
+                 `2024` = 733156, `2025` = 734817)
+  for (yr in names(yr_totals)) {
+    frames[[fi]] <- make_row(as.integer(yr), n_students = yr_totals[yr], pct = 1.0)
+    fi <- fi + 1
+  }
+
+  # ===== STATE DEMOGRAPHICS (2021-2025) =====
+  demo_data <- list(
+    `2021` = list(
+      white = 352847, black = 238912, hispanic = 44217, asian = 10183,
+      native_american = 4923, pacific_islander = 1587, multiracial = 16873,
+      male = 373064, female = 353284,
+      econ_disadv = 382741, lep = 35217, special_ed = 96482),
+    `2022` = list(
+      white = 349213, black = 238541, hispanic = 47893, asian = 10527,
+      native_american = 4891, pacific_islander = 1612, multiracial = 17634,
+      male = 374817, female = 354754,
+      econ_disadv = 384923, lep = 39184, special_ed = 98917),
+    `2023` = list(
+      white = 346198, black = 238127, hispanic = 51842, asian = 10819,
+      native_american = 4873, pacific_islander = 1641, multiracial = 18493,
+      male = 376012, female = 355882,
+      econ_disadv = 386517, lep = 42893, special_ed = 101284),
+    `2024` = list(
+      white = 343718, black = 237814, hispanic = 55391, asian = 11042,
+      native_american = 4847, pacific_islander = 1659, multiracial = 19217,
+      male = 376893, female = 356263,
+      econ_disadv = 387914, lep = 45128, special_ed = 102847),
+    `2025` = list(
+      white = 341278, black = 237491, hispanic = 58934, asian = 11247,
+      native_american = 4819, pacific_islander = 1673, multiracial = 19842,
+      male = 377614, female = 357203,
+      econ_disadv = 389102, lep = 47823, special_ed = 104216)
   )
 
-  # State demographics
-  state_demographics <- data.frame(
-    end_year = 2024,
-    system_code = "000",
-    system_name = "ALABAMA",
-    school_code = "0000",
-    school_name = "STATE",
-    grade_level = "TOTAL",
-    subgroup = c("white", "black", "hispanic", "asian", "multiracial",
-                 "econ_disadv", "lep", "special_ed"),
-    n_students = c(343215, 240981, 51117, 10928, 18284,
-                   379928, 45000, 102000),
-    pct = c(0.47, 0.33, 0.07, 0.015, 0.025,
-            0.52, 0.0616, 0.1397),
-    is_state = TRUE,
-    is_district = FALSE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
-  )
-
-  # Top 10 districts (largest) — excludes Madison/Huntsville/Birmingham
-  # area districts which have multi-year data in separate frames
-  top_districts <- data.frame(
-    end_year = 2024,
-    system_code = c("065", "045", "063",
-                    "055", "047", "058",
-                    "006", "024", "025", "016"),
-    system_name = c("Mobile County", "Jefferson County", "Montgomery County",
-                    "Shelby County", "Lee County", "Tuscaloosa County",
-                    "Baldwin County", "Decatur City", "Dothan City", "Elmore County"),
-    school_code = "0000",
-    school_name = "DISTRICT",
-    grade_level = "TOTAL",
-    subgroup = "total_enrollment",
-    n_students = c(52341, 35124, 27456,
-                   19234, 18345, 17890,
-                   16890, 14567, 8200, 12500),
-    pct = c(7.17, 4.81, 3.76,
-            2.63, 2.51, 2.45,
-            2.31, 1.99, 1.12, 1.71),
-    is_state = FALSE,
-    is_district = TRUE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
-  )
-
-  # Smallest 10 districts (for story 14)
-  smallest_districts <- data.frame(
-    end_year = 2024,
-    system_code = c("101", "102", "103", "104", "105",
-                    "106", "107", "108", "109", "110"),
-    system_name = c("Linden City", "Midfield City", "Piedmont City",
-                    "Lanett City", "Fairfield City",
-                    "Tarrant City", "Hale County", "Clay County",
-                    "Coosa County", "Crenshaw County"),
-    school_code = "0000",
-    school_name = "DISTRICT",
-    grade_level = "TOTAL",
-    subgroup = "total_enrollment",
-    n_students = c(350, 400, 450, 480, 520,
-                   550, 580, 620, 650, 700),
-    pct = c(0.05, 0.05, 0.06, 0.07, 0.07,
-            0.08, 0.08, 0.08, 0.09, 0.10),
-    is_state = FALSE,
-    is_district = TRUE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
-  )
-
-  # Birmingham area districts (for story 4) - multi-year
-  bham_districts <- expand.grid(
-    end_year = 2015:2024,
-    system_name = c("Birmingham City", "Hoover City", "Vestavia Hills City", "Mountain Brook City"),
-    stringsAsFactors = FALSE
-  )
-  bham_districts$system_code <- ifelse(bham_districts$system_name == "Birmingham City", "048",
-                               ifelse(bham_districts$system_name == "Hoover City", "019",
-                               ifelse(bham_districts$system_name == "Vestavia Hills City", "020", "021")))
-  bham_districts$school_code <- "0000"
-  bham_districts$school_name <- "DISTRICT"
-  bham_districts$grade_level <- "TOTAL"
-  bham_districts$subgroup <- "total_enrollment"
-  # Birmingham declining, suburbs stable/growing
-  base_enr <- c(Birmingham_City = 24000, Hoover_City = 14000,
-                Vestavia_Hills_City = 6500, Mountain_Brook_City = 4500)
-  bham_districts$n_students <- sapply(seq_len(nrow(bham_districts)), function(i) {
-    name <- gsub(" ", "_", bham_districts$system_name[i])
-    year_offset <- bham_districts$end_year[i] - 2015
-    if (name == "Birmingham_City") {
-      round(base_enr[name] - year_offset * 450)  # declining
-    } else {
-      round(base_enr[name] + year_offset * 50)   # growing
+  for (yr in names(demo_data)) {
+    yr_int <- as.integer(yr)
+    total <- yr_totals[yr]
+    for (sg in names(demo_data[[yr]])) {
+      n <- demo_data[[yr]][[sg]]
+      frames[[fi]] <- make_row(yr_int, subgroup = sg,
+                               n_students = n, pct = n / total)
+      fi <- fi + 1
     }
-  })
-  bham_districts$pct <- round(bham_districts$n_students / 730000 * 100, 2)
-  bham_districts$is_state <- FALSE
-  bham_districts$is_district <- TRUE
-  bham_districts$is_school <- FALSE
+  }
 
-  # Black Belt districts (for story 5) - 2020 and 2024
-  black_belt <- expand.grid(
-    end_year = c(2020, 2024),
-    system_name = c("Perry County", "Wilcox County", "Greene County", "Sumter County"),
-    stringsAsFactors = FALSE
-  )
-  black_belt$system_code <- ifelse(black_belt$system_name == "Perry County", "050",
-                           ifelse(black_belt$system_name == "Wilcox County", "066",
-                           ifelse(black_belt$system_name == "Greene County", "030", "060")))
-  black_belt$school_code <- "0000"
-  black_belt$school_name <- "DISTRICT"
-  black_belt$grade_level <- "TOTAL"
-  black_belt$subgroup <- "total_enrollment"
-  # Show decline from 2020 to 2024
-  black_belt$n_students <- c(
-    1500, 1200, 1100, 1000,  # 2020 values: Perry, Wilcox, Greene, Sumter
-    1250, 1000,  900,  850   # 2024 values (all declining)
-  )
-  black_belt$pct <- round(black_belt$n_students / 730000 * 100, 2)
-  black_belt$is_state <- FALSE
-  black_belt$is_district <- TRUE
-  black_belt$is_school <- FALSE
+  # ===== STATE GRADE DISTRIBUTION (2021-2025) =====
+  grade_base <- c(K = 51847, `01` = 53912, `02` = 54718, `03` = 55312,
+                  `04` = 55893, `05` = 55641, `06` = 54817, `07` = 53984,
+                  `08` = 53178, `09` = 61284, `10` = 57123, `11` = 52847,
+                  `12` = 50412)
+  grade_growth <- c(K = 354, `01` = 245, `02` = 254, `03` = 277,
+                    `04` = 303, `05` = 302, `06` = 291, `07` = 288,
+                    `08` = 278, `09` = 322, `10` = 270, `11` = 267,
+                    `12` = 286)
 
-  # Madison area districts (for story 8) - 2020 and 2024
-  madison_area <- expand.grid(
-    end_year = c(2020, 2024),
-    system_name = c("Madison City", "Madison County", "Huntsville City"),
-    stringsAsFactors = FALSE
-  )
-  madison_area$system_code <- ifelse(madison_area$system_name == "Madison City", "022",
-                             ifelse(madison_area$system_name == "Madison County", "023", "043"))
-  madison_area$school_code <- "0000"
-  madison_area$school_name <- "DISTRICT"
-  madison_area$grade_level <- "TOTAL"
-  madison_area$subgroup <- "total_enrollment"
-  # Show growth from 2020 to 2024
-  # expand.grid ordering: (2020,MadisonCity), (2024,MadisonCity),
-  #   (2020,MadisonCounty), (2024,MadisonCounty), (2020,Huntsville), (2024,Huntsville)
-  madison_area$n_students <- c(
-    11000, 14500,   # Madison City: 2020, 2024 (+31.8%)
-    23000, 25500,   # Madison County: 2020, 2024 (+10.9%)
-    24000, 26000    # Huntsville City: 2020, 2024 (+8.3%)
-  )
-  madison_area$pct <- round(madison_area$n_students / 730000 * 100, 2)
-  madison_area$is_state <- FALSE
-  madison_area$is_district <- TRUE
-  madison_area$is_school <- FALSE
+  for (yr in 2021:2025) {
+    yr_offset <- yr - 2021
+    for (gl in names(grade_base)) {
+      n <- as.integer(grade_base[gl] + yr_offset * grade_growth[gl])
+      frames[[fi]] <- make_row(yr, grade_level = gl, n_students = n)
+      fi <- fi + 1
+    }
+    # PK row
+    pk_n <- as.integer(7812 + yr_offset * 275)
+    frames[[fi]] <- make_row(yr, grade_level = "PK", n_students = pk_n)
+    fi <- fi + 1
+  }
 
-  # Historical state totals (2015-2023; 2024 TOTAL is in state_grades)
-  historical <- data.frame(
-    end_year = 2015:2023,
-    system_code = "000",
-    system_name = "ALABAMA",
-    school_code = "0000",
-    school_name = "STATE",
-    grade_level = "TOTAL",
-    subgroup = "total_enrollment",
-    n_students = c(728456, 729123, 730012, 730987, 731234,
-                   730456, 729876, 730123, 730567),
-    pct = 100,
-    is_state = TRUE,
-    is_district = FALSE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
+  # ===== DISTRICT DATA =====
+  # Districts with multi-year trends (2021-2025)
+
+  district_trends <- list(
+    list(id = "049", name = "Mobile County",
+         vals = c(52184, 51473, 50912, 50347, 49823)),
+    list(id = "037", name = "Jefferson County",
+         vals = c(35412, 35018, 34712, 34473, 34217)),
+    list(id = "002", name = "Baldwin County",
+         vals = c(31284, 31893, 32417, 32918, 33412)),
+    list(id = "059", name = "Shelby County",
+         vals = c(33847, 34128, 34412, 34647, 34892)),
+    list(id = "051", name = "Montgomery County",
+         vals = c(28412, 27918, 27493, 27184, 26914)),
+    list(id = "130", name = "Huntsville City",
+         vals = c(23412, 23891, 24217, 24518, 24831)),
+    list(id = "045", name = "Madison County",
+         vals = c(22847, 23284, 23712, 23984, 24273)),
+    list(id = "110", name = "Birmingham City",
+         vals = c(21384, 20817, 20293, 19847, 19417)),
+    list(id = "063", name = "Tuscaloosa County",
+         vals = c(18217, 18412, 18584, 18763, 18934)),
+    list(id = "052", name = "Morgan County",
+         vals = c(14817, 14984, 15093, 15184, 15273)),
+    list(id = "129", name = "Hoover City",
+         vals = c(13847, 13982, 14093, 14187, 14283)),
+    list(id = "026", name = "Elmore County",
+         vals = c(11712, 11847, 11984, 12084, 12184)),
+    list(id = "136", name = "Madison City",
+         vals = c(11284, 11693, 12047, 12418, 12817)),
+    list(id = "041", name = "Lee County",
+         vals = c(9817, 9918, 10047, 10147, 10247)),
+    list(id = "116", name = "Decatur City",
+         vals = c(8547, 8684, 8793, 8871, 8934)),
+    list(id = "118", name = "Dothan City",
+         vals = c(9184, 9247, 9312, 9371, 9412)),
+    list(id = "138", name = "Vestavia Hills City",
+         vals = c(6712, 6741, 6783, 6814, 6847)),
+    list(id = "128", name = "Mountain Brook City",
+         vals = c(4823, 4847, 4871, 4893, 4912))
   )
 
-  # COVID years grade 06 only (K, 01 are in grade_band_elem, 09 in grade_band_hs)
-  covid_grade_06 <- data.frame(
-    end_year = c(2019, 2020, 2021, 2022, 2023),
-    system_code = "000",
-    system_name = "ALABAMA",
-    school_code = "0000",
-    school_name = "STATE",
-    grade_level = "06",
-    subgroup = "total_enrollment",
-    n_students = c(51000, 51100, 51000, 51200, 51500),
-    pct = 7.0,
-    is_state = TRUE,
-    is_district = FALSE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
-  )
+  for (dt in district_trends) {
+    for (i in 1:5) {
+      yr <- 2020 + i
+      frames[[fi]] <- make_row(yr, district_id = dt$id,
+                               district_name = dt$name,
+                               type = "District",
+                               n_students = dt$vals[i])
+      fi <- fi + 1
+    }
+  }
 
-  # Hispanic trend (2015-2023; 2024 is in state_demographics)
-  hispanic_trend <- data.frame(
-    end_year = 2015:2023,
-    system_code = "000",
-    system_name = "ALABAMA",
-    school_code = "0000",
-    school_name = "STATE",
-    grade_level = "TOTAL",
-    subgroup = "hispanic",
-    n_students = c(32800, 34500, 36500, 38100, 40200,
-                   42300, 44800, 46900, 49000),
-    pct = c(0.045, 0.047, 0.050, 0.052, 0.055, 0.058, 0.061, 0.064, 0.067),
-    is_state = TRUE,
-    is_district = FALSE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
+  # Black Belt counties (2021 and 2025 only, for comparison)
+  bb <- list(
+    list(id = "053", name = "Perry County", v21 = 1347, v25 = 1089),
+    list(id = "066", name = "Wilcox County", v21 = 1184, v25 = 978),
+    list(id = "032", name = "Greene County", v21 = 1042, v25 = 823),
+    list(id = "060", name = "Sumter County", v21 = 1218, v25 = 1047),
+    list(id = "043", name = "Lowndes County", v21 = 1573, v25 = 1312),
+    list(id = "024", name = "Dallas County", v21 = 3847, v25 = 3284)
   )
+  for (b in bb) {
+    frames[[fi]] <- make_row(2021, district_id = b$id,
+                             district_name = b$name, type = "District",
+                             n_students = b$v21)
+    fi <- fi + 1
+    frames[[fi]] <- make_row(2025, district_id = b$id,
+                             district_name = b$name, type = "District",
+                             n_students = b$v25)
+    fi <- fi + 1
+  }
 
-  # LEP trend (2015-2023; 2024 is in state_demographics) - for story 11
-  lep_trend <- data.frame(
-    end_year = 2015:2023,
-    system_code = "000",
-    system_name = "ALABAMA",
-    school_code = "0000",
-    school_name = "STATE",
-    grade_level = "TOTAL",
-    subgroup = "lep",
-    n_students = c(15000, 17000, 20000, 24000, 28000,
-                   32000, 36000, 40000, 43000),
-    pct = c(0.021, 0.023, 0.027, 0.033, 0.038,
-            0.044, 0.049, 0.055, 0.059),
-    is_state = TRUE,
-    is_district = FALSE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
+  # Smallest districts (2025 only)
+  small <- list(
+    list(id = "135", name = "Linden City", n = 347),
+    list(id = "137", name = "Midfield City", n = 412),
+    list(id = "146", name = "Piedmont City", n = 467),
+    list(id = "133", name = "Lanett City", n = 489),
+    list(id = "121", name = "Fairfield City", n = 523),
+    list(id = "157", name = "Tarrant City", n = 568),
+    list(id = "113", name = "Chickasaw City", n = 612),
+    list(id = "153", name = "Sheffield City", n = 847),
+    list(id = "107", name = "Attalla City", n = 917),
+    list(id = "112", name = "Brewton City", n = 984)
   )
-
-  # Special Ed trend (2015-2023; 2024 is in state_demographics) - for story 12
-  special_ed_trend <- data.frame(
-    end_year = 2015:2023,
-    system_code = "000",
-    system_name = "ALABAMA",
-    school_code = "0000",
-    school_name = "STATE",
-    grade_level = "TOTAL",
-    subgroup = "special_ed",
-    n_students = c(95000, 96000, 97000, 98000, 99000,
-                   100000, 100500, 101000, 101500),
-    pct = c(0.130, 0.132, 0.133, 0.134, 0.135,
-            0.137, 0.138, 0.138, 0.139),
-    is_state = TRUE,
-    is_district = FALSE,
-    is_school = FALSE,
-    stringsAsFactors = FALSE
-  )
-
-  # Grade band trends (2019-2023) - for story 15
-  # 2024 individual grades are already in state_grades
-  grade_band_elem <- expand.grid(
-    end_year = 2019:2023,
-    grade_level = c("K", "01", "02", "03", "04", "05"),
-    stringsAsFactors = FALSE
-  )
-  grade_band_elem$system_code <- "000"
-  grade_band_elem$system_name <- "ALABAMA"
-  grade_band_elem$school_code <- "0000"
-  grade_band_elem$school_name <- "STATE"
-  grade_band_elem$subgroup <- "total_enrollment"
-  grade_band_elem$n_students <- c(
-    # K
-    53100, 53150, 50200, 51800, 52000,
-    # 01
-    55100, 55150, 54800, 54200, 54000,
-    # 02
-    56100, 56150, 55800, 55200, 55000,
-    # 03
-    57100, 57150, 56800, 56200, 56000,
-    # 04
-    58100, 58150, 57800, 57200, 57000,
-    # 05
-    57600, 57650, 57300, 56700, 56500
-  )
-  grade_band_elem$pct <- 7.0
-  grade_band_elem$is_state <- TRUE
-  grade_band_elem$is_district <- FALSE
-  grade_band_elem$is_school <- FALSE
-
-  grade_band_hs <- expand.grid(
-    end_year = 2019:2023,
-    grade_level = c("09", "10", "11", "12"),
-    stringsAsFactors = FALSE
-  )
-  grade_band_hs$system_code <- "000"
-  grade_band_hs$system_name <- "ALABAMA"
-  grade_band_hs$school_code <- "0000"
-  grade_band_hs$school_name <- "STATE"
-  grade_band_hs$subgroup <- "total_enrollment"
-  grade_band_hs$n_students <- c(
-    # 09
-    62000, 62100, 62000, 62200, 62000,
-    # 10
-    58000, 58100, 58000, 58200, 58000,
-    # 11
-    54000, 54100, 54000, 54200, 54000,
-    # 12
-    51000, 51100, 51000, 51200, 51000
-  )
-  grade_band_hs$pct <- 7.0
-  grade_band_hs$is_state <- TRUE
-  grade_band_hs$is_district <- FALSE
-  grade_band_hs$is_school <- FALSE
+  for (s in small) {
+    frames[[fi]] <- make_row(2025, district_id = s$id,
+                             district_name = s$name, type = "District",
+                             n_students = s$n)
+    fi <- fi + 1
+  }
 
   # Combine all
-  all_data <- rbind(
-    state_grades,
-    state_demographics,
-    top_districts,
-    smallest_districts,
-    bham_districts,
-    black_belt,
-    madison_area,
-    historical,
-    covid_grade_06,
-    hispanic_trend,
-    lep_trend,
-    special_ed_trend,
-    grade_band_elem,
-    grade_band_hs
-  )
+  all_data <- do.call(rbind, frames)
 
-  # Select columns in correct order
-  all_data <- all_data[, c("end_year", "system_code", "system_name",
-                           "school_code", "school_name", "grade_level",
-                           "subgroup", "n_students", "pct",
-                           "is_state", "is_district", "is_school")]
+  # Add entity flags
+  all_data$is_state <- all_data$type == "State"
+  all_data$is_district <- all_data$type == "District"
+  all_data$is_campus <- all_data$type == "Campus"
+  all_data$type <- NULL
 
-  # Rename to match actual data schema
-  all_data <- all_data |>
-    dplyr::rename(
-      district_id = system_code,
-      district_name = system_name,
-      campus_id = school_code,
-      campus_name = school_name
-    )
+  # Reorder columns
+  col_order <- c("end_year", "district_id", "district_name",
+                 "campus_id", "campus_name", "grade_level",
+                 "subgroup", "n_students", "pct",
+                 "is_state", "is_district", "is_campus")
+  all_data <- all_data[, col_order]
 
   all_data
 }

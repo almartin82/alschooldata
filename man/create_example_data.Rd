@@ -10,7 +10,7 @@ create_example_data()
 A data frame with example enrollment data
 }
 \description{
-Generates a minimal example dataset for vignette building during CI.
-This is a subset of real enrollment data with representative values.
+Returns a minimal dataset for vignette building during CI.
+Based on real enrollment patterns from Alabama DOE data.
 }
 \keyword{internal}

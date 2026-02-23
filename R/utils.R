@@ -3,6 +3,7 @@
 # ==============================================================================
 
 #' @importFrom rlang .data
+#' @importFrom stats median runif
 NULL
 
 # Declare non-standard evaluation variables for dplyr
