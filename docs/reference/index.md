@@ -1,6 +1,6 @@
 # Package index
 
-## Fetch Data
+## Fetch Enrollment Data
 
 - [`fetch_enr()`](https://almartin82.github.io/alschooldata/reference/fetch_enr.md)
   : Fetch Alabama enrollment data
@@ -8,6 +8,15 @@
   : Fetch enrollment data for multiple years
 - [`get_available_years()`](https://almartin82.github.io/alschooldata/reference/get_available_years.md)
   : Get Available Years
+
+## Fetch Assessment Data
+
+- [`fetch_assess()`](https://almartin82.github.io/alschooldata/reference/fetch_assess.md)
+  : Fetch Alabama ACAP assessment data
+- [`fetch_assess_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_assess_multi.md)
+  : Fetch assessment data for multiple years
+- [`get_available_assess_years()`](https://almartin82.github.io/alschooldata/reference/get_available_assess_years.md)
+  : Get available ACAP assessment years
 
 ## Process & Tidy
 

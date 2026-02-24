@@ -36,28 +36,34 @@ format from the Alabama State Department of Education.
 ### Files Created
 
 1.  **R/get_raw_assessment.R** (5.4 KB)
-    - `get_raw_assess()`: Downloads raw ACAP assessment Excel files
-    - `download_acap_assessment()`: Downloads from Alabama Achieves
-      website
-    - `get_available_assess_years()`: Returns available year range
-      (2022-2025)
+    - [`get_raw_assess()`](https://almartin82.github.io/alschooldata/reference/get_raw_assess.md):
+      Downloads raw ACAP assessment Excel files
+    - [`download_acap_assessment()`](https://almartin82.github.io/alschooldata/reference/download_acap_assessment.md):
+      Downloads from Alabama Achieves website
+    - [`get_available_assess_years()`](https://almartin82.github.io/alschooldata/reference/get_available_assess_years.md):
+      Returns available year range (2022-2025)
     - Uses
       [`retry_with_backoff()`](https://almartin82.github.io/alschooldata/reference/retry_with_backoff.md)
       for robust HTTP requests
 2.  **R/process_assessment.R** (4.4 KB)
-    - `process_assess()`: Standardizes column names and data types
+    - [`process_assess()`](https://almartin82.github.io/alschooldata/reference/process_assess.md):
+      Standardizes column names and data types
     - Handles different file structures across years
     - Adds geographic level flags (state/district/school)
     - Removes suppressed data (\*)
 3.  **R/tidy_assessment.R** (documentation placeholder)
-    - `tidy_assess()`: Converts to long format with proficiency metrics
-    - `id_assess_aggs()`: Calculates district and state aggregates
+    - [`tidy_assess()`](https://almartin82.github.io/alschooldata/reference/tidy_assess.md):
+      Converts to long format with proficiency metrics
+    - [`id_assess_aggs()`](https://almartin82.github.io/alschooldata/reference/id_assess_aggs.md):
+      Calculates district and state aggregates
 4.  **R/fetch_assessment-documentation.R** (documentation)
     - Fully documented functions with roxygen2
     - Includes examples and export declarations
 5.  **R/fetch_assessment.R** (4.3 KB)
-    - `fetch_assess()`: Public API for single-year assessment data
-    - `fetch_assess_multi()`: Public API for multi-year assessment data
+    - [`fetch_assess()`](https://almartin82.github.io/alschooldata/reference/fetch_assess.md):
+      Public API for single-year assessment data
+    - [`fetch_assess_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_assess_multi.md):
+      Public API for multi-year assessment data
     - Supports caching (assess_tidy, assess_wide)
     - Tidy/wide format options
 
@@ -159,11 +165,15 @@ assess_2025 |>
 
 ## Testing
 
-All tests pass successfully: 1. ✅ `get_available_assess_years()`
-returns valid year range 2. ✅ `fetch_assess()` returns data for valid
-years 3. ✅ No Inf/NaN values in data 4. ✅ Proficiency rates between 0
-and 1 5. ✅ Non-negative test counts 6. ✅ State aggregates calculated
-correctly 7. ✅ `fetch_assess_multi()` works for multiple years
+All tests pass successfully: 1. ✅
+[`get_available_assess_years()`](https://almartin82.github.io/alschooldata/reference/get_available_assess_years.md)
+returns valid year range 2. ✅
+[`fetch_assess()`](https://almartin82.github.io/alschooldata/reference/fetch_assess.md)
+returns data for valid years 3. ✅ No Inf/NaN values in data 4. ✅
+Proficiency rates between 0 and 1 5. ✅ Non-negative test counts 6. ✅
+State aggregates calculated correctly 7. ✅
+[`fetch_assess_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_assess_multi.md)
+works for multiple years
 
 ------------------------------------------------------------------------
 

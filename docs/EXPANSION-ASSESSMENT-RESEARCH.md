@@ -257,7 +257,9 @@ focus aligns with Alabama Literacy Act - 4 years of longitudinal data
 
 **No Changes Required:** - Current implementation is complete and
 functional - Tests pass (7/7 assessment tests passing) - Documentation
-complete - User-facing API (`fetch_assess()`, `fetch_assess_multi()`)
+complete - User-facing API
+([`fetch_assess()`](https://almartin82.github.io/alschooldata/reference/fetch_assess.md),
+[`fetch_assess_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_assess_multi.md))
 works correctly
 
 ### Priority 2: DOCUMENT LIMITATIONS ✅
@@ -304,13 +306,19 @@ format, not downloadable Excel)
 
 ### Current Implementation Tests ✅ (ALL PASSING)
 
-1.  ✅ `get_available_assess_years()` returns valid year range
-2.  ✅ `fetch_assess()` returns data for valid years
+1.  ✅
+    [`get_available_assess_years()`](https://almartin82.github.io/alschooldata/reference/get_available_assess_years.md)
+    returns valid year range
+2.  ✅
+    [`fetch_assess()`](https://almartin82.github.io/alschooldata/reference/fetch_assess.md)
+    returns data for valid years
 3.  ✅ No Inf/NaN values in data
 4.  ✅ Proficiency rates between 0 and 1
 5.  ✅ Non-negative test counts
 6.  ✅ State aggregates calculated correctly
-7.  ✅ `fetch_assess_multi()` works for multiple years
+7.  ✅
+    [`fetch_assess_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_assess_multi.md)
+    works for multiple years
 
 ### No Additional Tests Possible
 
