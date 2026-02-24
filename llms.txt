@@ -150,8 +150,8 @@ Hispanic enrollment trend
 
 ### 3. Mobile County leads with 47,000 students
 
-Alabama has 153 school systems. Mobile County alone enrolls more than
-double the second-largest district.
+Alabama has 153 school systems. Mobile County enrolls 40% more than
+Jefferson County, the second-largest district.
 
 ``` r
 enr_2025 <- enr |> filter(end_year == 2025)
@@ -175,8 +175,8 @@ Top 10 districts
 
 ### 4. Birmingham shrinks while suburbs hold steady
 
-Birmingham City lost 2,200 students since 2021 while nearby Homewood,
-Trussville, and Mountain Brook grew.
+Birmingham City lost 2,200 students since 2021 while nearby Homewood and
+Trussville grew and others held flat.
 
 ``` r
 bham_districts <- c("Birmingham City", "Hoover City",
@@ -283,8 +283,8 @@ Demographic shift chart
 
 ### 8. Madison City grew 9% on Huntsville’s tech boom
 
-The Huntsville metro area is Alabama’s growth engine, with Madison City
-adding 1,100 students since 2021.
+Madison City added 1,100 students since 2021 and Madison County grew 5%,
+even as Huntsville City itself declined 2%.
 
 ``` r
 madison_area <- enr |>
@@ -306,10 +306,11 @@ Madison growth chart
 
 ------------------------------------------------------------------------
 
-### 9. Nearly 59% of students are economically disadvantaged
+### 9. Economically disadvantaged share swung from 48% to 65% and back
 
-Alabama’s poverty rate makes the majority of public school students
-eligible for free/reduced lunch.
+Alabama’s economic disadvantage rate has been volatile – dropping to 48%
+in 2022, spiking to 65% in 2023, and settling at 59% in 2025, likely
+reflecting shifts in eligibility methodology.
 
 ``` r
 econ_trend <- enr |>
@@ -376,11 +377,11 @@ Mobile County chart
 
 ------------------------------------------------------------------------
 
-### 12. Special education enrollment spiked in 2022-2023
+### 12. Special education spiked to 131,000 then fell back to 104,000
 
-The number of students with disabilities jumped from 102,000 to 131,000
-in 2022, potentially reflecting expanded identification after pandemic
-disruptions.
+Students with disabilities jumped from 102,000 to 131,000 in 2022 –
+likely post-pandemic catch-up identification – then dropped back to
+104,000 by 2025.
 
 ``` r
 sped_trend <- enr |>
@@ -426,9 +427,9 @@ Grade distribution chart
 
 ------------------------------------------------------------------------
 
-### 14. Eufaula City grew 49% — the fastest in the state
+### 14. Eufaula City grew 49% – the fastest in the state
 
-Eufaula City added nearly 3,000 students since 2021, making it the
+Eufaula City added nearly 2,900 students since 2021, making it the
 fastest-growing district by percentage.
 
 ``` r
@@ -496,10 +497,12 @@ transition:
   years)
 - **English Learner surge** mirrors Hispanic growth (+52% since 2021)
 - **Urban-to-suburban shift** continues around Birmingham and Huntsville
-- **Black Belt crisis** — rural counties losing 19% of enrollment in 4
+- **Black Belt crisis** – rural counties losing 19% of enrollment in 4
   years
-- **High poverty** — nearly 59% of students are economically
-  disadvantaged
+- **Special ed volatility** – identification surged post-COVID then
+  returned to baseline
+- **Poverty data instability** – economically disadvantaged share swung
+  from 48% to 65%
 
 ------------------------------------------------------------------------
 
@@ -513,8 +516,15 @@ transition:
   student privacy
 - **Reporting:** Data reflects Census Day enrollment for each school
   year
-- **Race/ethnicity:** Federal reporting standard — Hispanic/Latino is an
-  ethnicity overlay on race categories
+- **Race/ethnicity overlap:** Federal reporting counts Hispanic/Latino
+  as an ethnicity overlay on race, so racial category totals may exceed
+  total enrollment
+- **Economic disadvantage volatility:** The economically disadvantaged
+  share shifted significantly across years (48%-65%), likely reflecting
+  changes in Alabama’s eligibility determination methodology
+- **Special education spike:** The 2022-2024 special education surge and
+  subsequent drop likely reflects post-COVID catch-up identification
+  followed by reclassification
 
 ------------------------------------------------------------------------
 

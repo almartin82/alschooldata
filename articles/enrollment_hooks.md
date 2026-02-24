@@ -45,11 +45,14 @@ state_totals
 ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_line(linewidth = 1.2, color = "#9B1B30") +
   geom_point(size = 3, color = "#9B1B30") +
+  geom_vline(xintercept = 2021, linetype = "dashed", color = "gray60", linewidth = 0.5) +
+  annotate("text", x = 2021.3, y = 738000, label = "COVID\nrecovery",
+           color = "gray50", size = 3, hjust = 0) +
   scale_y_continuous(labels = scales::comma, limits = c(710000, 740000)) +
   scale_x_continuous(breaks = 2021:2025) +
   labs(
     title = "Alabama Public School Enrollment (2021-2025)",
-    subtitle = "Post-COVID bounce followed by steady decline",
+    subtitle = "Post-COVID bounce in 2022 followed by steady decline",
     x = "School Year (ending)",
     y = "Total Enrollment"
   )
@@ -101,8 +104,8 @@ ggplot(hispanic_trend, aes(x = end_year, y = n_students)) +
 
 ## 3. Mobile County leads with 47,000 students
 
-Alabama has 153 school systems. Mobile County alone enrolls more than
-double the second-largest district.
+Alabama has 153 school systems. Mobile County enrolls 40% more than
+Jefferson County, the second-largest district.
 
 ``` r
 enr_2025 <- enr |> filter(end_year == 2025)
@@ -147,8 +150,8 @@ top_10 |>
 
 ## 4. Birmingham shrinks while suburbs hold steady
 
-Birmingham City lost 2,200 students since 2021 while nearby Homewood,
-Trussville, and Mountain Brook grew.
+Birmingham City lost 2,200 students since 2021 while nearby Homewood and
+Trussville grew and others held flat.
 
 ``` r
 bham_districts <- c("Birmingham City", "Hoover City",
@@ -182,6 +185,9 @@ enr |>
   ggplot(aes(x = end_year, y = n_students, color = district_name)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 2) +
+  geom_vline(xintercept = 2021, linetype = "dashed", color = "gray60", linewidth = 0.5) +
+  annotate("text", x = 2021.15, y = 22500, label = "COVID era",
+           color = "gray50", size = 3, hjust = 0) +
   scale_y_continuous(labels = scales::comma) +
   scale_x_continuous(breaks = 2021:2025) +
   labs(
@@ -346,8 +352,8 @@ enr |>
 
 ## 8. Madison City grew 9% on Huntsville’s tech boom
 
-The Huntsville metro area is Alabama’s growth engine, with Madison City
-adding 1,100 students since 2021.
+Madison City added 1,100 students since 2021 and Madison County grew 5%,
+even as Huntsville City itself declined 2%.
 
 ``` r
 madison_area <- enr |>
@@ -390,10 +396,11 @@ enr |>
 
 ------------------------------------------------------------------------
 
-## 9. Nearly 59% of students are economically disadvantaged
+## 9. Economically disadvantaged share swung from 48% to 65% and back
 
-Alabama’s poverty rate makes the majority of public school students
-eligible for free/reduced lunch.
+Alabama’s economic disadvantage rate has been volatile – dropping to 48%
+in 2022, spiking to 65% in 2023, and settling at 59% in 2025, likely
+reflecting shifts in eligibility methodology.
 
 ``` r
 econ_trend <- enr |>
@@ -418,10 +425,12 @@ ggplot(econ_trend, aes(x = end_year, y = pct)) +
   geom_point(size = 3, color = "#D2691E") +
   geom_hline(yintercept = 50, linetype = "dashed", color = "gray50") +
   annotate("text", x = 2021.5, y = 48, label = "50% line", color = "gray50") +
+  annotate("text", x = 2023, y = 67, label = "Reporting\nmethodology\nchange?",
+           color = "gray50", size = 3) +
   scale_x_continuous(breaks = 2021:2025) +
   labs(
     title = "Economically Disadvantaged Students in Alabama",
-    subtitle = "Majority of students qualify as economically disadvantaged",
+    subtitle = "Volatile trend may reflect changes in eligibility determination methods",
     x = "School Year",
     y = "Percent of Total Enrollment"
   )
@@ -512,11 +521,11 @@ ggplot(mobile_trend, aes(x = end_year, y = n_students)) +
 
 ------------------------------------------------------------------------
 
-## 12. Special education enrollment spiked in 2022-2023
+## 12. Special education spiked to 131,000 then fell back to 104,000
 
-The number of students with disabilities jumped from 102,000 to 131,000
-in 2022, potentially reflecting expanded identification after pandemic
-disruptions.
+Students with disabilities jumped from 102,000 to 131,000 in 2022 –
+likely post-pandemic catch-up identification – then dropped back to
+104,000 by 2025.
 
 ``` r
 sped_trend <- enr |>
@@ -539,6 +548,9 @@ sped_trend
 ggplot(sped_trend, aes(x = end_year, y = n_students)) +
   geom_line(linewidth = 1.2, color = "#8B4513") +
   geom_point(size = 3, color = "#8B4513") +
+  geom_vline(xintercept = 2022, linetype = "dashed", color = "gray60", linewidth = 0.5) +
+  annotate("text", x = 2022.15, y = 108000, label = "Post-COVID\nidentification surge",
+           color = "gray50", size = 3, hjust = 0) +
   scale_y_continuous(labels = scales::comma) +
   scale_x_continuous(breaks = 2021:2025) +
   labs(
@@ -603,9 +615,9 @@ ggplot(grade_dist, aes(x = grade_level, y = n_students)) +
 
 ------------------------------------------------------------------------
 
-## 14. Eufaula City grew 49% — the fastest in the state
+## 14. Eufaula City grew 49% – the fastest in the state
 
-Eufaula City added nearly 3,000 students since 2021, making it the
+Eufaula City added nearly 2,900 students since 2021, making it the
 fastest-growing district by percentage.
 
 ``` r
@@ -723,10 +735,12 @@ transition:
   years)
 - **English Learner surge** mirrors Hispanic growth (+52% since 2021)
 - **Urban-to-suburban shift** continues around Birmingham and Huntsville
-- **Black Belt crisis** — rural counties losing 19% of enrollment in 4
+- **Black Belt crisis** – rural counties losing 19% of enrollment in 4
   years
-- **High poverty** — nearly 59% of students are economically
-  disadvantaged
+- **Special ed volatility** – identification surged post-COVID then
+  returned to baseline
+- **Poverty data instability** – economically disadvantaged share swung
+  from 48% to 65%
 
 ------------------------------------------------------------------------
 
@@ -740,6 +754,15 @@ transition:
   student privacy
 - **Reporting:** Data reflects Census Day enrollment for each school
   year
+- **Race/ethnicity overlap:** Federal reporting counts Hispanic/Latino
+  as an ethnicity overlay on race, so racial category totals may exceed
+  total enrollment
+- **Economic disadvantage volatility:** The economically disadvantaged
+  share shifted significantly across years (48%-65%), likely reflecting
+  changes in Alabama’s eligibility determination methodology
+- **Special education spike:** The 2022-2024 special education surge and
+  subsequent drop likely reflects post-COVID catch-up identification
+  followed by reclassification
 
 ------------------------------------------------------------------------
 

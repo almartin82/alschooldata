@@ -102,11 +102,14 @@ declined from 730,000 to 717,000 since 2021.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">state_totals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span>, color <span class="op">=</span> <span class="st">"#9B1B30"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, color <span class="op">=</span> <span class="st">"#9B1B30"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">2021</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"gray60"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="fl">2021.3</span>, y <span class="op">=</span> <span class="fl">738000</span>, label <span class="op">=</span> <span class="st">"COVID\nrecovery"</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"gray50"</span>, size <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">710000</span>, <span class="fl">740000</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fl">2021</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Alabama Public School Enrollment (2021-2025)"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"Post-COVID bounce followed by steady decline"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Post-COVID bounce in 2022 followed by steady decline"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"School Year (ending)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Total Enrollment"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -151,8 +154,8 @@ declined from 730,000 to 717,000 since 2021.</p>
 <div class="section level2">
 <h2 id="mobile-county-leads-with-47000-students">3. Mobile County leads with 47,000 students<a class="anchor" aria-label="anchor" href="#mobile-county-leads-with-47000-students"></a>
 </h2>
-<p>Alabama has 153 school systems. Mobile County alone enrolls more than
-double the second-largest district.</p>
+<p>Alabama has 153 school systems. Mobile County enrolls 40% more than
+Jefferson County, the second-largest district.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">enr_2025</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2025</span><span class="op">)</span></span>
 <span></span>
@@ -192,8 +195,8 @@ double the second-largest district.</p>
 <div class="section level2">
 <h2 id="birmingham-shrinks-while-suburbs-hold-steady">4. Birmingham shrinks while suburbs hold steady<a class="anchor" aria-label="anchor" href="#birmingham-shrinks-while-suburbs-hold-steady"></a>
 </h2>
-<p>Birmingham City lost 2,200 students since 2021 while nearby Homewood,
-Trussville, and Mountain Brook grew.</p>
+<p>Birmingham City lost 2,200 students since 2021 while nearby Homewood
+and Trussville grew and others held flat.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bham_districts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Birmingham City"</span>, <span class="st">"Hoover City"</span>,</span>
 <span>                    <span class="st">"Vestavia Hills City"</span>, <span class="st">"Mountain Brook City"</span>,</span>
@@ -224,6 +227,9 @@ Trussville, and Mountain Brook grew.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span>, color <span class="op">=</span> <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">2021</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"gray60"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="fl">2021.15</span>, y <span class="op">=</span> <span class="fl">22500</span>, label <span class="op">=</span> <span class="st">"COVID era"</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"gray50"</span>, size <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fl">2021</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
@@ -371,8 +377,8 @@ student body diversifies.</p>
 <div class="section level2">
 <h2 id="madison-city-grew-9-on-huntsvilles-tech-boom">8. Madison City grew 9% on Huntsville’s tech boom<a class="anchor" aria-label="anchor" href="#madison-city-grew-9-on-huntsvilles-tech-boom"></a>
 </h2>
-<p>The Huntsville metro area is Alabama’s growth engine, with Madison
-City adding 1,100 students since 2021.</p>
+<p>Madison City added 1,100 students since 2021 and Madison County grew
+5%, even as Huntsville City itself declined 2%.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">madison_area</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
@@ -410,10 +416,12 @@ City adding 1,100 students since 2021.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="nearly-59-of-students-are-economically-disadvantaged">9. Nearly 59% of students are economically disadvantaged<a class="anchor" aria-label="anchor" href="#nearly-59-of-students-are-economically-disadvantaged"></a>
+<h2 id="economically-disadvantaged-share-swung-from-48-to-65-and-back">9. Economically disadvantaged share swung from 48% to 65% and
+back<a class="anchor" aria-label="anchor" href="#economically-disadvantaged-share-swung-from-48-to-65-and-back"></a>
 </h2>
-<p>Alabama’s poverty rate makes the majority of public school students
-eligible for free/reduced lunch.</p>
+<p>Alabama’s economic disadvantage rate has been volatile – dropping to
+48% in 2022, spiking to 65% in 2023, and settling at 59% in 2025, likely
+reflecting shifts in eligibility methodology.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">econ_trend</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"econ_disadv"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -435,10 +443,12 @@ eligible for free/reduced lunch.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, color <span class="op">=</span> <span class="st">"#D2691E"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">50</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"gray50"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="fl">2021.5</span>, y <span class="op">=</span> <span class="fl">48</span>, label <span class="op">=</span> <span class="st">"50% line"</span>, color <span class="op">=</span> <span class="st">"gray50"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="fl">2023</span>, y <span class="op">=</span> <span class="fl">67</span>, label <span class="op">=</span> <span class="st">"Reporting\nmethodology\nchange?"</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"gray50"</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fl">2021</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Economically Disadvantaged Students in Alabama"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"Majority of students qualify as economically disadvantaged"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Volatile trend may reflect changes in eligibility determination methods"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"School Year"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Percent of Total Enrollment"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -517,11 +527,12 @@ average, losing 11% of enrollment since 2021.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="special-education-enrollment-spiked-in-2022-2023">12. Special education enrollment spiked in 2022-2023<a class="anchor" aria-label="anchor" href="#special-education-enrollment-spiked-in-2022-2023"></a>
+<h2 id="special-education-spiked-to-131000-then-fell-back-to-104000">12. Special education spiked to 131,000 then fell back to
+104,000<a class="anchor" aria-label="anchor" href="#special-education-spiked-to-131000-then-fell-back-to-104000"></a>
 </h2>
-<p>The number of students with disabilities jumped from 102,000 to
-131,000 in 2022, potentially reflecting expanded identification after
-pandemic disruptions.</p>
+<p>Students with disabilities jumped from 102,000 to 131,000 in 2022 –
+likely post-pandemic catch-up identification – then dropped back to
+104,000 by 2025.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sped_trend</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"special_ed"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -541,6 +552,9 @@ pandemic disruptions.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">sped_trend</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span>, color <span class="op">=</span> <span class="st">"#8B4513"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, color <span class="op">=</span> <span class="st">"#8B4513"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">2022</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"gray60"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="fl">2022.15</span>, y <span class="op">=</span> <span class="fl">108000</span>, label <span class="op">=</span> <span class="st">"Post-COVID\nidentification surge"</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"gray50"</span>, size <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fl">2021</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
@@ -598,9 +612,9 @@ freshmen versus 50,800 seniors in 2025.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="eufaula-city-grew-49-the-fastest-in-the-state">14. Eufaula City grew 49% — the fastest in the state<a class="anchor" aria-label="anchor" href="#eufaula-city-grew-49-the-fastest-in-the-state"></a>
+<h2 id="eufaula-city-grew-49-the-fastest-in-the-state">14. Eufaula City grew 49% – the fastest in the state<a class="anchor" aria-label="anchor" href="#eufaula-city-grew-49-the-fastest-in-the-state"></a>
 </h2>
-<p>Eufaula City added nearly 3,000 students since 2021, making it the
+<p>Eufaula City added nearly 2,900 students since 2021, making it the
 fastest-growing district by percentage.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">growth</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
@@ -716,11 +730,14 @@ since 2021)</li>
 <strong>Urban-to-suburban shift</strong> continues around Birmingham
 and Huntsville</li>
 <li>
-<strong>Black Belt crisis</strong> — rural counties losing 19% of
+<strong>Black Belt crisis</strong> – rural counties losing 19% of
 enrollment in 4 years</li>
 <li>
-<strong>High poverty</strong> — nearly 59% of students are
-economically disadvantaged</li>
+<strong>Special ed volatility</strong> – identification surged
+post-COVID then returned to baseline</li>
+<li>
+<strong>Poverty data instability</strong> – economically
+disadvantaged share swung from 48% to 65%</li>
 </ul>
 <hr>
 <div class="section level3">
@@ -743,6 +760,19 @@ Card</a>
 <li>
 <strong>Reporting:</strong> Data reflects Census Day enrollment for
 each school year</li>
+<li>
+<strong>Race/ethnicity overlap:</strong> Federal reporting counts
+Hispanic/Latino as an ethnicity overlay on race, so racial category
+totals may exceed total enrollment</li>
+<li>
+<strong>Economic disadvantage volatility:</strong> The economically
+disadvantaged share shifted significantly across years (48%-65%), likely
+reflecting changes in Alabama’s eligibility determination
+methodology</li>
+<li>
+<strong>Special education spike:</strong> The 2022-2024 special
+education surge and subsequent drop likely reflects post-COVID catch-up
+identification followed by reclassification</li>
 </ul>
 <hr>
 <p><em>Part of the <a href="https://github.com/almartin82/njschooldata" class="external-link">state schooldata</a>
