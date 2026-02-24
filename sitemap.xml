@@ -13,11 +13,14 @@
 <url><loc>https://almartin82.github.io/alschooldata/reference/cache_exists.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/cache_status.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/clear_cache.html</loc></url>
+<url><loc>https://almartin82.github.io/alschooldata/reference/convert_percentages_to_counts.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/create_al_id.html</loc></url>
+<url><loc>https://almartin82.github.io/alschooldata/reference/create_example_data.html</loc></url>
+<url><loc>https://almartin82.github.io/alschooldata/reference/determine_row_type.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/download_acap_assessment.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/download_federal_reportcard.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/enr_grade_aggs.html</loc></url>
-<url><loc>https://almartin82.github.io/alschooldata/reference/extract_dimension_counts.html</loc></url>
+<url><loc>https://almartin82.github.io/alschooldata/reference/ensure_aggregation_levels.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/fetch_assess.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/fetch_assess_multi.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/fetch_enr.html</loc></url>
@@ -32,6 +35,7 @@
 <url><loc>https://almartin82.github.io/alschooldata/reference/get_raw_assess.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/get_raw_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/get_report_year.html</loc></url>
+<url><loc>https://almartin82.github.io/alschooldata/reference/get_system_lookup.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/id_assess_aggs.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/id_enr_aggs.html</loc></url>
 <url><loc>https://almartin82.github.io/alschooldata/reference/index.html</loc></url>

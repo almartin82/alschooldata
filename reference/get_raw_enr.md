@@ -13,7 +13,7 @@ get_raw_enr(end_year)
 
 - end_year:
 
-  School year end (2024-25 = 2025). Valid values are 2015-2025.
+  School year end (2023-24 = 2024). Valid values are 2015-2024.
 
 ## Value
 

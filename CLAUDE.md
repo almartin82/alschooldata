@@ -423,8 +423,8 @@ sessionInfo()
 | 2025 | Yes        | Yes            | Full data available |
 
 **Data Source:** Alabama State Department of Education (ALSDE) - URL:
-<https://reportcard.alsde.edu/SupportingData_StudentDemographics.aspx> -
-Reports: Enrollment by School, Grade, and Race/Ethnicity
+<https://www.alsde.edu/sec/sec/ASD/ASD.aspx> - Reports: Enrollment by
+School, Grade, and Race/Ethnicity
 
 ### Assessment Data
 
