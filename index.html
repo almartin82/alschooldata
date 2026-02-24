@@ -62,13 +62,14 @@
 <div class="section level2">
 <h2 id="what-can-you-find-with-alschooldata">What can you find with alschooldata?<a class="anchor" aria-label="anchor" href="#what-can-you-find-with-alschooldata"></a>
 </h2>
-<p><strong>10 years of enrollment data (2015-2024).</strong> Alabama’s public schools serve over 730,000 students across 140+ systems. This package lets you explore:</p>
+<p><strong>5 years of enrollment data (2021-2025).</strong> Alabama’s public schools serve 717,473 students across 153 districts and 1,362 campuses. This package lets you explore:</p>
 <ul>
-<li>Statewide enrollment trends and COVID recovery</li>
-<li>District and school-level data for all 140+ systems</li>
+<li>Statewide enrollment trends and demographic shifts</li>
+<li>District and school-level data for all 153 systems</li>
 <li>Student demographics (race/ethnicity, economic status, English learners, special education)</li>
-<li>Grade-level breakdowns from K-12</li>
-<li>Multi-year comparisons revealing urban-suburban shifts</li>
+<li>Grade-level breakdowns from PK-12</li>
+<li>Virtual school enrollment boom</li>
+<li>Black Belt population decline</li>
 </ul>
 <blockquote>
 <p><strong>See the full analysis with charts and data output:</strong> <a href="https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html">15 Insights from Alabama Enrollment Data</a></p>
@@ -103,22 +104,22 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Fetch one year</span></span>
-<span><span class="va">enr_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">enr_2025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Fetch multiple years</span></span>
-<span><span class="va">enr_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">enr_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># State totals</span></span>
-<span><span class="va">enr_2024</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">enr_2025</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># District breakdown</span></span>
-<span><span class="va">enr_2024</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">enr_2025</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Demographics</span></span>
-<span><span class="va">enr_2024</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">enr_2025</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
 <span>         <span class="va">subgroup</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"black"</span>, <span class="st">"hispanic"</span>, <span class="st">"asian"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span></span></code></pre></div>
@@ -129,30 +130,30 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="im">import</span> pyalschooldata <span class="im">as</span> al</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co"># Fetch one year</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>enr_2024 <span class="op">=</span> al.fetch_enr(<span class="dv">2024</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>enr_2025 <span class="op">=</span> al.fetch_enr(<span class="dv">2025</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co"># Fetch multiple years</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>enr_multi <span class="op">=</span> al.fetch_enr_multi([<span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>])</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>enr_multi <span class="op">=</span> al.fetch_enr_multi([<span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>, <span class="dv">2025</span>])</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># State totals</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>enr_2024[</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    (enr_2024[<span class="st">'is_state'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    (enr_2024[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    (enr_2024[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>enr_2025[</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    (enr_2025[<span class="st">'is_state'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    (enr_2025[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    (enr_2025[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
 <span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>]</span>
 <span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a></span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co"># District breakdown</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>district_df <span class="op">=</span> enr_2024[</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>    (enr_2024[<span class="st">'is_district'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>    (enr_2024[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>    (enr_2024[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>district_df <span class="op">=</span> enr_2025[</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>    (enr_2025[<span class="st">'is_district'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>    (enr_2025[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total_enrollment'</span>) <span class="op">&amp;</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>    (enr_2025[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
 <span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>].sort_values(<span class="st">'n_students'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a></span>
 <span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co"># Demographics</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>enr_2024[</span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>    (enr_2024[<span class="st">'is_state'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>    (enr_2024[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>) <span class="op">&amp;</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>    (enr_2024[<span class="st">'subgroup'</span>].isin([<span class="st">'white'</span>, <span class="st">'black'</span>, <span class="st">'hispanic'</span>, <span class="st">'asian'</span>]))</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>enr_2025[</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>    (enr_2025[<span class="st">'is_state'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>    (enr_2025[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>) <span class="op">&amp;</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>    (enr_2025[<span class="st">'subgroup'</span>].isin([<span class="st">'white'</span>, <span class="st">'black'</span>, <span class="st">'hispanic'</span>, <span class="st">'asian'</span>]))</span>
 <span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>][[<span class="st">'subgroup'</span>, <span class="st">'n_students'</span>, <span class="st">'pct'</span>]]</span></code></pre></div>
 <hr>
 </div>
@@ -161,11 +162,11 @@
 <h2 id="id_15-key-insights-from-alabama-enrollment-data">15 Key Insights from Alabama Enrollment Data<a class="anchor" aria-label="anchor" href="#id_15-key-insights-from-alabama-enrollment-data"></a>
 </h2>
 <div class="section level3">
-<h3 id="id_1-alabamas-enrollment-is-holding-steady">1. Alabama’s enrollment is holding steady<a class="anchor" aria-label="anchor" href="#id_1-alabamas-enrollment-is-holding-steady"></a>
+<h3 id="id_1-alabama-lost-12000-students-since-2022">1. Alabama lost 12,000 students since 2022<a class="anchor" aria-label="anchor" href="#id_1-alabama-lost-12000-students-since-2022"></a>
 </h3>
-<p>Unlike many states seeing sharp pandemic-driven declines, Alabama’s public school enrollment has remained relatively stable around 730,000 students.</p>
+<p>Statewide enrollment peaked at 735,808 in 2022 and has since declined by over 18,000 students. The 2024 drop of 11,073 was the steepest single-year decline.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2015</span><span class="op">:</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">:</span><span class="fl">2025</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">state_totals</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -176,59 +177,49 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">state_totals</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">state_totals</span></span>
-<span><span class="co">#&gt;    end_year n_students change pct_change</span></span>
-<span><span class="co">#&gt; 1      2015     728456     NA         NA</span></span>
-<span><span class="co">#&gt; 2      2016     729123    667       0.09</span></span>
-<span><span class="co">#&gt; 3      2017     730012    889       0.12</span></span>
-<span><span class="co">#&gt; 4      2018     730987    975       0.13</span></span>
-<span><span class="co">#&gt; 5      2019     731234    247       0.03</span></span>
-<span><span class="co">#&gt; 6      2020     730456   -778      -0.11</span></span>
-<span><span class="co">#&gt; 7      2021     729876   -580      -0.08</span></span>
-<span><span class="co">#&gt; 8      2022     730123    247       0.03</span></span>
-<span><span class="co">#&gt; 9      2023     730567    444       0.06</span></span>
-<span><span class="co">#&gt; 10     2024     730245   -322      -0.04</span></span></code></pre></div>
+<span><span class="co">#&gt;   end_year n_students change pct_change</span></span>
+<span><span class="co">#&gt; 1     2021     729786     NA         NA</span></span>
+<span><span class="co">#&gt; 2     2022     735808   6022       0.83</span></span>
+<span><span class="co">#&gt; 3     2023     729789  -6019      -0.82</span></span>
+<span><span class="co">#&gt; 4     2024     718716 -11073      -1.52</span></span>
+<span><span class="co">#&gt; 5     2025     717473  -1243      -0.17</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png" alt="Statewide trend"><div class="figcaption">Statewide trend</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_2-covid-hit-elementary-hardest">2. COVID hit elementary hardest<a class="anchor" aria-label="anchor" href="#id_2-covid-hit-elementary-hardest"></a>
+<h3 id="id_2-hispanic-enrollment-surged-from-95-to-122-in-four-years">2. Hispanic enrollment surged from 9.5% to 12.2% in four years<a class="anchor" aria-label="anchor" href="#id_2-hispanic-enrollment-surged-from-95-to-122-in-four-years"></a>
 </h3>
-<p>The pandemic’s enrollment impact was felt most sharply in elementary grades, especially kindergarten, which saw significant drops in 2021 as families delayed school entry.</p>
+<p>Hispanic students are the fastest-growing racial/ethnic group in Alabama schools, adding nearly 19,000 students since 2021 while overall enrollment declined.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">covid_grades</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>,</span>
-<span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"06"</span>, <span class="st">"09"</span><span class="op">)</span>,</span>
-<span>         <span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">2019</span><span class="op">:</span><span class="fl">2023</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change_2019_2021 <span class="op">=</span> <span class="va">`2021`</span> <span class="op">-</span> <span class="va">`2019`</span>,</span>
-<span>         pct_drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">change_2019_2021</span> <span class="op">/</span> <span class="va">`2019`</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">hispanic</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"hispanic"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">covid_grades</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">covid_grades</span></span>
-<span><span class="co">#&gt; # A tibble: 4 x 8</span></span>
-<span><span class="co">#&gt;   grade_level `2019` `2020` `2021` `2022` `2023` change_2019_2021 pct_drop</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;            &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 06           51000  51100  51000  51200  51500                0      0</span></span>
-<span><span class="co">#&gt; 2 K            53100  53150  50200  51800  52000            -2900     -5.5</span></span>
-<span><span class="co">#&gt; 3 01           55100  55150  54800  54200  54000             -300     -0.5</span></span>
-<span><span class="co">#&gt; 4 09           62000  62100  62000  62200  62000                0      0</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">hispanic</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">hispanic</span></span>
+<span><span class="co">#&gt;   end_year n_students  pct</span></span>
+<span><span class="co">#&gt; 1     2021      69093  9.5</span></span>
+<span><span class="co">#&gt; 2     2022      74561 10.1</span></span>
+<span><span class="co">#&gt; 3     2023      78638 10.8</span></span>
+<span><span class="co">#&gt; 4     2024      84661 11.8</span></span>
+<span><span class="co">#&gt; 5     2025      87790 12.2</span></span></code></pre></div>
 <div class="float">
-<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/covid-chart-1.png" alt="COVID impact by grade"><div class="figcaption">COVID impact by grade</div>
+<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/hispanic-chart-1.png" alt="Hispanic trend"><div class="figcaption">Hispanic trend</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_3-mobile-county-is-alabamas-largest-school-system">3. Mobile County is Alabama’s largest school system<a class="anchor" aria-label="anchor" href="#id_3-mobile-county-is-alabamas-largest-school-system"></a>
+<h3 id="id_3-mobile-county-is-alabamas-largest-system--and-shrinking-fastest">3. Mobile County is Alabama’s largest system – and shrinking fastest<a class="anchor" aria-label="anchor" href="#id_3-mobile-county-is-alabamas-largest-system--and-shrinking-fastest"></a>
 </h3>
-<p>Mobile County leads all Alabama districts with over 52,000 students, followed by Jefferson County at 35,000.</p>
+<p>Mobile County Public Schools serves 47,366 students, nearly 14,000 more than second-place Jefferson County. But Mobile has lost 5,768 students since 2021, a decline of 10.9%.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">enr_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">enr_2025</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2025</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">top_10</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">top_10</span> <span class="op">&lt;-</span> <span class="va">enr_2025</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -237,289 +228,295 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">top_10</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">top_10</span></span>
 <span><span class="co">#&gt;        district_name n_students</span></span>
-<span><span class="co">#&gt; 1      Mobile County      52341</span></span>
-<span><span class="co">#&gt; 2   Jefferson County      35124</span></span>
-<span><span class="co">#&gt; 3  Montgomery County      27456</span></span>
-<span><span class="co">#&gt; 4    Huntsville City      26000</span></span>
-<span><span class="co">#&gt; 5     Madison County      25500</span></span>
-<span><span class="co">#&gt; 6    Birmingham City      19950</span></span>
-<span><span class="co">#&gt; 7      Shelby County      19234</span></span>
-<span><span class="co">#&gt; 8         Lee County      18345</span></span>
-<span><span class="co">#&gt; 9  Tuscaloosa County      17890</span></span>
-<span><span class="co">#&gt; 10    Baldwin County      16890</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      Mobile County      47366</span></span>
+<span><span class="co">#&gt; 2   Jefferson County      33844</span></span>
+<span><span class="co">#&gt; 3     Baldwin County      30491</span></span>
+<span><span class="co">#&gt; 4  Montgomery County      25491</span></span>
+<span><span class="co">#&gt; 5    Huntsville City      22776</span></span>
+<span><span class="co">#&gt; 6      Shelby County      20159</span></span>
+<span><span class="co">#&gt; 7     Madison County      19769</span></span>
+<span><span class="co">#&gt; 8    Birmingham City      19710</span></span>
+<span><span class="co">#&gt; 9  Tuscaloosa County      18135</span></span>
+<span><span class="co">#&gt; 10  Limestone County      15816</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png" alt="Top 10 districts"><div class="figcaption">Top 10 districts</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_4-the-suburban-surge-around-birmingham">4. The suburban surge around Birmingham<a class="anchor" aria-label="anchor" href="#id_4-the-suburban-surge-around-birmingham"></a>
+<h3 id="id_4-black-belt-counties-are-hemorrhaging-students">4. Black Belt counties are hemorrhaging students<a class="anchor" aria-label="anchor" href="#id_4-black-belt-counties-are-hemorrhaging-students"></a>
 </h3>
-<p>While Birmingham City schools shrink, suburban systems like Hoover, Vestavia Hills, and Mountain Brook are growing steadily.</p>
+<p>Perry County has lost 32% of its enrollment since 2021 – the steepest decline of any Alabama district with 500+ students. Sumter County lost 29%, and Selma City lost 24%.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bham_area</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">decline</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
-<span>         <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Hoover|Vestavia|Mountain Brook|Birmingham"</span>, <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>         <span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2021</span>, <span class="fl">2025</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span></span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">`2021`</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">`2025`</span><span class="op">)</span>, <span class="va">`2021`</span> <span class="op">&gt;=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change <span class="op">=</span> <span class="va">`2025`</span> <span class="op">-</span> <span class="va">`2021`</span>,</span>
+<span>         pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">`2025`</span> <span class="op">/</span> <span class="va">`2021`</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pct_change</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bham_area</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">bham_area</span></span>
-<span><span class="co">#&gt; # A tibble: 4 x 11</span></span>
-<span><span class="co">#&gt;   district_name   `2015` `2016` `2017` `2018` `2019` `2020` `2021` `2022` `2023`</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Birmingham City  24000  23550  23100  22650  22200  21750  21300  20850  20400</span></span>
-<span><span class="co">#&gt; 2 Hoover City      14000  14050  14100  14150  14200  14250  14300  14350  14400</span></span>
-<span><span class="co">#&gt; 3 Vestavia Hills~  6500   6550   6600   6650   6700   6750   6800   6850   6900</span></span>
-<span><span class="co">#&gt; 4 Mountain Brook~  4500   4550   4600   4650   4700   4750   4800   4850   4900</span></span>
-<span><span class="co">#&gt; # i 1 more variable: `2024` &lt;dbl&gt;</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">decline</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">decline</span></span>
+<span><span class="co">#&gt;    district_name 2021 2025 change pct_change</span></span>
+<span><span class="co">#&gt; 1   Perry County 1148  778   -370      -32.2</span></span>
+<span><span class="co">#&gt; 2  Sumter County 1202  851   -351      -29.2</span></span>
+<span><span class="co">#&gt; 3 Talladega City 1837 1356   -481      -26.2</span></span>
+<span><span class="co">#&gt; 4     Selma City 2776 2124   -652      -23.5</span></span>
+<span><span class="co">#&gt; 5  Dallas County 2775 2211   -564      -20.3</span></span>
+<span><span class="co">#&gt; 6  Wilcox County 1404 1127   -277      -19.7</span></span>
+<span><span class="co">#&gt; 7 Conecuh County 1474 1197   -277      -18.8</span></span>
+<span><span class="co">#&gt; 8 Lowndes County 1311 1081   -230      -17.5</span></span>
+<span><span class="co">#&gt; 9  Anniston City 1980 1643   -337      -17.0</span></span>
+<span><span class="co">#&gt; 10  Roanoke City 1475 1239   -236      -16.0</span></span></code></pre></div>
 <div class="float">
-<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/suburb-chart-1.png" alt="Birmingham suburbs"><div class="figcaption">Birmingham suburbs</div>
+<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/decline-chart-1.png" alt="Fastest declining districts"><div class="figcaption">Fastest declining districts</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_5-black-belt-schools-face-accelerating-decline">5. Black Belt schools face accelerating decline<a class="anchor" aria-label="anchor" href="#id_5-black-belt-schools-face-accelerating-decline"></a>
+<h3 id="id_5-alabamas-student-body-56-white-32-black-12-hispanic">5. Alabama’s student body: 56% white, 32% Black, 12% Hispanic<a class="anchor" aria-label="anchor" href="#id_5-alabamas-student-body-56-white-32-black-12-hispanic"></a>
 </h3>
-<p>Rural Black Belt counties are losing students at alarming rates, with Greene and Perry counties each down 20% since 2020.</p>
+<p>Alabama’s racial demographics are shifting. White students still form the majority but their share dropped from 58.3% to 56.1% since 2021, while Hispanic and multiracial shares both grew.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">black_belt</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
-<span>         <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Perry|Wilcox|Greene|Sumter"</span>, <span class="va">district_name</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">district_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
-<span>    y2020 <span class="op">=</span> <span class="va">n_students</span><span class="op">[</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2020</span><span class="op">]</span>,</span>
-<span>    y2024 <span class="op">=</span> <span class="va">n_students</span><span class="op">[</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span>,</span>
-<span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">y2024</span> <span class="op">/</span> <span class="va">y2020</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pct_change</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">black_belt</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">black_belt</span></span>
-<span><span class="co">#&gt; # A tibble: 4 x 4</span></span>
-<span><span class="co">#&gt;   district_name y2020 y2024 pct_change</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Greene County  1250  1000      -20</span></span>
-<span><span class="co">#&gt; 2 Perry County   1500  1200      -20</span></span>
-<span><span class="co">#&gt; 3 Wilcox County  1100  1000       -9.1</span></span>
-<span><span class="co">#&gt; 4 Sumter County   900   850       -5.6</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_6-alabama-is-33-black-47-white">6. Alabama is 33% Black, 47% white<a class="anchor" aria-label="anchor" href="#id_6-alabama-is-33-black-47-white"></a>
-</h3>
-<p>Alabama’s student demographics show a significant Black student population, particularly concentrated in urban and Black Belt areas.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">demographics</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">demographics</span> <span class="op">&lt;-</span> <span class="va">enr_2025</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
-<span>         <span class="va">subgroup</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"black"</span>, <span class="st">"hispanic"</span>, <span class="st">"asian"</span>, <span class="st">"multiracial"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>         <span class="va">subgroup</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"black"</span>, <span class="st">"hispanic"</span>, <span class="st">"asian"</span>,</span>
+<span>                         <span class="st">"native_american"</span>, <span class="st">"pacific_islander"</span>, <span class="st">"multiracial"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">demographics</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">demographics</span></span>
-<span><span class="co">#&gt;      subgroup n_students  pct</span></span>
-<span><span class="co">#&gt; 1       white     343215 47.0</span></span>
-<span><span class="co">#&gt; 2       black     240981 33.0</span></span>
-<span><span class="co">#&gt; 3    hispanic      51117  7.0</span></span>
-<span><span class="co">#&gt; 4 multiracial      18284  2.5</span></span>
-<span><span class="co">#&gt; 5       asian      10928  1.5</span></span></code></pre></div>
+<span><span class="co">#&gt;           subgroup n_students  pct</span></span>
+<span><span class="co">#&gt; 1            white     402422 56.1</span></span>
+<span><span class="co">#&gt; 2            black     228708 31.9</span></span>
+<span><span class="co">#&gt; 3         hispanic      87790 12.2</span></span>
+<span><span class="co">#&gt; 4      multiracial      42305  5.9</span></span>
+<span><span class="co">#&gt; 5  native_american      30582  4.3</span></span>
+<span><span class="co">#&gt; 6            asian      11511  1.6</span></span>
+<span><span class="co">#&gt; 7 pacific_islander       1945  0.3</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/demographics-chart-1.png" alt="Demographics"><div class="figcaption">Demographics</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_7-hispanic-enrollment-is-climbing">7. Hispanic enrollment is climbing<a class="anchor" aria-label="anchor" href="#id_7-hispanic-enrollment-is-climbing"></a>
+<h3 id="id_6-nearly-3-in-5-alabama-students-are-economically-disadvantaged">6. Nearly 3 in 5 Alabama students are economically disadvantaged<a class="anchor" aria-label="anchor" href="#id_6-nearly-3-in-5-alabama-students-are-economically-disadvantaged"></a>
 </h3>
-<p>Hispanic student enrollment has been growing steadily, rising from 4.5% to 7% over the past decade.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hispanic_trend</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"hispanic"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<p>The economically disadvantaged rate jumped from 51% in 2021 to 65% in 2023, then settled at 59% in 2025. This volatility may reflect changes in reporting methodology rather than true poverty shifts.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">econ</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"econ_disadv"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">hispanic_trend</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">hispanic_trend</span></span>
-<span><span class="co">#&gt;    end_year n_students pct</span></span>
-<span><span class="co">#&gt; 1      2015      32800 4.5</span></span>
-<span><span class="co">#&gt; 2      2016      34500 4.7</span></span>
-<span><span class="co">#&gt; 3      2017      36500 5.0</span></span>
-<span><span class="co">#&gt; 4      2018      38100 5.2</span></span>
-<span><span class="co">#&gt; 5      2019      40200 5.5</span></span>
-<span><span class="co">#&gt; 6      2020      42300 5.8</span></span>
-<span><span class="co">#&gt; 7      2021      44800 6.1</span></span>
-<span><span class="co">#&gt; 8      2022      46900 6.4</span></span>
-<span><span class="co">#&gt; 9      2023      49000 6.7</span></span>
-<span><span class="co">#&gt; 10     2024      51117 7.0</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/hispanic-chart-1.png" alt="Hispanic trend"><div class="figcaption">Hispanic trend</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_8-huntsville-metro-is-alabamas-growth-engine">8. Huntsville metro is Alabama’s growth engine<a class="anchor" aria-label="anchor" href="#id_8-huntsville-metro-is-alabamas-growth-engine"></a>
-</h3>
-<p>The Huntsville metro area (Madison City, Madison County, Huntsville City) is the state’s fastest-growing region, with all three districts adding students since 2020.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">madison</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
-<span>         <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Madison|Huntsville"</span>, <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">district_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
-<span>    y2020 <span class="op">=</span> <span class="va">n_students</span><span class="op">[</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2020</span><span class="op">]</span>,</span>
-<span>    y2024 <span class="op">=</span> <span class="va">n_students</span><span class="op">[</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span>,</span>
-<span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">y2024</span> <span class="op">/</span> <span class="va">y2020</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">pct_change</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">madison</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">madison</span></span>
-<span><span class="co">#&gt; # A tibble: 3 x 4</span></span>
-<span><span class="co">#&gt;   district_name   y2020 y2024 pct_change</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Madison City    11000 14500       31.8</span></span>
-<span><span class="co">#&gt; 2 Madison County  23000 25500       10.9</span></span>
-<span><span class="co">#&gt; 3 Huntsville City 24000 26000        8.3</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_9-economically-disadvantaged-students-are-the-majority">9. Economically disadvantaged students are the majority<a class="anchor" aria-label="anchor" href="#id_9-economically-disadvantaged-students-are-the-majority"></a>
-</h3>
-<p>Over 52% of Alabama’s public school students qualify as economically disadvantaged, reflecting the state’s high poverty rates.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">econ</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
-<span>         <span class="va">subgroup</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"econ_disadv"</span>, <span class="st">"total_enrollment"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">econ</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">econ</span></span>
-<span><span class="co">#&gt;           subgroup n_students   pct</span></span>
-<span><span class="co">#&gt; 1 total_enrollment     730245 100.0</span></span>
-<span><span class="co">#&gt; 2      econ_disadv     379928  52.0</span></span></code></pre></div>
+<span><span class="co">#&gt;   end_year n_students  pct</span></span>
+<span><span class="co">#&gt; 1     2021     371737 50.9</span></span>
+<span><span class="co">#&gt; 2     2022     351049 47.7</span></span>
+<span><span class="co">#&gt; 3     2023     477329 65.4</span></span>
+<span><span class="co">#&gt; 4     2024     465245 64.7</span></span>
+<span><span class="co">#&gt; 5     2025     422645 58.9</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/econ-chart-1.png" alt="Econ disadv trend"><div class="figcaption">Econ disadv trend</div>
+</div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_10-mobile-county-is-larger-than-many-states">10. Mobile County is larger than many states<a class="anchor" aria-label="anchor" href="#id_10-mobile-county-is-larger-than-many-states"></a>
+<h3 id="id_7-birmingham-city-lost-2191-students-in-four-years">7. Birmingham City lost 2,191 students in four years<a class="anchor" aria-label="anchor" href="#id_7-birmingham-city-lost-2191-students-in-four-years"></a>
 </h3>
-<p>Mobile County Public Schools, with over 52,000 students, is one of the largest school systems in the Southeast – larger than the entire state enrollment of Wyoming.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mobile</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
+<p>Birmingham City Schools has shed students every single year since 2021, dropping from 21,901 to 19,710 – a 10% decline. Once a top-5 Alabama district, it now ranks 8th.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bham</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
-<span>         <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Mobile"</span>, <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span></span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Birmingham City"</span>, <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change <span class="op">=</span> <span class="va">n_students</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mobile</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">mobile</span></span>
-<span><span class="co">#&gt;   district_name n_students</span></span>
-<span><span class="co">#&gt; 1 Mobile County      52341</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bham</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">bham</span></span>
+<span><span class="co">#&gt;   end_year n_students change</span></span>
+<span><span class="co">#&gt; 1     2021      21901     NA</span></span>
+<span><span class="co">#&gt; 2     2022      21163   -738</span></span>
+<span><span class="co">#&gt; 3     2023      19921  -1242</span></span>
+<span><span class="co">#&gt; 4     2024      19829    -92</span></span>
+<span><span class="co">#&gt; 5     2025      19710   -119</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/birmingham-chart-1.png" alt="Birmingham decline"><div class="figcaption">Birmingham decline</div>
+</div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_11-english-learners-tripled-since-2015">11. English Learners tripled since 2015<a class="anchor" aria-label="anchor" href="#id_11-english-learners-tripled-since-2015"></a>
+<h3 id="id_8-virtual-schools-exploded-to-20000-students">8. Virtual schools exploded to 20,000 students<a class="anchor" aria-label="anchor" href="#id_8-virtual-schools-exploded-to-20000-students"></a>
 </h3>
-<p>English Learner enrollment has grown from 2% to over 6% of students as Alabama becomes more linguistically diverse.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>Alabama’s virtual schools grew from 12,741 students (8 schools) in 2021 to 19,963 students (16 schools) in 2025. Alabama Connections Academy alone enrolls 7,339, making Limestone County appear to be one of the state’s largest districts.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">virtual</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_campus</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Virtual|Connections|Destinations"</span>, <span class="va">campus_name</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>n_schools <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, total_students <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">virtual</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">virtual</span></span>
+<span><span class="co">#&gt;   end_year n_schools total_students</span></span>
+<span><span class="co">#&gt; 1     2021         8          12741</span></span>
+<span><span class="co">#&gt; 2     2022        13          15856</span></span>
+<span><span class="co">#&gt; 3     2023        14          15138</span></span>
+<span><span class="co">#&gt; 4     2024        13          16207</span></span>
+<span><span class="co">#&gt; 5     2025        16          19963</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/virtual-chart-1.png" alt="Virtual schools"><div class="figcaption">Virtual schools</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_9-multiracial-students-are-the-fastest-growing-demographic">9. Multiracial students are the fastest-growing demographic<a class="anchor" aria-label="anchor" href="#id_9-multiracial-students-are-the-fastest-growing-demographic"></a>
+</h3>
+<p>Students identifying as multiracial grew from 25,456 (3.5%) to 42,305 (5.9%) since 2021 – a 66% increase. At this pace, multiracial students will outnumber Asian and Native American students combined.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">multi</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"multiracial"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">multi</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">multi</span></span>
+<span><span class="co">#&gt;   end_year n_students pct</span></span>
+<span><span class="co">#&gt; 1     2021      25456 3.5</span></span>
+<span><span class="co">#&gt; 2     2022      29716 4.0</span></span>
+<span><span class="co">#&gt; 3     2023      33651 4.6</span></span>
+<span><span class="co">#&gt; 4     2024      37946 5.3</span></span>
+<span><span class="co">#&gt; 5     2025      42305 5.9</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/multiracial-chart-1.png" alt="Multiracial trend"><div class="figcaption">Multiracial trend</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_10-english-learners-grew-52-in-four-years">10. English Learners grew 52% in four years<a class="anchor" aria-label="anchor" href="#id_10-english-learners-grew-52-in-four-years"></a>
+</h3>
+<p>Alabama’s English Learner population surged from 33,595 (4.6%) to 51,068 (7.1%), closely tracking the growth in Hispanic enrollment and reflecting the state’s demographic transformation.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">el_trend</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"lep"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">el_trend</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">el_trend</span></span>
-<span><span class="co">#&gt;    end_year n_students  pct</span></span>
-<span><span class="co">#&gt; 1      2015      15000 2.10</span></span>
-<span><span class="co">#&gt; 2      2016      17000 2.30</span></span>
-<span><span class="co">#&gt; 3      2017      20000 2.70</span></span>
-<span><span class="co">#&gt; 4      2018      24000 3.30</span></span>
-<span><span class="co">#&gt; 5      2019      28000 3.80</span></span>
-<span><span class="co">#&gt; 6      2020      32000 4.40</span></span>
-<span><span class="co">#&gt; 7      2021      36000 4.90</span></span>
-<span><span class="co">#&gt; 8      2022      40000 5.50</span></span>
-<span><span class="co">#&gt; 9      2023      43000 5.90</span></span>
-<span><span class="co">#&gt; 10     2024      45000 6.16</span></span></code></pre></div>
+<span><span class="co">#&gt;   end_year n_students pct</span></span>
+<span><span class="co">#&gt; 1     2021      33595 4.6</span></span>
+<span><span class="co">#&gt; 2     2022      36956 5.0</span></span>
+<span><span class="co">#&gt; 3     2023      41430 5.7</span></span>
+<span><span class="co">#&gt; 4     2024      47838 6.7</span></span>
+<span><span class="co">#&gt; 5     2025      51068 7.1</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/el-chart-1.png" alt="EL trend"><div class="figcaption">EL trend</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_12-special-education-serves-1-in-7-students">12. Special education serves 1 in 7 students<a class="anchor" aria-label="anchor" href="#id_12-special-education-serves-1-in-7-students"></a>
+<h3 id="id_11-special-ed-spiked-to-18-then-fell-back-to-145">11. Special Ed spiked to 18% then fell back to 14.5%<a class="anchor" aria-label="anchor" href="#id_11-special-ed-spiked-to-18-then-fell-back-to-145"></a>
 </h3>
-<p>Approximately 14% of Alabama students receive special education services, consistently above the national average of 12%.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sped_trend</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
+<p>Special education enrollment jumped from 14% to 18% between 2021 and 2024, then dropped to 14.5% in 2025. The spike may reflect expanded eligibility or pandemic-related identification, with the recent decline suggesting a correction.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sped</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"special_ed"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sped_trend</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">sped_trend</span></span>
-<span><span class="co">#&gt;    end_year n_students   pct</span></span>
-<span><span class="co">#&gt; 1      2015      95000 13.00</span></span>
-<span><span class="co">#&gt; 2      2016      96000 13.20</span></span>
-<span><span class="co">#&gt; 3      2017      97000 13.30</span></span>
-<span><span class="co">#&gt; 4      2018      98000 13.40</span></span>
-<span><span class="co">#&gt; 5      2019      99000 13.50</span></span>
-<span><span class="co">#&gt; 6      2020     100000 13.70</span></span>
-<span><span class="co">#&gt; 7      2021     100500 13.80</span></span>
-<span><span class="co">#&gt; 8      2022     101000 13.80</span></span>
-<span><span class="co">#&gt; 9      2023     101500 13.90</span></span>
-<span><span class="co">#&gt; 10     2024     102000 13.97</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sped</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">sped</span></span>
+<span><span class="co">#&gt;   end_year n_students  pct</span></span>
+<span><span class="co">#&gt; 1     2021     102117 14.0</span></span>
+<span><span class="co">#&gt; 2     2022     130946 17.8</span></span>
+<span><span class="co">#&gt; 3     2023     130655 17.9</span></span>
+<span><span class="co">#&gt; 4     2024     129379 18.0</span></span>
+<span><span class="co">#&gt; 5     2025     104371 14.5</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/sped-chart-1.png" alt="Special Ed trend"><div class="figcaption">Special Ed trend</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_13-9th-grade-is-the-largest-class">13. 9th grade is the largest class<a class="anchor" aria-label="anchor" href="#id_13-9th-grade-is-the-largest-class"></a>
+<h3 id="id_12-3rd-grade-is-the-largest-class-in-alabama">12. 3rd grade is the largest class in Alabama<a class="anchor" aria-label="anchor" href="#id_12-3rd-grade-is-the-largest-class-in-alabama"></a>
 </h3>
-<p>The 9th grade “bulge” is a national phenomenon where course failure and retention policies cause grade 9 to have significantly more students than adjacent grades.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">grade_dist</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
+<p>With 57,054 students, 3rd grade edges out 1st grade (56,798) and kindergarten (55,467) as the most enrolled grade level in 2025.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">grade_dist</span> <span class="op">&lt;-</span> <span class="va">enr_2025</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>,</span>
 <span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>,</span>
 <span>                            <span class="st">"06"</span>, <span class="st">"07"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>grade_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">grade_level</span>,</span>
 <span>                              levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>,</span>
 <span>                                        <span class="st">"06"</span>, <span class="st">"07"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">grade_level</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">grade_dist</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">grade_dist</span></span>
 <span><span class="co">#&gt;    grade_level n_students</span></span>
-<span><span class="co">#&gt; 1            K      52000</span></span>
-<span><span class="co">#&gt; 2           01      54000</span></span>
-<span><span class="co">#&gt; 3           02      55000</span></span>
-<span><span class="co">#&gt; 4           03      56000</span></span>
-<span><span class="co">#&gt; 5           04      57000</span></span>
-<span><span class="co">#&gt; 6           05      56500</span></span>
-<span><span class="co">#&gt; 7           06      55500</span></span>
-<span><span class="co">#&gt; 8           07      54500</span></span>
-<span><span class="co">#&gt; 9           08      53000</span></span>
-<span><span class="co">#&gt; 10          09      62000</span></span>
-<span><span class="co">#&gt; 11          10      58000</span></span>
-<span><span class="co">#&gt; 12          11      54000</span></span>
-<span><span class="co">#&gt; 13          12      51000</span></span></code></pre></div>
+<span><span class="co">#&gt; 1            K      55467</span></span>
+<span><span class="co">#&gt; 2           01      56798</span></span>
+<span><span class="co">#&gt; 3           02      56515</span></span>
+<span><span class="co">#&gt; 4           03      57054</span></span>
+<span><span class="co">#&gt; 5           04      54307</span></span>
+<span><span class="co">#&gt; 6           05      53653</span></span>
+<span><span class="co">#&gt; 7           06      53450</span></span>
+<span><span class="co">#&gt; 8           07      54573</span></span>
+<span><span class="co">#&gt; 9           08      55053</span></span>
+<span><span class="co">#&gt; 10          09      56624</span></span>
+<span><span class="co">#&gt; 11          10      55541</span></span>
+<span><span class="co">#&gt; 12          11      53178</span></span>
+<span><span class="co">#&gt; 13          12      50839</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/grade-chart-1.png" alt="Grade distribution"><div class="figcaption">Grade distribution</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_14-alabamas-smallest-districts-serve-under-500-students">14. Alabama’s smallest districts serve under 500 students<a class="anchor" aria-label="anchor" href="#id_14-alabamas-smallest-districts-serve-under-500-students"></a>
+<h3 id="id_13-mobile-county-73-low-income-51-black">13. Mobile County: 73% low-income, 51% Black<a class="anchor" aria-label="anchor" href="#id_13-mobile-county-73-low-income-51-black"></a>
 </h3>
-<p>Several rural county systems have fewer than 500 students, raising questions about efficiency and sustainability.</p>
+<p>Mobile County’s demographics are dramatically different from statewide averages. Its economically disadvantaged rate (73%) is 14 points above the state average, and its Black student population (51%) is 19 points above the statewide share.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mobile_demo</span> <span class="op">&lt;-</span> <span class="va">enr_2025</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Mobile County"</span>, <span class="va">district_name</span><span class="op">)</span>,</span>
+<span>         <span class="va">subgroup</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"black"</span>, <span class="st">"hispanic"</span>,</span>
+<span>                         <span class="st">"econ_disadv"</span>, <span class="st">"total_enrollment"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mobile_demo</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">mobile_demo</span></span>
+<span><span class="co">#&gt;           subgroup n_students   pct</span></span>
+<span><span class="co">#&gt; 1 total_enrollment      47366 100.0</span></span>
+<span><span class="co">#&gt; 2      econ_disadv      34569  73.0</span></span>
+<span><span class="co">#&gt; 3            black      24070  50.8</span></span>
+<span><span class="co">#&gt; 4            white      17525  37.0</span></span>
+<span><span class="co">#&gt; 5         hispanic       3262   6.9</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_14-charter-schools-are-alabamas-smallest-districts">14. Charter schools are Alabama’s smallest districts<a class="anchor" aria-label="anchor" href="#id_14-charter-schools-are-alabamas-smallest-districts"></a>
+</h3>
+<p>Alabama’s charter sector is small but growing. The smallest 10 districts by enrollment are dominated by charter and specialty schools, with Freedom Prep Academy enrolling just 36 students.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">smallest</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">smallest</span> <span class="op">&lt;-</span> <span class="va">enr_2025</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -527,56 +524,58 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">smallest</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">smallest</span></span>
-<span><span class="co">#&gt;      district_name n_students</span></span>
-<span><span class="co">#&gt; 1      Linden City        350</span></span>
-<span><span class="co">#&gt; 2    Midfield City        400</span></span>
-<span><span class="co">#&gt; 3    Piedmont City        450</span></span>
-<span><span class="co">#&gt; 4      Lanett City        480</span></span>
-<span><span class="co">#&gt; 5   Fairfield City        520</span></span>
-<span><span class="co">#&gt; 6     Tarrant City        550</span></span>
-<span><span class="co">#&gt; 7      Hale County        580</span></span>
-<span><span class="co">#&gt; 8      Clay County        620</span></span>
-<span><span class="co">#&gt; 9     Coosa County        650</span></span>
-<span><span class="co">#&gt; 10 Crenshaw County        700</span></span></code></pre></div>
+<span><span class="co">#&gt;                                    district_name n_students</span></span>
+<span><span class="co">#&gt; 1                           Freedom Prep Academy         36</span></span>
+<span><span class="co">#&gt; 2                 Alabama Aerospace and Aviation        146</span></span>
+<span><span class="co">#&gt; 3  Floretta P. Carson Visual and Performing Arts        193</span></span>
+<span><span class="co">#&gt; 4                     Covenant Academy of Mobile        302</span></span>
+<span><span class="co">#&gt; 5                  Magic City Acceptance Academy        307</span></span>
+<span><span class="co">#&gt; 6                    Breakthrough Charter School        359</span></span>
+<span><span class="co">#&gt; 7                     Empower Schools of Alabama        375</span></span>
+<span><span class="co">#&gt; 8                                    Linden City        380</span></span>
+<span><span class="co">#&gt; 9                                   LIFE Academy        497</span></span>
+<span><span class="co">#&gt; 10                                   Legacy Prep        501</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/smallest-chart-1.png" alt="Smallest districts"><div class="figcaption">Smallest districts</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_15-elementary-enrollment-is-declining-while-high-school-holds-steady">15. Elementary enrollment is declining while high school holds steady<a class="anchor" aria-label="anchor" href="#id_15-elementary-enrollment-is-declining-while-high-school-holds-steady"></a>
+<h3 id="id_15-middle-school-enrollment-is-shrinking-while-elementary-grows">15. Middle school enrollment is shrinking while elementary grows<a class="anchor" aria-label="anchor" href="#id_15-middle-school-enrollment-is-shrinking-while-elementary-grows"></a>
 </h3>
-<p>While elementary grades (K-5) have seen enrollment declines, high school enrollment has remained more stable, suggesting families are leaving the public system earlier.</p>
+<p>Elementary (K-5) and high school (9-12) enrollment both grew since 2021, but middle school (6-8) dropped from 173,548 to 163,076 – a loss of over 10,000 students.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grade_bands</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>,</span>
 <span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>,</span>
+<span>                            <span class="st">"06"</span>, <span class="st">"07"</span>, <span class="st">"08"</span>,</span>
 <span>                            <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>band <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>    <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Elementary (K-5)"</span>,</span>
+<span>    <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"06"</span>, <span class="st">"07"</span>, <span class="st">"08"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Middle (6-8)"</span>,</span>
 <span>    <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"High School (9-12)"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">band</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>n_students <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">&gt;=</span> <span class="fl">2019</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>n_students <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">grade_bands</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">grade_bands</span></span>
-<span><span class="co">#&gt; # A tibble: 12 x 3</span></span>
-<span><span class="co">#&gt;    end_year band               n_students</span></span>
-<span><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1     2019 Elementary (K-5)       337100</span></span>
-<span><span class="co">#&gt;  2     2019 High School (9-12)     225000</span></span>
-<span><span class="co">#&gt;  3     2020 Elementary (K-5)       337400</span></span>
-<span><span class="co">#&gt;  4     2020 High School (9-12)     225400</span></span>
-<span><span class="co">#&gt;  5     2021 Elementary (K-5)       332700</span></span>
-<span><span class="co">#&gt;  6     2021 High School (9-12)     225000</span></span>
-<span><span class="co">#&gt;  7     2022 Elementary (K-5)       331300</span></span>
-<span><span class="co">#&gt;  8     2022 High School (9-12)     225800</span></span>
-<span><span class="co">#&gt;  9     2023 Elementary (K-5)       330500</span></span>
-<span><span class="co">#&gt; 10     2023 High School (9-12)     225000</span></span>
-<span><span class="co">#&gt; 11     2024 Elementary (K-5)       330500</span></span>
-<span><span class="co">#&gt; 12     2024 High School (9-12)     225000</span></span></code></pre></div>
+<span><span class="co">#&gt;    end_year               band n_students</span></span>
+<span><span class="co">#&gt;  1     2021   Elementary (K-5)     327017</span></span>
+<span><span class="co">#&gt;  2     2021 High School (9-12)     211750</span></span>
+<span><span class="co">#&gt;  3     2021       Middle (6-8)     173548</span></span>
+<span><span class="co">#&gt;  4     2022   Elementary (K-5)     329002</span></span>
+<span><span class="co">#&gt;  5     2022 High School (9-12)     212460</span></span>
+<span><span class="co">#&gt;  6     2022       Middle (6-8)     171009</span></span>
+<span><span class="co">#&gt;  7     2023   Elementary (K-5)     330453</span></span>
+<span><span class="co">#&gt;  8     2023 High School (9-12)     213639</span></span>
+<span><span class="co">#&gt;  9     2023       Middle (6-8)     167263</span></span>
+<span><span class="co">#&gt; 10     2024   Elementary (K-5)     332704</span></span>
+<span><span class="co">#&gt; 11     2024 High School (9-12)     216257</span></span>
+<span><span class="co">#&gt; 12     2024       Middle (6-8)     165208</span></span>
+<span><span class="co">#&gt; 13     2025   Elementary (K-5)     333794</span></span>
+<span><span class="co">#&gt; 14     2025 High School (9-12)     216182</span></span>
+<span><span class="co">#&gt; 15     2025       Middle (6-8)     163076</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/grade-band-chart-1.png" alt="Grade band trends"><div class="figcaption">Grade band trends</div>
 </div>
@@ -589,25 +588,27 @@
 <div class="section level3">
 <h3 id="data-source">Data Source<a class="anchor" aria-label="anchor" href="#data-source"></a>
 </h3>
-<p>Alabama State Department of Education Federal Report Card Student Demographics: <a href="https://reportcard.alsde.edu/" class="external-link">reportcard.alsde.edu</a></p>
+<p>Alabama State Department of Education (ALSDE) Federal Report Card: <a href="https://www.alsde.edu/" class="external-link">alsde.edu</a></p>
 </div>
 <div class="section level3">
 <h3 id="available-years">Available Years<a class="anchor" aria-label="anchor" href="#available-years"></a>
 </h3>
-<p>2015-2024 (10 years of complete data)</p>
+<p>2021-2025 (5 years of complete data)</p>
 </div>
 <div class="section level3">
 <h3 id="whats-included">What’s Included<a class="anchor" aria-label="anchor" href="#whats-included"></a>
 </h3>
 <ul>
 <li>
-<strong>Levels:</strong> State, system (~140), school (~1,600)</li>
+<strong>Levels:</strong> State, district (~153), campus (~1,362)</li>
 <li>
-<strong>Demographics:</strong> White, Black, Hispanic, Asian, American Indian, Pacific Islander, Two or More Races</li>
+<strong>Demographics:</strong> White, Black, Hispanic, Asian, Native American, Pacific Islander, Multiracial</li>
 <li>
 <strong>Special populations:</strong> Economically disadvantaged, English learners, Students with disabilities</li>
 <li>
-<strong>Grade levels:</strong> K-12</li>
+<strong>Gender:</strong> Male, Female</li>
+<li>
+<strong>Grade levels:</strong> PK-12</li>
 </ul>
 </div>
 <div class="section level3">
@@ -615,9 +616,9 @@
 </h3>
 <ul>
 <li>
-<strong>System codes:</strong> 3 digits (001-067 for counties, 100+ for cities)</li>
+<strong>District codes:</strong> 3 digits (county systems, city systems, and charter operators)</li>
 <li>
-<strong>School codes:</strong> 4 digits unique within each system</li>
+<strong>Campus codes:</strong> 4 digits unique within each district</li>
 </ul>
 </div>
 <div class="section level3">
@@ -625,16 +626,19 @@
 </h3>
 <ul>
 <li>Enrollment counts are as of Census Day (typically early October)</li>
-<li>Small cell suppression: Counts under 10 may be suppressed in some reports</li>
-<li>Historical data (pre-2015) is not available in the current downloadable format</li>
+<li>Economically disadvantaged rate shows volatility (48%-65%) likely due to reporting methodology changes</li>
+<li>Special education rate spiked 2022-2024, possibly reflecting expanded identification</li>
+<li>Virtual school enrollment is reported under the hosting district, inflating some district totals</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="known-limitations">Known Limitations<a class="anchor" aria-label="anchor" href="#known-limitations"></a>
 </h3>
 <ul>
+<li>Pre-2021 data is not available through the current ALSDE data source</li>
 <li>Pre-K enrollment data is inconsistently reported</li>
-<li>Some charter schools may be reported under their authorizing district</li>
+<li>Charter schools are reported as separate districts</li>
+<li>Virtual school students counted under hosting district rather than student’s home district</li>
 </ul>
 <hr>
 </div>
