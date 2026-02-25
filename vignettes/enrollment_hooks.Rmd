@@ -17,6 +17,12 @@ knitr::opts_chunk$set(
   fig.height = 5,
   cache = TRUE
 )
+
+# Load bundled data for CI builds (avoids network dependency)
+cache_file <- system.file("extdata", "vignette_enr_data.rds", package = "alschooldata")
+if (file.exists(cache_file) && nzchar(cache_file)) {
+  enr <- readRDS(cache_file)
+}
 ```
 
 ```{r load-packages}
@@ -37,7 +43,9 @@ This vignette explores Alabama's public school enrollment data from the Alabama 
 Statewide enrollment peaked at 735,808 in 2022 and has since declined by over 18,000 students. The 2024 drop of 11,073 was the steepest single-year decline.
 
 ```{r statewide-trend}
-enr <- fetch_enr_multi(2021:2025, use_cache = TRUE)
+if (!exists("enr")) {
+  enr <- fetch_enr_multi(2021:2025, use_cache = TRUE)
+}
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
