@@ -10,3 +10,5 @@ src/*.dll
 ..Rcheck/
 doc/
 Meta/
+__pycache__/
+*.pyc

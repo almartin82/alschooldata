@@ -67,17 +67,17 @@
 <ol style="list-style-type: decimal"><li>
 <strong>R/get_raw_assessment.R</strong> (5.4 KB)
 <ul><li>
-<code>get_raw_assess()</code>: Downloads raw ACAP assessment Excel files</li>
+<code><a href="reference/get_raw_assess.html">get_raw_assess()</a></code>: Downloads raw ACAP assessment Excel files</li>
 <li>
-<code>download_acap_assessment()</code>: Downloads from Alabama Achieves website</li>
+<code><a href="reference/download_acap_assessment.html">download_acap_assessment()</a></code>: Downloads from Alabama Achieves website</li>
 <li>
-<code>get_available_assess_years()</code>: Returns available year range (2022-2025)</li>
+<code><a href="reference/get_available_assess_years.html">get_available_assess_years()</a></code>: Returns available year range (2022-2025)</li>
 <li>Uses <code><a href="reference/retry_with_backoff.html">retry_with_backoff()</a></code> for robust HTTP requests</li>
 </ul></li>
 <li>
 <strong>R/process_assessment.R</strong> (4.4 KB)
 <ul><li>
-<code>process_assess()</code>: Standardizes column names and data types</li>
+<code><a href="reference/process_assess.html">process_assess()</a></code>: Standardizes column names and data types</li>
 <li>Handles different file structures across years</li>
 <li>Adds geographic level flags (state/district/school)</li>
 <li>Removes suppressed data (*)</li>
@@ -85,9 +85,9 @@
 <li>
 <strong>R/tidy_assessment.R</strong> (documentation placeholder)
 <ul><li>
-<code>tidy_assess()</code>: Converts to long format with proficiency metrics</li>
+<code><a href="reference/tidy_assess.html">tidy_assess()</a></code>: Converts to long format with proficiency metrics</li>
 <li>
-<code>id_assess_aggs()</code>: Calculates district and state aggregates</li>
+<code><a href="reference/id_assess_aggs.html">id_assess_aggs()</a></code>: Calculates district and state aggregates</li>
 </ul></li>
 <li>
 <strong>R/fetch_assessment-documentation.R</strong> (documentation)
@@ -97,9 +97,9 @@
 <li>
 <strong>R/fetch_assessment.R</strong> (4.3 KB)
 <ul><li>
-<code>fetch_assess()</code>: Public API for single-year assessment data</li>
+<code><a href="reference/fetch_assess.html">fetch_assess()</a></code>: Public API for single-year assessment data</li>
 <li>
-<code>fetch_assess_multi()</code>: Public API for multi-year assessment data</li>
+<code><a href="reference/fetch_assess_multi.html">fetch_assess_multi()</a></code>: Public API for multi-year assessment data</li>
 <li>Supports caching (assess_tidy, assess_wide)</li>
 <li>Tidy/wide format options</li>
 </ul></li>
@@ -183,10 +183,10 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/alschooldata/">alschooldata</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get single year</span></span>
-<span><span class="va">assess_2025</span> <span class="op">&lt;-</span> <span class="fu">fetch_assess</span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
+<span><span class="va">assess_2025</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_assess.html">fetch_assess</a></span><span class="op">(</span><span class="fl">2025</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get multiple years</span></span>
-<span><span class="va">assess_multi</span> <span class="op">&lt;-</span> <span class="fu">fetch_assess_multi</span><span class="op">(</span><span class="fl">2022</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span></span>
+<span><span class="va">assess_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_assess_multi.html">fetch_assess_multi</a></span><span class="op">(</span><span class="fl">2022</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># State-level 3rd grade reading proficiency</span></span>
 <span><span class="va">assess_2025</span> <span class="op">|&gt;</span></span>
@@ -205,7 +205,7 @@
 <hr></div>
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>All tests pass successfully: 1. ✅ <code>get_available_assess_years()</code> returns valid year range 2. ✅ <code>fetch_assess()</code> returns data for valid years 3. ✅ No Inf/NaN values in data 4. ✅ Proficiency rates between 0 and 1 5. ✅ Non-negative test counts 6. ✅ State aggregates calculated correctly 7. ✅ <code>fetch_assess_multi()</code> works for multiple years</p>
+<p>All tests pass successfully: 1. ✅ <code><a href="reference/get_available_assess_years.html">get_available_assess_years()</a></code> returns valid year range 2. ✅ <code><a href="reference/fetch_assess.html">fetch_assess()</a></code> returns data for valid years 3. ✅ No Inf/NaN values in data 4. ✅ Proficiency rates between 0 and 1 5. ✅ Non-negative test counts 6. ✅ State aggregates calculated correctly 7. ✅ <code><a href="reference/fetch_assess_multi.html">fetch_assess_multi()</a></code> works for multiple years</p>
 <hr></div>
 <div class="section level2">
 <h2 id="limitations-and-future-work">Limitations and Future Work<a class="anchor" aria-label="anchor" href="#limitations-and-future-work"></a></h2>
