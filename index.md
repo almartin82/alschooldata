@@ -1,224 +1,99 @@
 # alschooldata
 
-Fetch and analyze Alabama school enrollment data from the Alabama State
-Department of Education (ALSDE) in R or Python.
+Alabama’s 717,473 public school students across 153 districts and 1,362
+campuses – 5 years of enrollment data (2021-2025) from the Alabama State
+Department of Education.
 
-**Part of the [State Schooldata
-Project](https://github.com/almartin82/njschooldata)** - a simple,
-consistent interface for accessing state-published school data.
-Originally built as an extension of
-[njschooldata](https://github.com/almartin82/njschooldata), the New
-Jersey package that started it all.
+Part of the [njschooldata](https://github.com/almartin82/njschooldata)
+family.
 
-**[Documentation](https://almartin82.github.io/alschooldata/)** \| **[15
-Key
-Insights](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)**
+**[Full documentation](https://almartin82.github.io/alschooldata/)** –
+all 15 stories with interactive charts, getting-started guide, and
+complete function reference.
 
-## What can you find with alschooldata?
-
-**5 years of enrollment data (2021-2025).** Alabama’s public schools
-serve 717,473 students across 153 districts and 1,362 campuses. This
-package lets you explore:
-
-- Statewide enrollment trends and demographic shifts
-- District and school-level data for all 153 systems
-- Student demographics (race/ethnicity, economic status, English
-  learners, special education)
-- Grade-level breakdowns from PK-12
-- Virtual school enrollment boom
-- Black Belt population decline
-
-> **See the full analysis with charts and data output:** [15 Insights
-> from Alabama Enrollment
-> Data](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)
-
-------------------------------------------------------------------------
-
-## Installation
-
-### R
-
-``` r
-# install.packages("remotes")
-remotes::install_github("almartin82/alschooldata")
-```
-
-### Python
-
-``` bash
-pip install git+https://github.com/almartin82/alschooldata.git#subdirectory=pyalschooldata
-```
-
-------------------------------------------------------------------------
-
-## Quick Start
-
-### R
+## Highlights
 
 ``` r
 library(alschooldata)
 library(dplyr)
+library(tidyr)
+library(ggplot2)
 
-# Fetch one year
-enr_2025 <- fetch_enr(2025)
+theme_set(theme_minimal(base_size = 14))
 
-# Fetch multiple years
-enr_multi <- fetch_enr_multi(2021:2025)
-
-# State totals
-enr_2025 %>%
-  filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL")
-
-# District breakdown
-enr_2025 %>%
-  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") %>%
-  arrange(desc(n_students))
-
-# Demographics
-enr_2025 %>%
-  filter(is_state, grade_level == "TOTAL",
-         subgroup %in% c("white", "black", "hispanic", "asian")) %>%
-  select(subgroup, n_students, pct)
-```
-
-### Python
-
-``` python
-import pyalschooldata as al
-
-# Fetch one year
-enr_2025 = al.fetch_enr(2025)
-
-# Fetch multiple years
-enr_multi = al.fetch_enr_multi([2021, 2022, 2023, 2024, 2025])
-
-# State totals
-enr_2025[
-    (enr_2025['is_state'] == True) &
-    (enr_2025['subgroup'] == 'total_enrollment') &
-    (enr_2025['grade_level'] == 'TOTAL')
-]
-
-# District breakdown
-district_df = enr_2025[
-    (enr_2025['is_district'] == True) &
-    (enr_2025['subgroup'] == 'total_enrollment') &
-    (enr_2025['grade_level'] == 'TOTAL')
-].sort_values('n_students', ascending=False)
-
-# Demographics
-enr_2025[
-    (enr_2025['is_state'] == True) &
-    (enr_2025['grade_level'] == 'TOTAL') &
-    (enr_2025['subgroup'].isin(['white', 'black', 'hispanic', 'asian']))
-][['subgroup', 'n_students', 'pct']]
-```
-
-------------------------------------------------------------------------
-
-## 15 Key Insights from Alabama Enrollment Data
-
-### 1. Alabama lost 12,000 students since 2022
-
-Statewide enrollment peaked at 735,808 in 2022 and has since declined by
-over 18,000 students. The 2024 drop of 11,073 was the steepest
-single-year decline.
-
-``` r
 enr <- fetch_enr_multi(2021:2025, use_cache = TRUE)
-
-state_totals <- enr |>
-  filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
-  select(end_year, n_students) |>
-  arrange(end_year) |>
-  mutate(change = n_students - lag(n_students),
-         pct_change = round(change / lag(n_students) * 100, 2))
-
-stopifnot(nrow(state_totals) > 0)
-state_totals
-#>   end_year n_students change pct_change
-#> 1     2021     729786     NA         NA
-#> 2     2022     735808   6022       0.83
-#> 3     2023     729789  -6019      -0.82
-#> 4     2024     718716 -11073      -1.52
-#> 5     2025     717473  -1243      -0.17
+enr_2025 <- enr |> filter(end_year == 2025)
 ```
-
-![Statewide
-trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png)
-
-Statewide trend
 
 ------------------------------------------------------------------------
 
-### 2. Hispanic enrollment surged from 9.5% to 12.2% in four years
+### 1. Virtual schools exploded to 20,000 students
 
-Hispanic students are the fastest-growing racial/ethnic group in Alabama
-schools, adding nearly 19,000 students since 2021 while overall
-enrollment declined.
+Alabama’s virtual schools grew from 12,741 students (8 schools) in 2021
+to 19,963 students (16 schools) in 2025. Alabama Connections Academy
+alone enrolls 7,339, making Limestone County appear to be one of the
+state’s largest districts.
 
 ``` r
-hispanic <- enr |>
-  filter(is_state, subgroup == "hispanic", grade_level == "TOTAL") |>
+virtual <- enr |>
+  filter(is_campus, subgroup == "total_enrollment", grade_level == "TOTAL",
+         grepl("Virtual|Connections|Destinations", campus_name, ignore.case = TRUE)) |>
+  group_by(end_year) |>
+  summarize(n_schools = n(), total_students = sum(n_students), .groups = "drop") |>
+  arrange(end_year)
+
+stopifnot(nrow(virtual) > 0)
+virtual
+#>   end_year n_schools total_students
+#> 1     2021         8          12741
+#> 2     2022        13          15856
+#> 3     2023        14          15138
+#> 4     2024        13          16207
+#> 5     2025        16          19963
+```
+
+![Virtual
+schools](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/virtual-chart-1.png)
+
+Virtual schools
+
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#virtual-schools-exploded-to-20000-students)
+
+------------------------------------------------------------------------
+
+### 2. Multiracial students are the fastest-growing demographic
+
+Students identifying as multiracial grew from 25,456 (3.5%) to 42,305
+(5.9%) since 2021 – a 66% increase. At this pace, multiracial students
+will outnumber Asian and Native American students combined.
+
+``` r
+multi <- enr |>
+  filter(is_state, subgroup == "multiracial", grade_level == "TOTAL") |>
   mutate(pct = round(pct * 100, 1)) |>
   select(end_year, n_students, pct) |>
   arrange(end_year)
 
-stopifnot(nrow(hispanic) > 0)
-hispanic
-#>   end_year n_students  pct
-#> 1     2021      69093  9.5
-#> 2     2022      74561 10.1
-#> 3     2023      78638 10.8
-#> 4     2024      84661 11.8
-#> 5     2025      87790 12.2
+stopifnot(nrow(multi) > 0)
+multi
+#>   end_year n_students pct
+#> 1     2021      25456 3.5
+#> 2     2022      29716 4.0
+#> 3     2023      33651 4.6
+#> 4     2024      37946 5.3
+#> 5     2025      42305 5.9
 ```
 
-![Hispanic
-trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/hispanic-chart-1.png)
+![Multiracial
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/multiracial-chart-1.png)
 
-Hispanic trend
+Multiracial trend
+
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#multiracial-students-are-the-fastest-growing-demographic)
 
 ------------------------------------------------------------------------
 
-### 3. Mobile County is Alabama’s largest system – and shrinking fastest
-
-Mobile County Public Schools serves 47,366 students, nearly 14,000 more
-than second-place Jefferson County. But Mobile has lost 5,768 students
-since 2021, a decline of 10.9%.
-
-``` r
-enr_2025 <- enr |> filter(end_year == 2025)
-
-top_10 <- enr_2025 |>
-  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
-  arrange(desc(n_students)) |>
-  head(10) |>
-  select(district_name, n_students)
-
-stopifnot(nrow(top_10) > 0)
-top_10
-#>        district_name n_students
-#> 1      Mobile County      47366
-#> 2   Jefferson County      33844
-#> 3     Baldwin County      30491
-#> 4  Montgomery County      25491
-#> 5    Huntsville City      22776
-#> 6      Shelby County      20159
-#> 7     Madison County      19769
-#> 8    Birmingham City      19710
-#> 9  Tuscaloosa County      18135
-#> 10  Limestone County      15816
-```
-
-![Top 10
-districts](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png)
-
-Top 10 districts
-
-------------------------------------------------------------------------
-
-### 4. Black Belt counties are hemorrhaging students
+### 3. Black Belt counties are hemorrhaging students
 
 Perry County has lost 32% of its enrollment since 2021 – the steepest
 decline of any Alabama district with 500+ students. Sumter County lost
@@ -256,9 +131,259 @@ districts](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_f
 
 Fastest declining districts
 
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#black-belt-counties-are-hemorrhaging-students)
+
 ------------------------------------------------------------------------
 
-### 5. Alabama’s student body: 56% white, 32% Black, 12% Hispanic
+## Data Taxonomy
+
+| Category           | Years     | Function                                                                                                                                                                          | Details                                                |
+|--------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| **Enrollment**     | 2021-2025 | [`fetch_enr()`](https://almartin82.github.io/alschooldata/reference/fetch_enr.md) / [`fetch_enr_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_enr_multi.md) | State, district, campus. Race, gender, FRPL, SpEd, LEP |
+| Assessments        | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| Graduation         | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| Directory          | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| Per-Pupil Spending | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| Accountability     | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| Chronic Absence    | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| EL Progress        | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| Special Ed         | –         | –                                                                                                                                                                                 | Not yet available                                      |
+
+> See the full [data category
+> taxonomy](https://almartin82.github.io/alschooldata/DATA-CATEGORY-TAXONOMY.md)
+> for what each category covers.
+
+## Quick Start
+
+### R
+
+``` r
+# install.packages("remotes")
+remotes::install_github("almartin82/alschooldata")
+```
+
+``` r
+library(alschooldata)
+library(dplyr)
+
+# Fetch one year
+enr_2025 <- fetch_enr(2025)
+
+# Fetch multiple years
+enr_multi <- fetch_enr_multi(2021:2025)
+
+# State totals
+enr_2025 %>%
+  filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL")
+
+# District breakdown
+enr_2025 %>%
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") %>%
+  arrange(desc(n_students))
+
+# Demographics
+enr_2025 %>%
+  filter(is_state, grade_level == "TOTAL",
+         subgroup %in% c("white", "black", "hispanic", "asian")) %>%
+  select(subgroup, n_students, pct)
+```
+
+### Python
+
+``` bash
+pip install git+https://github.com/almartin82/alschooldata.git#subdirectory=pyalschooldata
+```
+
+``` python
+import pyalschooldata as al
+
+# Fetch one year
+enr_2025 = al.fetch_enr(2025)
+
+# Fetch multiple years
+enr_multi = al.fetch_enr_multi([2021, 2022, 2023, 2024, 2025])
+
+# State totals
+enr_2025[
+    (enr_2025['is_state'] == True) &
+    (enr_2025['subgroup'] == 'total_enrollment') &
+    (enr_2025['grade_level'] == 'TOTAL')
+]
+
+# District breakdown
+district_df = enr_2025[
+    (enr_2025['is_district'] == True) &
+    (enr_2025['subgroup'] == 'total_enrollment') &
+    (enr_2025['grade_level'] == 'TOTAL')
+].sort_values('n_students', ascending=False)
+
+# Demographics
+enr_2025[
+    (enr_2025['is_state'] == True) &
+    (enr_2025['grade_level'] == 'TOTAL') &
+    (enr_2025['subgroup'].isin(['white', 'black', 'hispanic', 'asian']))
+][['subgroup', 'n_students', 'pct']]
+```
+
+## Explore More
+
+Full analysis with 15 stories: - [Enrollment
+trends](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html)
+– 15 stories - [Function
+reference](https://almartin82.github.io/alschooldata/reference/)
+
+## Data Notes
+
+### Data Source
+
+Alabama State Department of Education (ALSDE) Federal Report Card:
+[alsde.edu](https://www.alsde.edu/)
+
+### Available Years
+
+2021-2025 (5 years of complete data)
+
+### What’s Included
+
+- **Levels:** State, district (~153), campus (~1,362)
+- **Demographics:** White, Black, Hispanic, Asian, Native American,
+  Pacific Islander, Multiracial
+- **Special populations:** Economically disadvantaged, English learners,
+  Students with disabilities
+- **Gender:** Male, Female
+- **Grade levels:** PK-12
+
+### Alabama ID System
+
+- **District codes:** 3 digits (county systems, city systems, and
+  charter operators)
+- **Campus codes:** 4 digits unique within each district
+
+### Data Quality Notes
+
+- Enrollment counts are as of Census Day (typically early October)
+- Economically disadvantaged rate shows volatility (48%-65%) likely due
+  to reporting methodology changes
+- Special education rate spiked 2022-2024, possibly reflecting expanded
+  identification
+- Virtual school enrollment is reported under the hosting district,
+  inflating some district totals
+
+### Known Limitations
+
+- Pre-2021 data is not available through the current ALSDE data source
+- Pre-K enrollment data is inconsistently reported
+- Charter schools are reported as separate districts
+- Virtual school students counted under hosting district rather than
+  student’s home district
+
+## Deeper Dive
+
+------------------------------------------------------------------------
+
+### 4. Alabama lost 12,000 students since 2022
+
+Statewide enrollment peaked at 735,808 in 2022 and has since declined by
+over 18,000 students. The 2024 drop of 11,073 was the steepest
+single-year decline.
+
+``` r
+state_totals <- enr |>
+  filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
+  select(end_year, n_students) |>
+  arrange(end_year) |>
+  mutate(change = n_students - lag(n_students),
+         pct_change = round(change / lag(n_students) * 100, 2))
+
+stopifnot(nrow(state_totals) > 0)
+state_totals
+#>   end_year n_students change pct_change
+#> 1     2021     729786     NA         NA
+#> 2     2022     735808   6022       0.83
+#> 3     2023     729789  -6019      -0.82
+#> 4     2024     718716 -11073      -1.52
+#> 5     2025     717473  -1243      -0.17
+```
+
+![Statewide
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png)
+
+Statewide trend
+
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#alabama-lost-12000-students-since-2022)
+
+------------------------------------------------------------------------
+
+### 5. Hispanic enrollment surged from 9.5% to 12.2% in four years
+
+Hispanic students are the fastest-growing racial/ethnic group in Alabama
+schools, adding nearly 19,000 students since 2021 while overall
+enrollment declined.
+
+``` r
+hispanic <- enr |>
+  filter(is_state, subgroup == "hispanic", grade_level == "TOTAL") |>
+  mutate(pct = round(pct * 100, 1)) |>
+  select(end_year, n_students, pct) |>
+  arrange(end_year)
+
+stopifnot(nrow(hispanic) > 0)
+hispanic
+#>   end_year n_students  pct
+#> 1     2021      69093  9.5
+#> 2     2022      74561 10.1
+#> 3     2023      78638 10.8
+#> 4     2024      84661 11.8
+#> 5     2025      87790 12.2
+```
+
+![Hispanic
+trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/hispanic-chart-1.png)
+
+Hispanic trend
+
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#hispanic-enrollment-surged-from-95-to-122-in-four-years)
+
+------------------------------------------------------------------------
+
+### 6. Mobile County is Alabama’s largest system – and shrinking fastest
+
+Mobile County Public Schools serves 47,366 students, nearly 14,000 more
+than second-place Jefferson County. But Mobile has lost 5,768 students
+since 2021, a decline of 10.9%.
+
+``` r
+top_10 <- enr_2025 |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
+  arrange(desc(n_students)) |>
+  head(10) |>
+  select(district_name, n_students)
+
+stopifnot(nrow(top_10) > 0)
+top_10
+#>        district_name n_students
+#> 1      Mobile County      47366
+#> 2   Jefferson County      33844
+#> 3     Baldwin County      30491
+#> 4  Montgomery County      25491
+#> 5    Huntsville City      22776
+#> 6      Shelby County      20159
+#> 7     Madison County      19769
+#> 8    Birmingham City      19710
+#> 9  Tuscaloosa County      18135
+#> 10  Limestone County      15816
+```
+
+![Top 10
+districts](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png)
+
+Top 10 districts
+
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#mobile-county-is-alabamas-largest-system-and-shrinking-fastest)
+
+------------------------------------------------------------------------
+
+### 7. Alabama’s student body: 56% white, 32% Black, 12% Hispanic
 
 Alabama’s racial demographics are shifting. White students still form
 the majority but their share dropped from 58.3% to 56.1% since 2021,
@@ -289,9 +414,11 @@ demographics
 
 Demographics
 
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#alabamas-student-body-56-white-32-black-12-hispanic)
+
 ------------------------------------------------------------------------
 
-### 6. Nearly 3 in 5 Alabama students are economically disadvantaged
+### 8. Nearly 3 in 5 Alabama students are economically disadvantaged
 
 The economically disadvantaged rate jumped from 51% in 2021 to 65% in
 2023, then settled at 59% in 2025. This volatility may reflect changes
@@ -319,9 +446,11 @@ trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files
 
 Econ disadv trend
 
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#nearly-3-in-5-alabama-students-are-economically-disadvantaged)
+
 ------------------------------------------------------------------------
 
-### 7. Birmingham City lost 2,191 students in four years
+### 9. Birmingham City lost 2,191 students in four years
 
 Birmingham City Schools has shed students every single year since 2021,
 dropping from 21,901 to 19,710 – a 10% decline. Once a top-5 Alabama
@@ -350,67 +479,7 @@ decline](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_fil
 
 Birmingham decline
 
-------------------------------------------------------------------------
-
-### 8. Virtual schools exploded to 20,000 students
-
-Alabama’s virtual schools grew from 12,741 students (8 schools) in 2021
-to 19,963 students (16 schools) in 2025. Alabama Connections Academy
-alone enrolls 7,339, making Limestone County appear to be one of the
-state’s largest districts.
-
-``` r
-virtual <- enr |>
-  filter(is_campus, subgroup == "total_enrollment", grade_level == "TOTAL",
-         grepl("Virtual|Connections|Destinations", campus_name, ignore.case = TRUE)) |>
-  group_by(end_year) |>
-  summarize(n_schools = n(), total_students = sum(n_students), .groups = "drop") |>
-  arrange(end_year)
-
-stopifnot(nrow(virtual) > 0)
-virtual
-#>   end_year n_schools total_students
-#> 1     2021         8          12741
-#> 2     2022        13          15856
-#> 3     2023        14          15138
-#> 4     2024        13          16207
-#> 5     2025        16          19963
-```
-
-![Virtual
-schools](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/virtual-chart-1.png)
-
-Virtual schools
-
-------------------------------------------------------------------------
-
-### 9. Multiracial students are the fastest-growing demographic
-
-Students identifying as multiracial grew from 25,456 (3.5%) to 42,305
-(5.9%) since 2021 – a 66% increase. At this pace, multiracial students
-will outnumber Asian and Native American students combined.
-
-``` r
-multi <- enr |>
-  filter(is_state, subgroup == "multiracial", grade_level == "TOTAL") |>
-  mutate(pct = round(pct * 100, 1)) |>
-  select(end_year, n_students, pct) |>
-  arrange(end_year)
-
-stopifnot(nrow(multi) > 0)
-multi
-#>   end_year n_students pct
-#> 1     2021      25456 3.5
-#> 2     2022      29716 4.0
-#> 3     2023      33651 4.6
-#> 4     2024      37946 5.3
-#> 5     2025      42305 5.9
-```
-
-![Multiracial
-trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/multiracial-chart-1.png)
-
-Multiracial trend
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#birmingham-city-lost-2191-students-in-four-years)
 
 ------------------------------------------------------------------------
 
@@ -442,6 +511,8 @@ trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files
 
 EL trend
 
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#english-learners-grew-52-in-four-years)
+
 ------------------------------------------------------------------------
 
 ### 11. Special Ed spiked to 18% then fell back to 14.5%
@@ -472,6 +543,8 @@ sped
 trend](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/sped-chart-1.png)
 
 Special Ed trend
+
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#special-ed-spiked-to-18-then-fell-back-to-145)
 
 ------------------------------------------------------------------------
 
@@ -513,6 +586,8 @@ grade_dist
 distribution](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_files/figure-html/grade-chart-1.png)
 
 Grade distribution
+
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#3rd-grade-is-the-largest-class-in-alabama)
 
 ------------------------------------------------------------------------
 
@@ -578,6 +653,8 @@ districts](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_f
 
 Smallest districts
 
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#charter-schools-are-alabamas-smallest-districts)
+
 ------------------------------------------------------------------------
 
 ### 15. Middle school enrollment is shrinking while elementary grows
@@ -625,71 +702,6 @@ trends](https://almartin82.github.io/alschooldata/articles/enrollment_hooks_file
 
 Grade band trends
 
-------------------------------------------------------------------------
-
-## Data Notes
-
-### Data Source
-
-Alabama State Department of Education (ALSDE) Federal Report Card:
-[alsde.edu](https://www.alsde.edu/)
-
-### Available Years
-
-2021-2025 (5 years of complete data)
-
-### What’s Included
-
-- **Levels:** State, district (~153), campus (~1,362)
-- **Demographics:** White, Black, Hispanic, Asian, Native American,
-  Pacific Islander, Multiracial
-- **Special populations:** Economically disadvantaged, English learners,
-  Students with disabilities
-- **Gender:** Male, Female
-- **Grade levels:** PK-12
-
-### Alabama ID System
-
-- **District codes:** 3 digits (county systems, city systems, and
-  charter operators)
-- **Campus codes:** 4 digits unique within each district
-
-### Data Quality Notes
-
-- Enrollment counts are as of Census Day (typically early October)
-- Economically disadvantaged rate shows volatility (48%-65%) likely due
-  to reporting methodology changes
-- Special education rate spiked 2022-2024, possibly reflecting expanded
-  identification
-- Virtual school enrollment is reported under the hosting district,
-  inflating some district totals
-
-### Known Limitations
-
-- Pre-2021 data is not available through the current ALSDE data source
-- Pre-K enrollment data is inconsistently reported
-- Charter schools are reported as separate districts
-- Virtual school students counted under hosting district rather than
-  student’s home district
+[(source)](https://almartin82.github.io/alschooldata/articles/enrollment_hooks.html#middle-school-enrollment-is-shrinking-while-elementary-grows)
 
 ------------------------------------------------------------------------
-
-## Part of the State Schooldata Project
-
-A simple, consistent interface for accessing state-published school data
-in Python and R. This project originated with
-[njschooldata](https://github.com/almartin82/njschooldata) for New
-Jersey and has expanded to cover all 50 states.
-
-**All 50 state packages:**
-[github.com/almartin82](https://github.com/almartin82?tab=repositories&q=schooldata)
-
-------------------------------------------------------------------------
-
-## Author
-
-[Andy Martin](https://github.com/almartin82) (<almartin@gmail.com>)
-
-## License
-
-MIT
