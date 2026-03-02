@@ -8,7 +8,9 @@ NULL
 # Declare non-standard evaluation variables for dplyr
 utils::globalVariables(
   c("district_id", "district_name", "system_code", "system_name",
-    "school_code", "school_name")
+    "school_code", "school_name", "superintendent_name",
+    "principal_name", "entity_type", "is_state", "is_district",
+    "is_school")
 )
 
 
