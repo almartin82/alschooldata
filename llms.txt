@@ -137,17 +137,17 @@ Fastest declining districts
 
 ## Data Taxonomy
 
-| Category           | Years     | Function                                                                                                                                                                          | Details                                                |
-|--------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| **Enrollment**     | 2021-2025 | [`fetch_enr()`](https://almartin82.github.io/alschooldata/reference/fetch_enr.md) / [`fetch_enr_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_enr_multi.md) | State, district, campus. Race, gender, FRPL, SpEd, LEP |
-| Assessments        | –         | –                                                                                                                                                                                 | Not yet available                                      |
-| Graduation         | –         | –                                                                                                                                                                                 | Not yet available                                      |
-| Directory          | –         | –                                                                                                                                                                                 | Not yet available                                      |
-| Per-Pupil Spending | –         | –                                                                                                                                                                                 | Not yet available                                      |
-| Accountability     | –         | –                                                                                                                                                                                 | Not yet available                                      |
-| Chronic Absence    | –         | –                                                                                                                                                                                 | Not yet available                                      |
-| EL Progress        | –         | –                                                                                                                                                                                 | Not yet available                                      |
-| Special Ed         | –         | –                                                                                                                                                                                 | Not yet available                                      |
+| Category           | Years     | Function                                                                                                                                                                          | Details                                                                      |
+|--------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| **Enrollment**     | 2021-2025 | [`fetch_enr()`](https://almartin82.github.io/alschooldata/reference/fetch_enr.md) / [`fetch_enr_multi()`](https://almartin82.github.io/alschooldata/reference/fetch_enr_multi.md) | State, district, campus. Race, gender, FRPL, SpEd, LEP                       |
+| Assessments        | –         | –                                                                                                                                                                                 | Not yet available                                                            |
+| Graduation         | –         | –                                                                                                                                                                                 | Not yet available                                                            |
+| **Directory**      | Current   | [`fetch_directory()`](https://almartin82.github.io/alschooldata/reference/fetch_directory.md)                                                                                     | District, school. Principal, superintendent, address, phone, website, grades |
+| Per-Pupil Spending | –         | –                                                                                                                                                                                 | Not yet available                                                            |
+| Accountability     | –         | –                                                                                                                                                                                 | Not yet available                                                            |
+| Chronic Absence    | –         | –                                                                                                                                                                                 | Not yet available                                                            |
+| EL Progress        | –         | –                                                                                                                                                                                 | Not yet available                                                            |
+| Special Ed         | –         | –                                                                                                                                                                                 | Not yet available                                                            |
 
 > See the full [data category
 > taxonomy](https://almartin82.github.io/alschooldata/DATA-CATEGORY-TAXONOMY.md)
@@ -726,6 +726,11 @@ Grade band trends
 - [`get_available_assess_years()`](https://almartin82.github.io/alschooldata/reference/get_available_assess_years.md)
   : Get available ACAP assessment years
 
+## Fetch Directory Data
+
+- [`fetch_directory()`](https://almartin82.github.io/alschooldata/reference/fetch_directory.md)
+  : Fetch Alabama school directory data
+
 ## Process & Tidy
 
 - [`tidy_enr()`](https://almartin82.github.io/alschooldata/reference/tidy_enr.md)
@@ -745,6 +750,8 @@ Grade band trends
   : Show cache status
 - [`clear_cache()`](https://almartin82.github.io/alschooldata/reference/clear_cache.md)
   : Clear the alschooldata cache
+- [`clear_directory_cache()`](https://almartin82.github.io/alschooldata/reference/clear_directory_cache.md)
+  : Clear directory data cache
 
 # Articles
 

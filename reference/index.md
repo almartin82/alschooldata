@@ -18,6 +18,11 @@
 - [`get_available_assess_years()`](https://almartin82.github.io/alschooldata/reference/get_available_assess_years.md)
   : Get available ACAP assessment years
 
+## Fetch Directory Data
+
+- [`fetch_directory()`](https://almartin82.github.io/alschooldata/reference/fetch_directory.md)
+  : Fetch Alabama school directory data
+
 ## Process & Tidy
 
 - [`tidy_enr()`](https://almartin82.github.io/alschooldata/reference/tidy_enr.md)
@@ -37,3 +42,5 @@
   : Show cache status
 - [`clear_cache()`](https://almartin82.github.io/alschooldata/reference/clear_cache.md)
   : Clear the alschooldata cache
+- [`clear_directory_cache()`](https://almartin82.github.io/alschooldata/reference/clear_directory_cache.md)
+  : Clear directory data cache

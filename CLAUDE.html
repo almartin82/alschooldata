@@ -80,6 +80,23 @@
 <code>is_campus</code>: <code>type == "Campus"</code>
 </li>
 </ul><p>Note: No <code>is_charter</code> flag is defined for Alabama.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="valid-filter-values-directory-via-fetch_directory">Valid Filter Values (directory via <code>fetch_directory()</code>)<a class="anchor" aria-label="anchor" href="#valid-filter-values-directory-via-fetch_directory"></a></h2>
+<div class="section level3">
+<h3 id="entity_type">entity_type<a class="anchor" aria-label="anchor" href="#entity_type"></a></h3>
+<p><code>State</code>, <code>District</code>, <code>School</code></p>
+</div>
+<div class="section level3">
+<h3 id="entity-flags-1">entity flags<a class="anchor" aria-label="anchor" href="#entity-flags-1"></a></h3>
+<p><code>is_state</code>, <code>is_district</code>, <code>is_school</code></p>
+</div>
+<div class="section level3">
+<h3 id="columns">columns<a class="anchor" aria-label="anchor" href="#columns"></a></h3>
+<p><code>district_name</code>, <code>school_name</code>, <code>entity_type</code>, <code>principal_name</code>, <code>superintendent_name</code>, <code>address</code>, <code>city</code>, <code>state</code>, <code>zip</code>, <code>phone</code>, <code>website</code>, <code>grades_served</code>, <code>is_state</code>, <code>is_district</code>, <code>is_school</code></p>
+<p><strong>Data Source:</strong> ALSDE Education Directory - Registered School Information - URL: <a href="https://eddir.alsde.edu/SiteInfo/PublicPrivateReligiousSites" class="external-link uri">https://eddir.alsde.edu/SiteInfo/PublicPrivateReligiousSites</a> - Export: DevExpress ASPxGridView CSV export via ASP.NET postback - Postback args: <code>__EVENTTARGET=pcResults$gridPublicSchool</code>, <code>__EVENTARGUMENT=6|EXPORT3|Csv</code> - The page may return Windows-1252 encoded data (curly apostrophes, etc.)</p>
+<p><strong>Note:</strong> Directory data is a point-in-time snapshot (no year parameter). Cache uses pseudo-year 0.</p>
 <hr></div>
 <div class="section level3">
 <h3 id="concurrent-task-limit">CONCURRENT TASK LIMIT<a class="anchor" aria-label="anchor" href="#concurrent-task-limit"></a></h3>
@@ -412,6 +429,13 @@ enr_multi &lt;- fetch_enr_multi(2020:2024, use_cache = TRUE)</code></pre>
 </tr></tbody></table><p><strong>Data Source:</strong> Alabama State Department of Education (ALSDE) Alabama Achieves - URL: <a href="https://www.alabamaachieves.org/assessment/" class="external-link uri">https://www.alabamaachieves.org/assessment/</a> - Assessment: Alabama Comprehensive Assessment Program (ACAP) Reading - Proficiency Definition: At or above grade level</p>
 <p><strong>Assessment Data Limitations:</strong> - Only Reading/ELA assessments are available in Excel format - Math and Science assessments are not available as downloadable data files - Only grades 2-3 are included (early literacy assessment focus) - Historical ACT Aspire data (pre-2021) is not available in downloadable format</p>
 </div>
+<div class="section level3">
+<h3 id="directory-data">Directory Data<a class="anchor" aria-label="anchor" href="#directory-data"></a></h3>
+<p><strong>Available:</strong> Current snapshot (no year parameter)</p>
+<p><strong>Data Source:</strong> ALSDE Education Directory - Registered School Information - URL: <a href="https://eddir.alsde.edu/SiteInfo/PublicPrivateReligiousSites" class="external-link uri">https://eddir.alsde.edu/SiteInfo/PublicPrivateReligiousSites</a> - Export: DevExpress ASPxGridView CSV export - Grids: Public Schools (pcResults<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mi>r</mi><mi>i</mi><mi>d</mi><mi>P</mi><mi>u</mi><mi>b</mi><mi>l</mi><mi>i</mi><mi>c</mi><mi>S</mi><mi>c</mi><mi>h</mi><mi>o</mi><mi>o</mi><mi>l</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>S</mi><mi>u</mi><mi>p</mi><mi>e</mi><mi>r</mi><mi>i</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mi>c</mi><mi>R</mi><mi>e</mi><mi>s</mi><mi>u</mi><mi>l</mi><mi>t</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">gridPublicSchool), Superintendents (pcResults</annotation></semantics></math>gridSuperintendent)</p>
+<p><strong>Directory Data Contents:</strong> - District name, school name - Principal/administrator name - Superintendent name (from superintendent grid) - Physical address (street, city, state, zip) - Phone number, website - Grade range served</p>
+<p><strong>Directory Data Notes:</strong> - Point-in-time snapshot, not year-specific - The DevExpress grid may return duplicate rows for schools with multiple administrators - Processing deduplicates by (district_name, school_name, address) - Some school names contain Windows-1252 encoded characters (e.g., curly apostrophes)</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="known-data-issues">Known Data Issues<a class="anchor" aria-label="anchor" href="#known-data-issues"></a></h2>
@@ -426,6 +450,12 @@ enr_multi &lt;- fetch_enr_multi(2020:2024, use_cache = TRUE)</code></pre>
 <li>No Math or Science assessment data available in downloadable format</li>
 <li>No high school assessment data available (SAT/ACT excluded per package requirements)</li>
 </ul></div>
+<div class="section level3">
+<h3 id="directory">Directory<a class="anchor" aria-label="anchor" href="#directory"></a></h3>
+<ul><li>Data is a point-in-time snapshot; no historical directory data available</li>
+<li>Some schools list multiple administrators, creating duplicate rows (handled by dedup)</li>
+<li>Website field sometimes contains relative paths or non-standard URLs</li>
+</ul></div>
 </div>
 <div class="section level2">
 <h2 id="test-coverage">Test Coverage<a class="anchor" aria-label="anchor" href="#test-coverage"></a></h2>
@@ -436,6 +466,10 @@ enr_multi &lt;- fetch_enr_multi(2020:2024, use_cache = TRUE)</code></pre>
 <div class="section level3">
 <h3 id="assessment-tests">Assessment Tests<a class="anchor" aria-label="anchor" href="#assessment-tests"></a></h3>
 <p>The test suite verifies: 1. All years fetchable: 2022-2025 all download and process successfully 2. Proficiency rates between 0 and 1 (or 0-100%) 3. Non-negative test counts 4. State aggregates calculated correctly 5. No Inf/NaN values in data 6. Multiple-year fetch works correctly</p>
+</div>
+<div class="section level3">
+<h3 id="directory-tests">Directory Tests<a class="anchor" aria-label="anchor" href="#directory-tests"></a></h3>
+<p>The test suite verifies: 1. ALSDE Education Directory page is accessible 2. Raw data downloads for schools and superintendents 3. Processing produces valid output with all entity types 4. Expected columns present in output 5. Reasonable row counts (100+ districts, 500+ schools) 6. Entity flags are mutually exclusive 7. Known districts are present (Mobile, Jefferson, Birmingham, etc.) 8. End-to-end fetch_directory() pipeline works</p>
 </div>
 </div>
 </div>

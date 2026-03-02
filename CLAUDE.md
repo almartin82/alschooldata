@@ -78,6 +78,33 @@ Always filter on the normalized values.
 
 Note: No `is_charter` flag is defined for Alabama.
 
+## Valid Filter Values (directory via `fetch_directory()`)
+
+### entity_type
+
+`State`, `District`, `School`
+
+### entity flags
+
+`is_state`, `is_district`, `is_school`
+
+### columns
+
+`district_name`, `school_name`, `entity_type`, `principal_name`,
+`superintendent_name`, `address`, `city`, `state`, `zip`, `phone`,
+`website`, `grades_served`, `is_state`, `is_district`, `is_school`
+
+**Data Source:** ALSDE Education Directory - Registered School
+Information - URL:
+<https://eddir.alsde.edu/SiteInfo/PublicPrivateReligiousSites> - Export:
+DevExpress ASPxGridView CSV export via ASP.NET postback - Postback args:
+`__EVENTTARGET=pcResults$gridPublicSchool`,
+`__EVENTARGUMENT=6|EXPORT3|Csv` - The page may return Windows-1252
+encoded data (curly apostrophes, etc.)
+
+**Note:** Directory data is a point-in-time snapshot (no year
+parameter). Cache uses pseudo-year 0.
+
 ------------------------------------------------------------------------
 
 ### CONCURRENT TASK LIMIT
@@ -480,6 +507,27 @@ available as downloadable data files - Only grades 2-3 are included
 (early literacy assessment focus) - Historical ACT Aspire data
 (pre-2021) is not available in downloadable format
 
+### Directory Data
+
+**Available:** Current snapshot (no year parameter)
+
+**Data Source:** ALSDE Education Directory - Registered School
+Information - URL:
+<https://eddir.alsde.edu/SiteInfo/PublicPrivateReligiousSites> - Export:
+DevExpress ASPxGridView CSV export - Grids: Public Schools
+(pcResults$gridPublicSchool),Superintendents(pcResults$gridSuperintendent)
+
+**Directory Data Contents:** - District name, school name -
+Principal/administrator name - Superintendent name (from superintendent
+grid) - Physical address (street, city, state, zip) - Phone number,
+website - Grade range served
+
+**Directory Data Notes:** - Point-in-time snapshot, not year-specific -
+The DevExpress grid may return duplicate rows for schools with multiple
+administrators - Processing deduplicates by (district_name, school_name,
+address) - Some school names contain Windows-1252 encoded characters
+(e.g., curly apostrophes)
+
 ## Known Data Issues
 
 ### Enrollment
@@ -494,6 +542,14 @@ No state-specific data issues identified at this time.
 - No Math or Science assessment data available in downloadable format
 - No high school assessment data available (SAT/ACT excluded per package
   requirements)
+
+### Directory
+
+- Data is a point-in-time snapshot; no historical directory data
+  available
+- Some schools list multiple administrators, creating duplicate rows
+  (handled by dedup)
+- Website field sometimes contains relative paths or non-standard URLs
 
 ## Test Coverage
 
@@ -514,3 +570,13 @@ and process successfully 2. Proficiency rates between 0 and 1 (or
 0-100%) 3. Non-negative test counts 4. State aggregates calculated
 correctly 5. No Inf/NaN values in data 6. Multiple-year fetch works
 correctly
+
+### Directory Tests
+
+The test suite verifies: 1. ALSDE Education Directory page is accessible
+2. Raw data downloads for schools and superintendents 3. Processing
+produces valid output with all entity types 4. Expected columns present
+in output 5. Reasonable row counts (100+ districts, 500+ schools) 6.
+Entity flags are mutually exclusive 7. Known districts are present
+(Mobile, Jefferson, Birmingham, etc.) 8. End-to-end fetch_directory()
+pipeline works
