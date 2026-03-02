@@ -33,6 +33,10 @@ reference:
   - fetch_assess_multi
   - get_available_assess_years
 
+- title: Fetch Directory Data
+  contents:
+  - fetch_directory
+
 - title: Process & Tidy
   contents:
   - tidy_enr

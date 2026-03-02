@@ -128,7 +128,7 @@ decline
 | **Enrollment** | 2021-2025 | `fetch_enr()` / `fetch_enr_multi()` | State, district, campus. Race, gender, FRPL, SpEd, LEP |
 | Assessments | -- | -- | Not yet available |
 | Graduation | -- | -- | Not yet available |
-| Directory | -- | -- | Not yet available |
+| **Directory** | Current | `fetch_directory()` | District, school. Principal, superintendent, address, phone, website, grades |
 | Per-Pupil Spending | -- | -- | Not yet available |
 | Accountability | -- | -- | Not yet available |
 | Chronic Absence | -- | -- | Not yet available |
